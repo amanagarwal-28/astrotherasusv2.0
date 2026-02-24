@@ -19,7 +19,7 @@ def ask_ollama(prompt, system=None):
                     "num_predict": 500
                 }
             },
-            timeout=60
+            timeout=120
         )
         return response.json().get("response", "").strip()
     except Exception as e:
