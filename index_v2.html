@@ -4,25 +4,26 @@
 <head>
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
-  <title>ASTRO THESAURUS — Orbital Intelligence Engine</title>
+  <title>ASTRO THESAURUS — Orbital Intelligence</title>
   <style>
-    @import url('https://fonts.googleapis.com/css2?family=Orbitron:wght@400;600;700;900&family=JetBrains+Mono:wght@300;400;500;700&family=Rajdhani:wght@300;400;500;600;700&display=swap');
+    @import url('https://fonts.googleapis.com/css2?family=Orbitron:wght@400;600;700;900&family=JetBrains+Mono:ital,wght@0,300;0,400;0,500;0,700;1,400&family=Space+Grotesk:wght@300;400;500;600&display=swap');
 
     :root {
-      --void: #00000a;
-      --deep: #020310;
-      --panel: rgba(2, 5, 22, 0.85);
-      --glass: rgba(10, 20, 60, 0.4);
-      --border: rgba(60, 120, 255, 0.15);
-      --glow: rgba(60, 120, 255, 0.08);
-      --accent: #3d7fff;
-      --pulse: #00d4ff;
-      --fire: #ff6b35;
-      --nova: #ff3d8f;
-      --star: #fff7aa;
-      --nebula: #c084fc;
-      --text: #d0dcff;
-      --muted: #3a4a70;
+      --void: #000008;
+      --deep: #03071a;
+      --panel: #050d24;
+      --card: #071530;
+      --border: rgba(50, 130, 255, 0.2);
+      --glow: rgba(50, 130, 255, 0.08);
+      --accent: #3280ff;
+      --pulse: #00e5ff;
+      --fire: #ff5722;
+      --nova: #ff1a6e;
+      --gold: #ffd700;
+      --green: #00ff88;
+      --purple: #b44bff;
+      --text: #c8d8ff;
+      --dim: #506090;
       --bright: #ffffff;
     }
 
@@ -40,80 +41,45 @@
       height: 100%;
       background: var(--void);
       color: var(--text);
-      font-family: 'JetBrains Mono', monospace;
+      font-family: 'Space Grotesk', sans-serif;
       overflow: hidden;
-      cursor: crosshair;
     }
 
-    /* ── NEBULA BACKGROUND ── */
-    #nebula-bg {
+    #starfield {
       position: fixed;
       inset: 0;
       z-index: 0;
-      background:
-        radial-gradient(ellipse 80% 60% at 20% 50%, rgba(30, 0, 80, 0.4) 0%, transparent 60%),
-        radial-gradient(ellipse 60% 80% at 80% 20%, rgba(0, 40, 120, 0.3) 0%, transparent 60%),
-        radial-gradient(ellipse 40% 40% at 60% 80%, rgba(80, 0, 40, 0.2) 0%, transparent 50%),
-        #00000a;
-      animation: nebulaShift 20s ease-in-out infinite alternate;
+      pointer-events: none;
     }
 
-    @keyframes nebulaShift {
-      0% {
-        filter: hue-rotate(0deg) brightness(1);
-      }
-
-      50% {
-        filter: hue-rotate(15deg) brightness(1.05);
-      }
-
-      100% {
-        filter: hue-rotate(-10deg) brightness(0.95);
-      }
-    }
-
-    /* ── STAR CANVAS ── */
-    #starfield {
+    body::before {
+      content: '';
       position: fixed;
       inset: 0;
       z-index: 1;
       pointer-events: none;
+      background-image: linear-gradient(rgba(50, 128, 255, 0.03) 1px, transparent 1px), linear-gradient(90deg, rgba(50, 128, 255, 0.03) 1px, transparent 1px);
+      background-size: 40px 40px;
     }
 
-    /* ── SCAN LINES ── */
-    #scanlines {
-      position: fixed;
-      inset: 0;
-      z-index: 2;
-      pointer-events: none;
-      background: repeating-linear-gradient(0deg,
-          transparent,
-          transparent 2px,
-          rgba(0, 0, 0, 0.03) 2px,
-          rgba(0, 0, 0, 0.03) 4px);
-    }
-
-    /* ── LAYOUT ── */
     .app {
       position: relative;
-      z-index: 3;
+      z-index: 2;
       display: grid;
-      grid-template-rows: 56px 1fr;
-      grid-template-columns: 320px 1fr 380px;
+      grid-template-rows: 52px 1fr;
+      grid-template-columns: 280px 1fr 360px;
       height: 100vh;
-      gap: 0;
     }
 
-    /* ── HEADER ── */
     header {
       grid-column: 1/-1;
+      grid-row: 1;
       display: flex;
       align-items: center;
       justify-content: space-between;
-      padding: 0 24px;
-      background: rgba(0, 0, 10, 0.9);
+      padding: 0 20px;
+      background: rgba(3, 7, 26, 0.97);
       border-bottom: 1px solid var(--border);
-      backdrop-filter: blur(20px);
       position: relative;
       overflow: hidden;
     }
@@ -125,110 +91,104 @@
       left: 0;
       right: 0;
       height: 1px;
-      background: linear-gradient(90deg, transparent, var(--accent), var(--pulse), var(--accent), transparent);
-      animation: scanH 4s linear infinite;
+      background: linear-gradient(90deg, transparent 0%, var(--pulse) 30%, var(--accent) 70%, transparent 100%);
+      opacity: 0.6;
     }
 
-    @keyframes scanH {
-      0% {
-        transform: translateX(-100%);
-      }
-
-      100% {
-        transform: translateX(100%);
-      }
-    }
-
-    .logo-group {
-      display: flex;
-      align-items: center;
-      gap: 16px;
-    }
-
-    .logo-icon {
-      width: 36px;
-      height: 36px;
-      border: 1px solid var(--accent);
-      border-radius: 50%;
-      display: flex;
-      align-items: center;
-      justify-content: center;
-      font-size: 16px;
-      box-shadow: 0 0 20px rgba(61, 127, 255, 0.3), inset 0 0 10px rgba(61, 127, 255, 0.1);
-      animation: iconPulse 3s ease-in-out infinite;
-    }
-
-    @keyframes iconPulse {
-
-      0%,
-      100% {
-        box-shadow: 0 0 20px rgba(61, 127, 255, 0.3), inset 0 0 10px rgba(61, 127, 255, 0.1);
-      }
-
-      50% {
-        box-shadow: 0 0 35px rgba(61, 127, 255, 0.6), inset 0 0 15px rgba(61, 127, 255, 0.2);
-      }
-    }
-
-    .logo-text {
-      font-family: 'Orbitron', sans-serif;
-      font-size: 18px;
-      font-weight: 900;
-      letter-spacing: 4px;
-      background: linear-gradient(90deg, #fff 0%, var(--accent) 40%, var(--pulse) 70%, var(--nebula) 100%);
-      -webkit-background-clip: text;
-      -webkit-text-fill-color: transparent;
-      background-clip: text;
-    }
-
-    .logo-sub {
-      font-size: 8px;
-      letter-spacing: 3px;
-      color: var(--muted);
-      text-transform: uppercase;
-      margin-top: 2px;
-    }
-
-    .header-stats {
-      display: flex;
-      gap: 24px;
-    }
-
-    .hstat {
-      text-align: center;
-      padding: 4px 12px;
-      border: 1px solid var(--border);
-      border-radius: 2px;
-      background: var(--glow);
-    }
-
-    .hstat-label {
-      font-size: 7px;
-      letter-spacing: 2px;
-      color: var(--muted);
-      display: block;
-      text-transform: uppercase;
-    }
-
-    .hstat-value {
-      font-family: 'Orbitron', sans-serif;
-      font-size: 12px;
-      color: var(--pulse);
-      font-weight: 600;
-    }
-
-    .header-right {
+    .logo {
       display: flex;
       align-items: center;
       gap: 12px;
     }
 
-    .status-dot {
-      width: 8px;
-      height: 8px;
+    .logo-ring {
+      width: 34px;
+      height: 34px;
       border-radius: 50%;
-      background: #00ff88;
-      box-shadow: 0 0 10px #00ff88;
+      border: 1.5px solid var(--accent);
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      font-size: 15px;
+      box-shadow: 0 0 16px rgba(50, 128, 255, 0.4), inset 0 0 8px rgba(50, 128, 255, 0.15);
+      animation: rp 3s ease-in-out infinite;
+    }
+
+    @keyframes rp {
+
+      0%,
+      100% {
+        box-shadow: 0 0 16px rgba(50, 128, 255, 0.4), inset 0 0 8px rgba(50, 128, 255, 0.15);
+      }
+
+      50% {
+        box-shadow: 0 0 28px rgba(50, 128, 255, 0.7), inset 0 0 14px rgba(50, 128, 255, 0.25);
+      }
+    }
+
+    .logo-name {
+      font-family: 'Orbitron', sans-serif;
+      font-size: 15px;
+      font-weight: 900;
+      letter-spacing: 3px;
+      background: linear-gradient(90deg, #fff 0%, var(--pulse) 60%);
+      -webkit-background-clip: text;
+      -webkit-text-fill-color: transparent;
+      background-clip: text;
+    }
+
+    .logo-tag {
+      font-size: 9px;
+      letter-spacing: 2px;
+      color: var(--dim);
+      margin-top: 1px;
+    }
+
+    .hbar {
+      display: flex;
+      align-items: center;
+      gap: 6px;
+    }
+
+    .hstat {
+      padding: 4px 14px;
+      background: rgba(50, 128, 255, 0.05);
+      border: 1px solid var(--border);
+      border-radius: 2px;
+      text-align: center;
+    }
+
+    .hl {
+      display: block;
+      font-size: 7px;
+      letter-spacing: 2px;
+      color: var(--dim);
+      text-transform: uppercase;
+    }
+
+    .hv {
+      font-family: 'Orbitron', sans-serif;
+      font-size: 11px;
+      color: var(--pulse);
+      font-weight: 700;
+    }
+
+    .online-pill {
+      display: flex;
+      align-items: center;
+      gap: 6px;
+      padding: 4px 12px;
+      border: 1px solid rgba(0, 255, 136, 0.2);
+      border-radius: 20px;
+      background: rgba(0, 255, 136, 0.05);
+    }
+
+    .online-dot {
+      width: 6px;
+      height: 6px;
+      border-radius: 50%;
+      background: var(--green);
+      box-shadow: 0 0 8px var(--green);
       animation: blink 2s ease-in-out infinite;
     }
 
@@ -236,140 +196,178 @@
 
       0%,
       100% {
-        opacity: 1
+        opacity: 1;
       }
 
       50% {
-        opacity: 0.3
+        opacity: 0.3;
       }
     }
 
-    .status-text {
+    .online-txt {
       font-size: 9px;
-      letter-spacing: 2px;
-      color: #00ff88;
+      letter-spacing: 1px;
+      color: var(--green);
       text-transform: uppercase;
     }
 
-    /* ── LEFT PANEL — SIMULATION ── */
-    #sim-panel {
+    #left {
       grid-column: 1;
       grid-row: 2;
       background: var(--panel);
       border-right: 1px solid var(--border);
-      backdrop-filter: blur(20px);
       display: flex;
       flex-direction: column;
       overflow: hidden;
     }
 
-    .panel-header {
-      padding: 12px 16px 10px;
+    .sec-head {
+      padding: 10px 14px 8px;
       border-bottom: 1px solid var(--border);
       display: flex;
       align-items: center;
       gap: 8px;
     }
 
-    .panel-tag {
+    .sec-title {
       font-family: 'Orbitron', sans-serif;
-      font-size: 7px;
+      font-size: 8px;
       letter-spacing: 3px;
-      color: var(--accent);
+      color: var(--pulse);
       text-transform: uppercase;
     }
 
-    .panel-tag-line {
+    .sec-line {
       flex: 1;
       height: 1px;
       background: linear-gradient(90deg, var(--border), transparent);
     }
 
-    .sim-scroll {
+    .scroll {
       flex: 1;
       overflow-y: auto;
-      padding: 12px;
-      display: flex;
-      flex-direction: column;
-      gap: 10px;
+      padding: 8px;
     }
 
-    .sim-scroll::-webkit-scrollbar {
-      width: 2px;
+    .scroll::-webkit-scrollbar {
+      width: 3px;
     }
 
-    .sim-scroll::-webkit-scrollbar-thumb {
+    .scroll::-webkit-scrollbar-thumb {
       background: var(--accent);
-      border-radius: 2px;
-    }
-
-    /* Scenario chips */
-    .scenario-section-title {
-      font-size: 8px;
-      letter-spacing: 2px;
-      color: var(--muted);
-      text-transform: uppercase;
-      padding: 4px 0;
-    }
-
-    .chip-grid {
-      display: grid;
-      grid-template-columns: 1fr 1fr;
-      gap: 4px;
-    }
-
-    .chip {
-      padding: 8px 6px;
-      border: 1px solid var(--border);
       border-radius: 3px;
-      background: rgba(0, 0, 0, 0.3);
-      color: var(--muted);
-      font-family: 'JetBrains Mono', monospace;
-      font-size: 8px;
+    }
+
+    .cat-lbl {
+      font-size: 9px;
+      letter-spacing: 2px;
+      color: var(--dim);
+      text-transform: uppercase;
+      padding: 8px 4px 4px;
+      display: flex;
+      align-items: center;
+      gap: 6px;
+    }
+
+    .cat-lbl::after {
+      content: '';
+      flex: 1;
+      height: 1px;
+      background: rgba(50, 128, 255, 0.12);
+    }
+
+    .sc-item {
+      display: flex;
+      align-items: center;
+      gap: 10px;
+      padding: 9px 10px;
+      margin-bottom: 3px;
+      border: 1px solid transparent;
+      border-radius: 4px;
+      background: rgba(0, 0, 0, 0.2);
       cursor: pointer;
-      transition: all 0.2s;
-      text-align: center;
-      line-height: 1.6;
+      transition: all 0.18s;
       position: relative;
       overflow: hidden;
     }
 
-    .chip::before {
+    .sc-item::before {
       content: '';
       position: absolute;
-      inset: 0;
-      background: linear-gradient(135deg, transparent 40%, rgba(61, 127, 255, 0.05) 100%);
+      left: 0;
+      top: 0;
+      bottom: 0;
+      width: 2px;
+      background: var(--accent);
       opacity: 0;
-      transition: opacity 0.2s;
+      transition: opacity 0.18s;
     }
 
-    .chip:hover {
-      border-color: var(--accent);
-      color: var(--text);
+    .sc-item:hover {
+      background: rgba(50, 128, 255, 0.08);
+      border-color: rgba(50, 128, 255, 0.3);
     }
 
-    .chip:hover::before {
+    .sc-item:hover::before {
       opacity: 1;
     }
 
-    .chip.active {
-      border-color: var(--pulse);
+    .sc-item:hover .sc-name {
+      color: var(--bright);
+    }
+
+    .sc-item.active {
+      background: rgba(0, 229, 255, 0.07);
+      border-color: rgba(0, 229, 255, 0.3);
+    }
+
+    .sc-item.active::before {
+      background: var(--pulse);
+      opacity: 1;
+    }
+
+    .sc-icon {
+      font-size: 17px;
+      flex-shrink: 0;
+      width: 24px;
+      text-align: center;
+    }
+
+    .sc-info {
+      flex: 1;
+      min-width: 0;
+    }
+
+    .sc-name {
+      font-size: 12px;
+      font-weight: 600;
+      color: var(--text);
+      line-height: 1.3;
+      white-space: nowrap;
+      overflow: hidden;
+      text-overflow: ellipsis;
+    }
+
+    .sc-item.active .sc-name {
       color: var(--pulse);
-      background: rgba(0, 212, 255, 0.06);
-      box-shadow: 0 0 12px rgba(0, 212, 255, 0.15);
     }
 
-    .chip-icon {
-      display: block;
-      font-size: 13px;
-      margin-bottom: 2px;
+    .sc-desc {
+      font-size: 9px;
+      color: var(--dim);
+      line-height: 1.4;
+      white-space: nowrap;
+      overflow: hidden;
+      text-overflow: ellipsis;
     }
 
-    /* Controls */
-    .ctrl-group {
+    .ctrl-bar {
+      padding: 10px;
+      border-top: 1px solid var(--border);
+      background: rgba(0, 0, 0, 0.3);
       display: flex;
       flex-direction: column;
-      gap: 6px;
+      gap: 7px;
     }
 
     .ctrl-row {
@@ -379,18 +377,18 @@
 
     .btn {
       flex: 1;
-      padding: 8px 4px;
+      padding: 7px 4px;
       border: 1px solid var(--border);
       border-radius: 3px;
       background: rgba(0, 0, 0, 0.3);
-      color: var(--muted);
+      color: var(--dim);
       font-family: 'JetBrains Mono', monospace;
-      font-size: 8px;
+      font-size: 9px;
       cursor: pointer;
-      transition: all 0.2s;
-      letter-spacing: 1px;
+      transition: all 0.18s;
       text-align: center;
       text-transform: uppercase;
+      letter-spacing: 1px;
     }
 
     .btn:hover {
@@ -399,86 +397,130 @@
     }
 
     .btn.on {
-      background: rgba(61, 127, 255, 0.15);
+      background: rgba(50, 128, 255, 0.12);
       border-color: var(--accent);
       color: var(--accent);
     }
 
-    .btn.danger.on {
-      background: rgba(255, 107, 53, 0.15);
-      border-color: var(--fire);
-      color: var(--fire);
-    }
-
-    .slider-wrap {
+    .sl-row {
       display: flex;
       flex-direction: column;
-      gap: 4px;
+      gap: 3px;
     }
 
-    .slider-label {
+    .sl-lbl {
       display: flex;
       justify-content: space-between;
-      font-size: 8px;
-      color: var(--muted);
-      letter-spacing: 1px;
+      font-size: 9px;
+      color: var(--dim);
+    }
+
+    .sl-lbl span:last-child {
+      color: var(--pulse);
+      font-weight: 600;
     }
 
     input[type=range] {
       width: 100%;
       accent-color: var(--accent);
-      height: 2px;
+      height: 3px;
+      cursor: pointer;
     }
 
-    /* Object list */
     .obj-list {
+      max-height: 90px;
+      overflow-y: auto;
       display: flex;
       flex-direction: column;
       gap: 2px;
-      max-height: 140px;
-      overflow-y: auto;
     }
 
-    .obj-item {
+    .obj-list::-webkit-scrollbar {
+      width: 2px;
+    }
+
+    .obj-list::-webkit-scrollbar-thumb {
+      background: var(--accent);
+    }
+
+    .obj-row {
       display: flex;
       align-items: center;
-      gap: 6px;
-      padding: 4px 6px;
+      gap: 7px;
+      padding: 3px 6px;
       border-radius: 2px;
-      background: rgba(0, 0, 0, 0.2);
-      font-size: 8px;
-      color: var(--muted);
-      border-left: 2px solid transparent;
-      transition: all 0.15s;
-    }
-
-    .obj-item:hover {
-      background: rgba(61, 127, 255, 0.05);
-      border-left-color: var(--accent);
+      background: rgba(0, 0, 0, 0.25);
+      font-size: 9px;
     }
 
     .obj-dot {
-      width: 6px;
-      height: 6px;
+      width: 7px;
+      height: 7px;
       border-radius: 50%;
       flex-shrink: 0;
     }
 
-    .obj-name {
+    .obj-n {
       flex: 1;
+      color: var(--text);
     }
 
-    .obj-mass {
-      color: var(--muted);
-      font-size: 7px;
+    .obj-m {
+      color: var(--dim);
+      font-size: 8px;
     }
 
-    /* ── CENTER — CANVAS ── */
-    #canvas-area {
+    #center {
       grid-column: 2;
       grid-row: 2;
+      display: flex;
+      flex-direction: column;
+      background: #000008;
       position: relative;
-      background: #000005;
+      overflow: hidden;
+    }
+
+    #view-toggle {
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      padding: 8px 16px;
+      background: rgba(3, 7, 26, 0.97);
+      border-bottom: 1px solid var(--border);
+      flex-shrink: 0;
+    }
+
+    .vtab {
+      padding: 6px 22px;
+      font-family: 'Orbitron', sans-serif;
+      font-size: 9px;
+      letter-spacing: 2px;
+      text-transform: uppercase;
+      border: 1px solid var(--border);
+      background: rgba(0, 0, 0, 0.4);
+      color: var(--dim);
+      cursor: pointer;
+      transition: all 0.2s;
+    }
+
+    .vtab:first-child {
+      border-radius: 3px 0 0 3px;
+    }
+
+    .vtab:last-child {
+      border-radius: 0 3px 3px 0;
+      border-left: none;
+    }
+
+    .vtab.active {
+      background: rgba(50, 128, 255, 0.15);
+      border-color: var(--accent);
+      color: var(--pulse);
+    }
+
+    #canvas-wrap {
+      flex: 1;
+      position: relative;
       overflow: hidden;
     }
 
@@ -486,135 +528,129 @@
       display: block;
       width: 100%;
       height: 100%;
+      position: absolute;
+      inset: 0;
     }
 
-    /* Canvas overlays */
-    .cv-tl,
-    .cv-tr,
-    .cv-bl,
-    .cv-br {
-      position: absolute;
-      pointer-events: none;
+    #plot-wrap {
+      flex: 1;
+      position: relative;
+      overflow: hidden;
+      display: none;
+      align-items: center;
+      justify-content: center;
+      background: #000008;
+      padding: 16px;
+    }
+
+    #plot-img {
+      max-width: 100%;
+      max-height: 100%;
+      border-radius: 6px;
+      border: 1px solid var(--border);
+      box-shadow: 0 0 40px rgba(50, 128, 255, 0.12);
+      object-fit: contain;
+      display: none;
+    }
+
+    #plot-empty {
+      text-align: center;
       font-family: 'JetBrains Mono', monospace;
-    }
-
-    .cv-tl {
-      top: 14px;
-      left: 16px;
-    }
-
-    .cv-tr {
-      top: 14px;
-      right: 16px;
-      text-align: right;
-    }
-
-    .cv-bl {
-      bottom: 14px;
-      left: 16px;
-    }
-
-    .cv-br {
-      bottom: 14px;
-      right: 16px;
-      text-align: right;
-    }
-
-    .cv-label {
-      font-size: 8px;
+      font-size: 10px;
       letter-spacing: 2px;
-      color: rgba(61, 127, 255, 0.3);
-      text-transform: uppercase;
-      line-height: 1.8;
+      color: rgba(50, 128, 255, 0.25);
+      position: absolute;
     }
 
-    /* Corner decorations */
-    .corner {
+    .pe-icon {
+      font-size: 44px;
+      display: block;
+      margin-bottom: 12px;
+      opacity: 0.3;
+    }
+
+    .cv-corner {
       position: absolute;
       pointer-events: none;
-      width: 20px;
-      height: 20px;
+      width: 16px;
+      height: 16px;
     }
 
-    .corner-tl {
-      top: 8px;
-      left: 8px;
-      border-top: 1px solid rgba(61, 127, 255, 0.3);
-      border-left: 1px solid rgba(61, 127, 255, 0.3);
+    .cv-corner.tl {
+      top: 10px;
+      left: 10px;
+      border-top: 1px solid rgba(50, 128, 255, 0.4);
+      border-left: 1px solid rgba(50, 128, 255, 0.4);
     }
 
-    .corner-tr {
-      top: 8px;
-      right: 8px;
-      border-top: 1px solid rgba(61, 127, 255, 0.3);
-      border-right: 1px solid rgba(61, 127, 255, 0.3);
+    .cv-corner.tr {
+      top: 10px;
+      right: 10px;
+      border-top: 1px solid rgba(50, 128, 255, 0.4);
+      border-right: 1px solid rgba(50, 128, 255, 0.4);
     }
 
-    .corner-bl {
-      bottom: 8px;
-      left: 8px;
-      border-bottom: 1px solid rgba(61, 127, 255, 0.3);
-      border-left: 1px solid rgba(61, 127, 255, 0.3);
+    .cv-corner.bl {
+      bottom: 10px;
+      left: 10px;
+      border-bottom: 1px solid rgba(50, 128, 255, 0.4);
+      border-left: 1px solid rgba(50, 128, 255, 0.4);
     }
 
-    .corner-br {
-      bottom: 8px;
-      right: 8px;
-      border-bottom: 1px solid rgba(61, 127, 255, 0.3);
-      border-right: 1px solid rgba(61, 127, 255, 0.3);
+    .cv-corner.br {
+      bottom: 10px;
+      right: 10px;
+      border-bottom: 1px solid rgba(50, 128, 255, 0.4);
+      border-right: 1px solid rgba(50, 128, 255, 0.4);
     }
 
-    #scenario-watermark {
+    #cv-tl {
       position: absolute;
-      bottom: 50px;
+      top: 14px;
+      left: 18px;
+      pointer-events: none;
+    }
+
+    #cv-tr {
+      position: absolute;
+      top: 14px;
+      right: 18px;
+      text-align: right;
+      pointer-events: none;
+    }
+
+    #cv-bl {
+      position: absolute;
+      bottom: 14px;
+      left: 18px;
+      pointer-events: none;
+    }
+
+    .cv-txt {
+      font-family: 'JetBrains Mono', monospace;
+      font-size: 8px;
+      letter-spacing: 1px;
+      color: rgba(50, 128, 255, 0.4);
+      line-height: 1.8;
+      text-transform: uppercase;
+    }
+
+    #watermark {
+      position: absolute;
+      bottom: 48px;
       left: 50%;
       transform: translateX(-50%);
       font-family: 'Orbitron', sans-serif;
-      font-size: 28px;
+      font-size: 30px;
       font-weight: 900;
-      color: rgba(255, 255, 255, 0.03);
-      letter-spacing: 6px;
+      color: rgba(255, 255, 255, 0.025);
+      letter-spacing: 8px;
       white-space: nowrap;
       text-transform: uppercase;
       pointer-events: none;
+      user-select: none;
     }
 
-    /* Reticle crosshair */
-    #reticle {
-      position: absolute;
-      pointer-events: none;
-      top: 50%;
-      left: 50%;
-      transform: translate(-50%, -50%);
-      width: 60px;
-      height: 60px;
-      opacity: 0.06;
-    }
-
-    #reticle::before,
-    #reticle::after {
-      content: '';
-      position: absolute;
-      background: var(--accent);
-    }
-
-    #reticle::before {
-      top: 50%;
-      left: 0;
-      right: 0;
-      height: 1px;
-      transform: translateY(-50%);
-    }
-
-    #reticle::after {
-      left: 50%;
-      top: 0;
-      bottom: 0;
-      width: 1px;
-      transform: translateX(-50%);
-    }
-
-    /* Empty state */
     #empty-state {
       position: absolute;
       top: 50%;
@@ -624,356 +660,315 @@
       pointer-events: none;
     }
 
-    .empty-orb {
-      width: 120px;
-      height: 120px;
+    .es-orb {
+      width: 100px;
+      height: 100px;
       border-radius: 50%;
-      border: 1px solid rgba(61, 127, 255, 0.1);
-      margin: 0 auto 20px;
+      border: 1px solid rgba(50, 128, 255, 0.1);
       display: flex;
       align-items: center;
       justify-content: center;
-      font-size: 40px;
-      opacity: 0.15;
-      box-shadow: 0 0 40px rgba(61, 127, 255, 0.05);
-      animation: orbFloat 4s ease-in-out infinite;
+      font-size: 36px;
+      margin: 0 auto 16px;
+      animation: fl 4s ease-in-out infinite;
+      box-shadow: 0 0 40px rgba(50, 128, 255, 0.04);
     }
 
-    @keyframes orbFloat {
+    @keyframes fl {
 
       0%,
       100% {
-        transform: translateY(0)
+        transform: translateY(0);
       }
 
       50% {
-        transform: translateY(-8px)
+        transform: translateY(-8px);
       }
     }
 
-    .empty-text {
-      font-size: 8px;
+    .es-txt {
+      font-family: 'JetBrains Mono', monospace;
+      font-size: 9px;
       letter-spacing: 3px;
-      color: rgba(61, 127, 255, 0.3);
+      color: rgba(50, 128, 255, 0.3);
       text-transform: uppercase;
-      line-height: 2;
+      line-height: 2.2;
     }
 
-    /* ── RIGHT PANEL — CHAT ── */
-    #chat-panel {
+    #right {
       grid-column: 3;
       grid-row: 2;
       background: var(--panel);
       border-left: 1px solid var(--border);
-      backdrop-filter: blur(20px);
       display: flex;
       flex-direction: column;
       overflow: hidden;
     }
 
-    /* Chat messages */
-    #chat-messages {
+    #chat-msgs {
       flex: 1;
       overflow-y: auto;
-      padding: 14px;
+      padding: 12px;
       display: flex;
       flex-direction: column;
       gap: 10px;
       scroll-behavior: smooth;
     }
 
-    #chat-messages::-webkit-scrollbar {
-      width: 2px;
+    #chat-msgs::-webkit-scrollbar {
+      width: 3px;
     }
 
-    #chat-messages::-webkit-scrollbar-thumb {
+    #chat-msgs::-webkit-scrollbar-thumb {
       background: var(--accent);
     }
 
-    /* Welcome message */
-    .welcome-msg {
+    .welcome {
       padding: 14px;
-      border: 1px solid rgba(61, 127, 255, 0.15);
-      border-radius: 4px;
-      background: rgba(61, 127, 255, 0.04);
+      border-radius: 5px;
+      background: linear-gradient(135deg, rgba(50, 128, 255, 0.06), rgba(0, 229, 255, 0.04));
+      border: 1px solid rgba(50, 128, 255, 0.2);
       position: relative;
       overflow: hidden;
     }
 
-    .welcome-msg::before {
+    .welcome::before {
       content: '';
       position: absolute;
       top: 0;
       left: 0;
       right: 0;
       height: 1px;
-      background: linear-gradient(90deg, transparent, var(--accent), transparent);
+      background: linear-gradient(90deg, transparent, var(--pulse), transparent);
     }
 
-    .welcome-title {
+    .wc-title {
       font-family: 'Orbitron', sans-serif;
-      font-size: 10px;
+      font-size: 9px;
       letter-spacing: 2px;
       color: var(--pulse);
       margin-bottom: 8px;
     }
 
-    .welcome-body {
-      font-size: 9px;
-      color: var(--muted);
+    .wc-body {
+      font-size: 10px;
+      color: var(--dim);
       line-height: 1.8;
     }
 
-    .welcome-examples {
+    .examples {
       margin-top: 10px;
       display: flex;
       flex-direction: column;
-      gap: 4px;
+      gap: 3px;
     }
 
-    .example-chip {
-      padding: 5px 8px;
-      border: 1px solid rgba(61, 127, 255, 0.1);
-      border-radius: 2px;
-      font-size: 8px;
-      color: rgba(61, 127, 255, 0.5);
+    .ex {
+      padding: 6px 10px;
+      font-size: 10px;
+      border: 1px solid rgba(50, 128, 255, 0.12);
+      border-radius: 3px;
+      color: rgba(0, 229, 255, 0.6);
       cursor: pointer;
-      transition: all 0.2s;
+      transition: all 0.15s;
       background: rgba(0, 0, 0, 0.2);
+      font-family: 'JetBrains Mono', monospace;
     }
 
-    .example-chip:hover {
-      border-color: var(--accent);
+    .ex:hover {
+      border-color: var(--pulse);
       color: var(--pulse);
-      background: rgba(61, 127, 255, 0.06);
+      background: rgba(0, 229, 255, 0.05);
     }
 
-    /* Message bubbles */
     .msg {
-      max-width: 100%;
-      animation: msgIn 0.3s ease;
+      animation: mi 0.25s ease;
     }
 
-    @keyframes msgIn {
+    @keyframes mi {
       from {
         opacity: 0;
-        transform: translateY(8px)
+        transform: translateY(6px);
       }
 
       to {
         opacity: 1;
-        transform: translateY(0)
+        transform: none;
       }
     }
 
-    .msg-user {
+    .msg-u {
       align-self: flex-end;
-      background: rgba(61, 127, 255, 0.12);
-      border: 1px solid rgba(61, 127, 255, 0.25);
-      border-radius: 4px 4px 1px 4px;
-      padding: 8px 12px;
-      font-size: 10px;
-      color: var(--text);
-      max-width: 85%;
+      max-width: 88%;
+      padding: 9px 13px;
+      font-size: 11px;
+      line-height: 1.6;
+      background: rgba(50, 128, 255, 0.12);
+      border: 1px solid rgba(50, 128, 255, 0.25);
+      border-radius: 6px 6px 2px 6px;
+      color: var(--bright);
     }
 
-    .msg-assistant {
-      align-self: flex-start;
-      background: rgba(0, 212, 255, 0.06);
-      border: 1px solid rgba(0, 212, 255, 0.12);
-      border-radius: 4px 4px 4px 1px;
-      padding: 10px 12px;
-      font-size: 10px;
-      color: var(--text);
-      line-height: 1.7;
+    .msg-a {
       width: 100%;
+      padding: 11px 13px;
+      font-size: 11px;
+      line-height: 1.8;
+      background: rgba(0, 229, 255, 0.04);
+      border: 1px solid rgba(0, 229, 255, 0.12);
+      border-radius: 2px 6px 6px 6px;
+      color: var(--text);
       position: relative;
     }
 
-    .msg-assistant::before {
-      content: 'AI';
+    .msg-a-tag {
       position: absolute;
-      top: -8px;
+      top: -9px;
       left: 8px;
-      font-size: 6px;
+      font-family: 'JetBrains Mono', monospace;
+      font-size: 7px;
       letter-spacing: 2px;
       color: var(--pulse);
-      background: var(--deep);
-      padding: 1px 4px;
-      border: 1px solid rgba(0, 212, 255, 0.2);
-      border-radius: 1px;
+      background: var(--panel);
+      padding: 1px 5px;
+      border: 1px solid rgba(0, 229, 255, 0.2);
+      border-radius: 2px;
     }
 
-    .msg-error {
-      background: rgba(255, 61, 143, 0.08);
-      border: 1px solid rgba(255, 61, 143, 0.2);
-      border-radius: 4px;
-      padding: 8px 12px;
+    .msg-sys {
+      align-self: center;
+      font-family: 'JetBrains Mono', monospace;
+      font-size: 8px;
+      letter-spacing: 2px;
+      color: var(--dim);
+      padding: 3px 10px;
+      border: 1px solid var(--border);
+      border-radius: 10px;
+      background: rgba(0, 0, 0, 0.3);
+      text-transform: uppercase;
+    }
+
+    .msg-err {
+      padding: 9px 13px;
       font-size: 10px;
+      background: rgba(255, 26, 110, 0.07);
+      border: 1px solid rgba(255, 26, 110, 0.2);
+      border-radius: 4px;
       color: var(--nova);
     }
 
-    .msg-system {
-      align-self: center;
-      font-size: 8px;
-      letter-spacing: 2px;
-      color: var(--muted);
-      text-transform: uppercase;
-      padding: 4px 10px;
-      border: 1px solid var(--border);
-      border-radius: 10px;
-      background: rgba(0, 0, 0, 0.2);
+    .chat-plot-wrap {
+      margin-top: 8px;
+      position: relative;
+      cursor: pointer;
+      border-radius: 4px;
+      overflow: hidden;
     }
 
-    /* Plot in chat */
+    .chat-plot-wrap:hover .plot-ov {
+      opacity: 1;
+    }
+
     .chat-plot {
       width: 100%;
       border-radius: 4px;
       border: 1px solid var(--border);
-      margin-top: 6px;
       display: block;
     }
 
-    /* Data table */
-    .data-table {
-      margin-top: 8px;
+    .plot-ov {
+      position: absolute;
+      inset: 0;
+      background: rgba(0, 229, 255, 0.08);
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      opacity: 0;
+      transition: opacity 0.2s;
+      font-family: 'Orbitron', sans-serif;
+      font-size: 8px;
+      letter-spacing: 2px;
+      color: var(--pulse);
+    }
+
+    .dtable {
       width: 100%;
       border-collapse: collapse;
-      font-size: 8px;
+      margin-top: 8px;
+      font-size: 9px;
     }
 
-    .data-table td {
-      padding: 3px 6px;
-      border-bottom: 1px solid rgba(61, 127, 255, 0.06);
+    .dtable td {
+      padding: 4px 6px;
+      border-bottom: 1px solid rgba(50, 128, 255, 0.06);
     }
 
-    .data-table td:first-child {
-      color: var(--muted);
+    .dtable td:first-child {
+      color: var(--dim);
     }
 
-    .data-table td:last-child {
+    .dtable td:last-child {
       color: var(--pulse);
       text-align: right;
+      font-family: 'JetBrains Mono', monospace;
       font-weight: 500;
     }
 
-    /* Typing indicator */
     .typing {
       display: flex;
-      gap: 4px;
-      padding: 10px 12px;
+      gap: 5px;
+      align-items: center;
+      padding: 12px 13px;
     }
 
     .typing span {
       width: 5px;
       height: 5px;
       border-radius: 50%;
-      background: var(--muted);
-      animation: typingDot 1.2s ease-in-out infinite;
+      background: var(--dim);
+      animation: td 1.2s ease-in-out infinite;
     }
 
     .typing span:nth-child(2) {
-      animation-delay: 0.2s
+      animation-delay: 0.2s;
     }
 
     .typing span:nth-child(3) {
-      animation-delay: 0.4s
+      animation-delay: 0.4s;
     }
 
-    @keyframes typingDot {
+    @keyframes td {
 
       0%,
       60%,
       100% {
         transform: translateY(0);
-        opacity: 0.4
+        opacity: 0.4;
       }
 
       30% {
-        transform: translateY(-6px);
-        opacity: 1
+        transform: translateY(-5px);
+        opacity: 1;
       }
     }
 
-    /* Chat input */
-    .chat-input-area {
-      padding: 12px;
+    #input-area {
+      padding: 10px;
       border-top: 1px solid var(--border);
+      background: rgba(0, 0, 0, 0.35);
+      display: flex;
+      flex-direction: column;
+      gap: 7px;
+    }
+
+    .api-row {
+      display: flex;
+      align-items: center;
+      gap: 7px;
+      padding: 4px 8px;
+      border: 1px solid var(--border);
+      border-radius: 3px;
       background: rgba(0, 0, 0, 0.3);
-    }
-
-    .input-wrap {
-      display: flex;
-      gap: 6px;
-      align-items: flex-end;
-    }
-
-    #chat-input {
-      flex: 1;
-      background: rgba(0, 0, 0, 0.5);
-      border: 1px solid var(--border);
-      border-radius: 4px;
-      color: var(--text);
-      font-family: 'JetBrains Mono', monospace;
-      font-size: 10px;
-      padding: 9px 12px;
-      resize: none;
-      min-height: 38px;
-      max-height: 100px;
-      outline: none;
-      transition: border-color 0.2s;
-      line-height: 1.5;
-    }
-
-    #chat-input:focus {
-      border-color: var(--accent);
-      box-shadow: 0 0 0 1px rgba(61, 127, 255, 0.1);
-    }
-
-    #chat-input::placeholder {
-      color: var(--muted);
-    }
-
-    #send-btn {
-      width: 38px;
-      height: 38px;
-      flex-shrink: 0;
-      background: linear-gradient(135deg, var(--accent), #2a5acc);
-      border: none;
-      border-radius: 4px;
-      color: white;
-      font-size: 14px;
-      cursor: pointer;
-      transition: all 0.2s;
-      display: flex;
-      align-items: center;
-      justify-content: center;
-    }
-
-    #send-btn:hover {
-      transform: translateY(-1px);
-      box-shadow: 0 4px 20px rgba(61, 127, 255, 0.4);
-    }
-
-    #send-btn:active {
-      transform: translateY(0);
-    }
-
-    #send-btn:disabled {
-      opacity: 0.4;
-      cursor: not-allowed;
-      transform: none;
-    }
-
-    .api-status {
-      display: flex;
-      align-items: center;
-      gap: 6px;
-      margin-bottom: 8px;
-      padding: 5px 8px;
-      border: 1px solid var(--border);
-      border-radius: 2px;
-      background: rgba(0, 0, 0, 0.2);
     }
 
     .api-dot {
@@ -982,611 +977,572 @@
       border-radius: 50%;
     }
 
-    .api-dot.online {
-      background: #00ff88;
-      box-shadow: 0 0 8px #00ff88;
+    .api-dot.on {
+      background: var(--green);
+      box-shadow: 0 0 6px var(--green);
     }
 
-    .api-dot.offline {
+    .api-dot.off {
       background: #ff4444;
-      box-shadow: 0 0 8px #ff4444;
+      box-shadow: 0 0 6px #ff4444;
     }
 
-    .api-dot.checking {
+    .api-dot.wait {
       background: #ffaa00;
       animation: blink 1s infinite;
     }
 
-    .api-label {
-      font-size: 7px;
-      letter-spacing: 2px;
-      color: var(--muted);
+    .api-lbl {
+      font-size: 8px;
+      letter-spacing: 1px;
+      color: var(--dim);
       text-transform: uppercase;
     }
 
-    /* ── RESPONSIVE DIVIDERS ── */
-    .vdivider {
-      width: 1px;
-      background: var(--border);
-      position: relative;
+    .input-row {
+      display: flex;
+      gap: 6px;
+      align-items: flex-end;
     }
 
-    .vdivider::before {
-      content: '';
-      position: absolute;
-      top: 0;
-      left: 0;
-      right: 0;
-      height: 60px;
-      background: linear-gradient(180deg, var(--accent), transparent);
-      animation: divFlow 3s ease-in-out infinite;
+    #chat-in {
+      flex: 1;
+      background: rgba(0, 0, 0, 0.5);
+      border: 1px solid var(--border);
+      border-radius: 4px;
+      color: var(--bright);
+      font-family: 'Space Grotesk', sans-serif;
+      font-size: 11px;
+      padding: 9px 12px;
+      resize: none;
+      min-height: 40px;
+      max-height: 90px;
+      outline: none;
+      transition: border-color 0.2s;
+      line-height: 1.5;
     }
 
-    @keyframes divFlow {
-      0% {
-        top: 0%
-      }
+    #chat-in:focus {
+      border-color: var(--accent);
+    }
 
-      50% {
-        top: 40%
-      }
+    #chat-in::placeholder {
+      color: var(--dim);
+      font-size: 10px;
+    }
 
-      100% {
-        top: 0%
-      }
+    #send {
+      width: 40px;
+      height: 40px;
+      flex-shrink: 0;
+      background: linear-gradient(135deg, var(--accent), #1a56cc);
+      border: none;
+      border-radius: 4px;
+      color: #fff;
+      font-size: 15px;
+      cursor: pointer;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      transition: all 0.18s;
+    }
+
+    #send:hover {
+      transform: translateY(-1px);
+      box-shadow: 0 4px 18px rgba(50, 128, 255, 0.45);
+    }
+
+    #send:active {
+      transform: none;
+    }
+
+    #send:disabled {
+      opacity: 0.4;
+      cursor: not-allowed;
+      transform: none;
     }
   </style>
 </head>
 
 <body>
-
-  <div id="nebula-bg"></div>
   <canvas id="starfield"></canvas>
-  <div id="scanlines"></div>
-
   <div class="app">
-
-    <!-- ── HEADER ── -->
     <header>
-      <div class="logo-group">
-        <div class="logo-icon">⚛</div>
+      <div class="logo">
+        <div class="logo-ring">&#9883;</div>
         <div>
-          <div class="logo-text">ASTRO THESAURUS</div>
-          <div class="logo-sub">Orbital Intelligence Engine v2.0</div>
+          <div class="logo-name">ASTRO THESAURUS</div>
+          <div class="logo-tag">Orbital Intelligence Engine &middot; v2.0 &middot; 30 Scenarios</div>
         </div>
       </div>
-
-      <div class="header-stats">
-        <div class="hstat">
-          <span class="hstat-label">Scenario</span>
-          <span class="hstat-value" id="h-scenario">—</span>
-        </div>
-        <div class="hstat">
-          <span class="hstat-label">Bodies</span>
-          <span class="hstat-value" id="h-bodies">0</span>
-        </div>
-        <div class="hstat">
-          <span class="hstat-label">Tick</span>
-          <span class="hstat-value" id="h-tick">0</span>
-        </div>
-        <div class="hstat">
-          <span class="hstat-label">FPS</span>
-          <span class="hstat-value" id="h-fps">—</span>
-        </div>
-        <div class="hstat">
-          <span class="hstat-label">RAG Docs</span>
-          <span class="hstat-value" id="h-rag">1226</span>
-        </div>
+      <div class="hbar">
+        <div class="hstat"><span class="hl">Scenario</span><span class="hv" id="h-sc">&#8212;</span></div>
+        <div class="hstat"><span class="hl">Bodies</span><span class="hv" id="h-bd">0</span></div>
+        <div class="hstat"><span class="hl">Tick</span><span class="hv" id="h-tk">0</span></div>
+        <div class="hstat"><span class="hl">FPS</span><span class="hv" id="h-fp">&#8212;</span></div>
+        <div class="hstat"><span class="hl">View</span><span class="hv" id="h-vw">SIM</span></div>
       </div>
-
-      <div class="header-right">
-        <div class="status-dot"></div>
-        <div class="status-text">Systems Online</div>
+      <div class="online-pill">
+        <div class="online-dot"></div><span class="online-txt">Systems Online</span>
       </div>
     </header>
-
-    <!-- ── LEFT: SIMULATION PANEL ── -->
-    <div id="sim-panel">
-      <div class="panel-header">
-        <span class="panel-tag">Simulation Library</span>
-        <div class="panel-tag-line"></div>
+    <div id="left">
+      <div class="sec-head"><span class="sec-title">Orbital Scenarios</span>
+        <div class="sec-line"></div>
       </div>
-      <div class="sim-scroll">
-
-        <div>
-          <div class="scenario-section-title">Orbital Mechanics</div>
-          <div class="chip-grid" id="chip-grid-orbital"></div>
+      <div class="scroll" id="sc-list"></div>
+      <div class="ctrl-bar">
+        <div class="ctrl-row">
+          <button class="btn on" id="play-btn">&#9646;&#9646; Pause</button>
+          <button class="btn" id="reset-btn">&#8634; Reset</button>
         </div>
-
-        <div>
-          <div class="scenario-section-title">Stellar Objects</div>
-          <div class="chip-grid" id="chip-grid-stellar"></div>
+        <div class="ctrl-row">
+          <button class="btn on" id="trail-btn">&#9678; Trails</button>
+          <button class="btn on" id="glow-btn">&#10022; Glow</button>
+          <button class="btn on" id="lbl-btn">&#8982; Labels</button>
         </div>
-
-        <div>
-          <div class="scenario-section-title">Galactic Scale</div>
-          <div class="chip-grid" id="chip-grid-galactic"></div>
+        <div class="sl-row">
+          <div class="sl-lbl"><span>Speed</span><span id="spd-v">3&#215;</span></div>
+          <input type="range" id="spd-sl" min="1" max="12" value="3">
         </div>
-
-        <div class="ctrl-group">
-          <div class="scenario-section-title">Playback Controls</div>
-          <div class="ctrl-row">
-            <button class="btn on" id="play-btn">⏸ PAUSE</button>
-            <button class="btn" id="reset-btn">↺ RESET</button>
-          </div>
-          <div class="ctrl-row">
-            <button class="btn on" id="trail-btn">◎ TRAILS</button>
-            <button class="btn on" id="glow-btn">✦ GLOW</button>
-            <button class="btn on" id="label-btn">⌖ LABELS</button>
-          </div>
-          <div class="slider-wrap">
-            <div class="slider-label"><span>SPEED</span><span id="speed-val">3×</span></div>
-            <input type="range" id="speed-slider" min="1" max="12" value="3">
-          </div>
-          <div class="slider-wrap">
-            <div class="slider-label"><span>TRAIL FADE</span><span id="trail-val">medium</span></div>
-            <input type="range" id="trail-slider" min="1" max="10" value="4">
-          </div>
+        <div class="sl-row">
+          <div class="sl-lbl"><span>Trail Fade</span><span id="trl-v">Medium</span></div>
+          <input type="range" id="trl-sl" min="1" max="10" value="4">
         </div>
-
         <div>
-          <div class="scenario-section-title">Active Objects</div>
+          <div class="sl-lbl" style="margin-bottom:4px"><span>Active Objects</span></div>
           <div class="obj-list" id="obj-list">
-            <div style="font-size:9px;color:var(--muted);padding:4px">No simulation loaded</div>
+            <div style="font-size:9px;color:var(--dim);padding:3px">No simulation loaded</div>
           </div>
-        </div>
-
-      </div>
-    </div>
-
-    <!-- ── CENTER: CANVAS ── -->
-    <div id="canvas-area">
-      <canvas id="sim-canvas"></canvas>
-
-      <div class="corner corner-tl"></div>
-      <div class="corner corner-tr"></div>
-      <div class="corner corner-bl"></div>
-      <div class="corner corner-br"></div>
-      <div id="reticle"></div>
-
-      <div class="cv-tl">
-        <div class="cv-label">ASTRO THESAURUS // N-BODY PHYSICS</div>
-        <div class="cv-label" id="cv-scenario">AWAITING INPUT</div>
-      </div>
-      <div class="cv-tr">
-        <div class="cv-label" id="cv-info">SELECT SCENARIO<br>OR USE CHAT</div>
-      </div>
-      <div class="cv-bl">
-        <div class="cv-label" id="cv-desc"></div>
-      </div>
-      <div class="cv-br">
-        <div class="cv-label">G=0.4 // LEAPFROG INTEGRATOR</div>
-      </div>
-
-      <div id="scenario-watermark">ORBITAL MECHANICS</div>
-
-      <div id="empty-state">
-        <div class="empty-orb">🌌</div>
-        <div class="empty-text">
-          SELECT A SCENARIO<br>
-          OR ASK THE AI ASSISTANT<br>
-          TO SIMULATE AN ORBIT
         </div>
       </div>
     </div>
-
-    <!-- ── RIGHT: CHAT PANEL ── -->
-    <div id="chat-panel">
-      <div class="panel-header">
-        <span class="panel-tag">AI Orbital Assistant</span>
-        <div class="panel-tag-line"></div>
+    <div id="center">
+      <div id="view-toggle">
+        <button class="vtab active" id="vtab-sim" onclick="setView('sim')">&#9654; Live Simulation</button>
+        <button class="vtab" id="vtab-plot" onclick="setView('plot')">&#128202; Orbital Plot</button>
       </div>
-
-      <div id="chat-messages">
-        <div class="welcome-msg">
-          <div class="welcome-title">⚡ ORBITAL INTELLIGENCE ONLINE</div>
-          <div class="welcome-body">
-            Powered by Llama 3.1 + ChromaDB RAG<br>
-            Domain: Orbital Mechanics &amp; Dynamics
-          </div>
-          <div class="welcome-examples">
-            <div class="example-chip" onclick="fillInput('Simulate Mars orbit for 2 years')">
-              → Simulate Mars orbit for 2 years
+      <div id="canvas-wrap">
+        <canvas id="sim-canvas"></canvas>
+        <div class="cv-corner tl"></div>
+        <div class="cv-corner tr"></div>
+        <div class="cv-corner bl"></div>
+        <div class="cv-corner br"></div>
+        <div id="cv-tl">
+          <div class="cv-txt">Astro Thesaurus // N-Body</div>
+          <div class="cv-txt" id="cv-sc">Awaiting Input</div>
+        </div>
+        <div id="cv-tr">
+          <div class="cv-txt" id="cv-info">Select Scenario</div>
+        </div>
+        <div id="cv-bl">
+          <div class="cv-txt" id="cv-desc"></div>
+        </div>
+        <div id="watermark">ORBITAL MECHANICS</div>
+        <div id="empty-state">
+          <div class="es-orb">&#127756;</div>
+          <div class="es-txt">Select a scenario<br>from the left panel<br>or ask the AI assistant</div>
+        </div>
+      </div>
+      <div id="plot-wrap">
+        <div id="plot-empty"><span class="pe-icon">&#128225;</span>No plot generated yet<br>Ask the AI to simulate an
+          orbit</div>
+        <img id="plot-img" alt="Orbital Plot">
+      </div>
+    </div>
+    <div id="right">
+      <div class="sec-head"><span class="sec-title">AI Orbital Assistant</span>
+        <div class="sec-line"></div>
+      </div>
+      <div id="chat-msgs">
+        <div class="welcome">
+          <div class="wc-title">&#9889; Orbital Intelligence Active</div>
+          <div class="wc-body">Llama 3.1 + ChromaDB RAG &middot; 1226 Docs<br>Domain: Orbital Mechanics Only</div>
+          <div class="examples">
+            <div class="ex" onclick="fill('Simulate Mars orbit for 2 years')">&#8594; Simulate Mars orbit for 2 years
             </div>
-            <div class="example-chip" onclick="fillInput('Show Earth to Mars Hohmann transfer')">
-              → Show Earth to Mars Hohmann transfer
+            <div class="ex" onclick="fill('Show Earth to Mars Hohmann transfer')">&#8594; Earth &#8594; Mars Hohmann
+              transfer</div>
+            <div class="ex" onclick="fill('What are Lagrange points?')">&#8594; What are Lagrange points?</div>
+            <div class="ex" onclick="fill('Show all inner planets orbiting the sun')">&#8594; Show all inner planets
             </div>
-            <div class="example-chip" onclick="fillInput('What are Lagrange points?')">
-              → What are Lagrange points?
-            </div>
-            <div class="example-chip" onclick="fillInput('Show all inner planets orbiting the sun')">
-              → Show all inner planets
-            </div>
-            <div class="example-chip" onclick="fillInput('Explain Kepler third law with Mars data')">
-              → Explain Kepler third law
+            <div class="ex" onclick="fill('Explain Kepler third law with examples')">&#8594; Explain Kepler third law
             </div>
           </div>
         </div>
       </div>
-
-      <div class="chat-input-area">
-        <div class="api-status">
-          <div class="api-dot checking" id="api-dot"></div>
-          <span class="api-label" id="api-label">Checking API connection...</span>
+      <div id="input-area">
+        <div class="api-row">
+          <div class="api-dot wait" id="api-dot"></div>
+          <span class="api-lbl" id="api-lbl">Checking connection...</span>
         </div>
-        <div class="input-wrap">
-          <textarea id="chat-input" placeholder="Ask about any orbit, transfer, or orbital mechanics concept..."
-            rows="2"></textarea>
-          <button id="send-btn" title="Send">➤</button>
+        <div class="input-row">
+          <textarea id="chat-in" placeholder="Ask about any orbit, transfer, or Kepler concept..." rows="2"></textarea>
+          <button id="send">&#10148;</button>
         </div>
       </div>
     </div>
-
   </div>
-
   <script>
-    "use strict";
+    'use strict';
+    var API = 'http://localhost:8000';
 
-    var API_BASE = 'http://localhost:8000';
-    var astroData = {};
-    var simState = {
-      objects: [], originals: [],
-      playing: false, showTrails: true, showGlow: true, showLabels: true,
-      speed: 3, trailAlpha: 0.12,
-      G: 0.4, tick: 0, animId: null,
-      currentKey: '', description: ''
+    // ── SCENARIO DEFINITIONS ────────────────────────────────────
+    var SCENARIOS = [
+      { cat: 'Orbital Mechanics', key: 'solar system', icon: '&#127760;', name: 'Solar System', desc: 'Sun + 6 planets' },
+      { cat: 'Orbital Mechanics', key: 'three body', icon: '&#128314;', name: 'Three Body', desc: 'Chaotic 3-star system' },
+      { cat: 'Orbital Mechanics', key: 'figure-8 orbit', icon: '&#8734;', name: 'Figure-8 Orbit', desc: 'Choreographic solution' },
+      { cat: 'Orbital Mechanics', key: 'lagrange points', icon: '&#9878;', name: 'Lagrange Points', desc: 'L4/L5 Trojan asteroids' },
+      { cat: 'Orbital Mechanics', key: 'hohmann transfer', icon: '&#128640;', name: 'Hohmann Transfer', desc: 'Fuel-efficient maneuver' },
+      { cat: 'Orbital Mechanics', key: 'resonance chain', icon: '&#127925;', name: 'Resonance Chain', desc: 'TRAPPIST-1 style' },
+      { cat: 'Orbital Mechanics', key: 'stellar flyby', icon: '&#128168;', name: 'Stellar Flyby', desc: 'Rogue star disruption' },
+      { cat: 'Orbital Mechanics', key: 'roche limit', icon: '&#128148;', name: 'Roche Limit', desc: 'Tidal fragmentation' },
+      { cat: 'Orbital Mechanics', key: 'slingshot', icon: '&#127919;', name: 'Slingshot', desc: 'Gravity assist' },
+      { cat: 'Orbital Mechanics', key: 'kozai mechanism', icon: '&#128260;', name: 'Kozai Mechanism', desc: 'Outer binary coupling' },
+      { cat: 'Orbital Mechanics', key: 'comet', icon: '&#9732;', name: 'Comet', desc: 'Highly eccentric orbit' },
+      { cat: 'Orbital Mechanics', key: 'asteroid belt', icon: '&#129704;', name: 'Asteroid Belt', desc: 'Sun + Jupiter + rocks' },
+      { cat: 'Orbital Mechanics', key: 'double planet', icon: '&#127758;', name: 'Double Planet', desc: 'Co-orbiting twin worlds' },
+      { cat: 'Orbital Mechanics', key: 'exoplanet system', icon: '&#127757;', name: 'Exoplanet System', desc: 'Hot Jupiter + Super Earth' },
+      { cat: 'Binary Stars', key: 'binary system', icon: '&#11088;', name: 'Binary System', desc: 'Equal mass circular' },
+      { cat: 'Binary Stars', key: 'contact binary', icon: '&#128308;', name: 'Contact Binary', desc: 'Shared envelope' },
+      { cat: 'Binary Stars', key: 'eccentric binary', icon: '&#127744;', name: 'Eccentric Binary', desc: 'High eccentricity e&#8776;0.7' },
+      { cat: 'Stellar Objects', key: 'black hole', icon: '&#128371;', name: 'Black Hole', desc: 'Accretion disk' },
+      { cat: 'Stellar Objects', key: 'neutron star', icon: '&#128171;', name: 'Neutron Star', desc: 'With companion star' },
+      { cat: 'Stellar Objects', key: 'pulsar', icon: '&#128225;', name: 'Pulsar', desc: 'Rotating + jets' },
+      { cat: 'Stellar Objects', key: 'white dwarf', icon: '&#9899;', name: 'White Dwarf', desc: 'Accreting from giant' },
+      { cat: 'Stellar Objects', key: 'supernova remnant', icon: '&#128165;', name: 'Supernova', desc: 'Expanding shell' },
+      { cat: 'Stellar Objects', key: 'protoplanetary disk', icon: '&#127744;', name: 'Proto. Disk', desc: 'Young forming planets' },
+      { cat: 'Stellar Objects', key: 'nebula', icon: '&#127800;', name: 'Nebula', desc: 'Stellar nursery' },
+      { cat: 'Galactic Scale', key: 'galaxy collision', icon: '&#127756;', name: 'Galaxy Collision', desc: 'Two spirals merging' },
+      { cat: 'Galactic Scale', key: 'globular cluster', icon: '&#128302;', name: 'Globular Cluster', desc: '13 ancient stars' },
+      { cat: 'Galactic Scale', key: 'star cluster', icon: '&#10024;', name: 'Star Cluster', desc: 'Open cluster' },
+      { cat: 'Galactic Scale', key: 'dark matter halo', icon: '&#127761;', name: 'Dark Matter', desc: 'Invisible mass halo' },
+      { cat: 'Galactic Scale', key: 'quasar', icon: '&#9889;', name: 'Quasar', desc: 'Supermassive BH + jets' },
+      { cat: 'Galactic Scale', key: 'milky way core', icon: '&#127963;', name: 'Milky Way Core', desc: 'Sgr A* + S-stars' },
+    ];
+
+    // ── EMBEDDED SCENARIO DATA (no fetch needed) ─────────────────
+    var astroData = { "solar system": { "description": "Sun + 6 planets with realistic relative orbits", "G": 0.5, "objects": [{ "name": "Sun", "x": 350.0, "y": 350.0, "vx": 0, "vy": 0, "mass": 2000, "color": "#fff200", "radius": 22, "type": "star" }, { "name": "Mercury", "x": 410.0, "y": 350.0, "vx": 0, "vy": 4.8, "mass": 1, "color": "#b5b5b5", "radius": 4, "type": "planet" }, { "name": "Venus", "x": 450.0, "y": 350.0, "vx": 0, "vy": 3.8, "mass": 2, "color": "#e8cda0", "radius": 6, "type": "planet" }, { "name": "Earth", "x": 495.0, "y": 350.0, "vx": 0, "vy": 3.2, "mass": 3, "color": "#4fffb0", "radius": 7, "type": "planet" }, { "name": "Mars", "x": 550.0, "y": 350.0, "vx": 0, "vy": 2.6, "mass": 1.5, "color": "#ff6b35", "radius": 5, "type": "planet" }, { "name": "Jupiter", "x": 660.0, "y": 350.0, "vx": 0, "vy": 1.9, "mass": 50, "color": "#c88b3a", "radius": 14, "type": "planet" }, { "name": "Saturn", "x": 780.0, "y": 350.0, "vx": 0, "vy": 1.5, "mass": 40, "color": "#e4d191", "radius": 12, "type": "planet" }] }, "three body": { "description": "Three equal-mass stars \u2014 chaotic system", "G": 0.5, "objects": [{ "name": "Star-A", "x": 480.0, "y": 350.0, "vx": 0, "vy": 1.4, "mass": 200, "color": "#ff4444", "radius": 12, "type": "star" }, { "name": "Star-B", "x": 285.0, "y": 462.0, "vx": -1.21, "vy": -0.7, "mass": 200, "color": "#44aaff", "radius": 12, "type": "star" }, { "name": "Star-C", "x": 285.0, "y": 238.0, "vx": 1.21, "vy": -0.7, "mass": 200, "color": "#44ff88", "radius": 12, "type": "star" }] }, "figure-8 orbit": { "description": "Choreographic figure-8 three-body solution", "G": 1.0, "objects": [{ "name": "Body-A", "x": 446.0, "y": 350.0, "vx": 0.93, "vy": 0.86, "mass": 100, "color": "#ff6b35", "radius": 10, "type": "star" }, { "name": "Body-B", "x": 254.0, "y": 350.0, "vx": 0.93, "vy": 0.86, "mass": 100, "color": "#4fffb0", "radius": 10, "type": "star" }, { "name": "Body-C", "x": 350.0, "y": 350.0, "vx": -1.86, "vy": -1.72, "mass": 100, "color": "#bf7fff", "radius": 10, "type": "star" }] }, "lagrange points": { "description": "Sun\u2013Jupiter system with L4/L5 Trojan asteroids", "G": 0.45, "objects": [{ "name": "Sun", "x": 350.0, "y": 350.0, "vx": 0, "vy": 0, "mass": 2000, "color": "#fff200", "radius": 22, "type": "star" }, { "name": "Jupiter", "x": 650.0, "y": 350.0, "vx": 0, "vy": 1.73, "mass": 100, "color": "#c88b3a", "radius": 13, "type": "planet" }, { "name": "T-L4-0", "x": 500.0, "y": 609.8076211353316, "vx": -1.4982239485470787, "vy": 0.8650000000000002, "mass": 0.01, "color": "#ffcc44", "radius": 2, "type": "debris" }, { "name": "T-L4-1", "x": 462.3819780247736, "y": 628.1551563700363, "vx": -1.6040280684005421, "vy": 0.6480694066095277, "mass": 0.01, "color": "#ffcc44", "radius": 2, "type": "debris" }, { "name": "T-L4-2", "x": 422.57656867990033, "y": 641.088717882799, "vx": -1.6786116064574739, "vy": 0.41852487938742505, "mass": 0.01, "color": "#ffcc44", "radius": 2, "type": "debris" }, { "name": "T-L4-3", "x": 381.35853898029603, "y": 648.356568610482, "vx": -1.7205228789871128, "vy": 0.18083424145304047, "mass": 0.01, "color": "#ffcc44", "radius": 2, "type": "debris" }, { "name": "T-L4-4", "x": 339.5301509892497, "y": 649.8172481057287, "vx": -1.7289461307430356, "vy": -0.06037612929532665, "mass": 0.01, "color": "#ffcc44", "radius": 2, "type": "debris" }, { "name": "T-L4-5", "x": 297.90554669992093, "y": 645.4423259036623, "vx": -1.7037174127111199, "vy": -0.30041134736378944, "mass": 0.01, "color": "#ffcc44", "radius": 2, "type": "debris" }, { "name": "T-L4-6", "x": 257.2949016875158, "y": 635.3169548885461, "vx": -1.6453277731906157, "vy": -0.5345994002686589, "mass": 0.01, "color": "#ffcc44", "radius": 2, "type": "debris" }, { "name": "T-L5-0", "x": 500.0, "y": 90.1923788646684, "vx": 1.4982239485470787, "vy": 0.8650000000000002, "mass": 0.01, "color": "#ff9944", "radius": 2, "type": "debris" }, { "name": "T-L5-1", "x": 534.6984425976975, "y": 113.5967739179834, "vx": 1.363258603739629, "vy": 1.065094352313389, "mass": 0.01, "color": "#ff9944", "radius": 2, "type": "debris" }, { "name": "T-L5-2", "x": 565.8019401015954, "y": 141.60248886230082, "vx": 1.2017589808940652, "vy": 1.2444578545858664, "mass": 0.01, "color": "#ff9944", "radius": 2, "type": "debris" }, { "name": "T-L5-3", "x": 592.7050983124842, "y": 173.66442431225806, "vx": 1.0168684864659785, "vy": 1.3995994002686591, "mass": 0.01, "color": "#ff9944", "radius": 2, "type": "debris" }, { "name": "T-L5-4", "x": 614.8842778576782, "y": 209.15853116423276, "vx": 0.8121858036195911, "vy": 1.5274993356459436, "mass": 0.01, "color": "#ff9944", "radius": 2, "type": "debris" }, { "name": "T-L5-5", "x": 631.9077862357725, "y": 247.39395700229937, "vx": 0.5916948479534069, "vy": 1.6256682339596216, "mass": 0.01, "color": "#ff9944", "radius": 2, "type": "debris" }, { "name": "T-L5-6", "x": 643.4442802201418, "y": 287.6264927546722, "vx": 0.3596872251147237, "vy": 1.692195349269484, "mass": 0.01, "color": "#ff9944", "radius": 2, "type": "debris" }] }, "hohmann transfer": { "description": "Spacecraft Hohmann transfer \u2014 Earth to Mars orbit", "G": 0.5, "objects": [{ "name": "Sun", "x": 350.0, "y": 350.0, "vx": 0, "vy": 0, "mass": 2000, "color": "#fff200", "radius": 22, "type": "star" }, { "name": "Earth", "x": 495.0, "y": 350.0, "vx": 0, "vy": 3.2, "mass": 3, "color": "#4fffb0", "radius": 7, "type": "planet" }, { "name": "Mars", "x": 550.0, "y": 350.0, "vx": 0, "vy": 2.6, "mass": 1.5, "color": "#ff6b35", "radius": 5, "type": "planet" }, { "name": "Craft", "x": 495.0, "y": 350.0, "vx": 0, "vy": 3.78, "mass": 0.001, "color": "#ffffff", "radius": 3, "type": "debris" }] }, "resonance chain": { "description": "TRAPPIST-1 style resonance chain \u2014 4:3:2:1", "G": 0.5, "objects": [{ "name": "Star", "x": 350.0, "y": 350.0, "vx": 0, "vy": 0, "mass": 2000, "color": "#ff8844", "radius": 18, "type": "star" }, { "name": "T-b", "x": 405.0, "y": 350.0, "vx": 0, "vy": 5.5, "mass": 1, "color": "#4fffb0", "radius": 4, "type": "planet" }, { "name": "T-c", "x": 430.0, "y": 350.0, "vx": 0, "vy": 4.5, "mass": 1.2, "color": "#44aaff", "radius": 4, "type": "planet" }, { "name": "T-d", "x": 460.0, "y": 350.0, "vx": 0, "vy": 3.8, "mass": 0.8, "color": "#ff6b35", "radius": 4, "type": "planet" }, { "name": "T-e", "x": 498.0, "y": 350.0, "vx": 0, "vy": 3.2, "mass": 1.1, "color": "#bf7fff", "radius": 4, "type": "planet" }, { "name": "T-f", "x": 535.0, "y": 350.0, "vx": 0, "vy": 2.8, "mass": 1.0, "color": "#ffcc44", "radius": 4, "type": "planet" }] }, "stellar flyby": { "description": "Rogue star flyby disrupting a planetary system", "G": 0.5, "objects": [{ "name": "Home Star", "x": 350.0, "y": 350.0, "vx": 0, "vy": 0, "mass": 1500, "color": "#fff200", "radius": 20, "type": "star" }, { "name": "Planet-A", "x": 470.0, "y": 350.0, "vx": 0, "vy": 3.5, "mass": 2, "color": "#4fffb0", "radius": 6, "type": "planet" }, { "name": "Planet-B", "x": 530.0, "y": 350.0, "vx": 0, "vy": 2.8, "mass": 3, "color": "#44aaff", "radius": 7, "type": "planet" }, { "name": "Planet-C", "x": 600.0, "y": 350.0, "vx": 0, "vy": 2.3, "mass": 2, "color": "#ff6b35", "radius": 6, "type": "planet" }, { "name": "Rogue Star", "x": 850.0, "y": 50.0, "vx": -2.2, "vy": 1.0, "mass": 1200, "color": "#ff4444", "radius": 18, "type": "star" }] }, "roche limit": { "description": "Moon fragmenting inside Roche limit \u2014 tidal disruption", "G": 0.5, "objects": [{ "name": "Planet", "x": 350.0, "y": 350.0, "vx": 0, "vy": 0, "mass": 800, "color": "#4466ff", "radius": 22, "type": "planet" }, { "name": "Frag-0", "x": 420.0, "y": 350.0, "vx": -0.30000000000000004, "vy": 4.2, "mass": 1.5, "color": "#b478cc", "radius": 4, "type": "debris" }, { "name": "Frag-1", "x": 416.16046845367543, "y": 380.85113310707106, "vx": -2.151782177833147, "vy": 3.8283850416649248, "mass": 1.5, "color": "#aa80cc", "radius": 4, "type": "debris" }, { "name": "Frag-2", "x": 398.851858336177, "y": 408.2193776770423, "vx": -3.647199994035401, "vy": 2.692544243589427, "mass": 1.5, "color": "#a088cc", "radius": 4, "type": "debris" }, { "name": "Frag-3", "x": 370.44670456309916, "y": 426.3081402768364, "vx": -4.496666218300808, "vy": 1.0146857029613434, "mass": 1.5, "color": "#9690cc", "radius": 4, "type": "debris" }, { "name": "Frag-4", "x": 335.7608494313117, "y": 430.7542357470011, "vx": -4.531634888554936, "vy": -0.8814167995011863, "mass": 1.5, "color": "#8c98cc", "radius": 4, "type": "debris" }, { "name": "Frag-5", "x": 301.24600291016105, "y": 419.6279237645643, "vx": -3.7361841993004625, "vy": -2.6310939635797075, "mass": 1.5, "color": "#82a0cc", "radius": 4, "type": "debris" }, { "name": "Frag-6", "x": 273.78976446696936, "y": 394.0, "vx": -2.2499999999999996, "vy": -3.897114317029974, "mass": 1.5, "color": "#78a8cc", "radius": 4, "type": "debris" }, { "name": "Frag-7", "x": 259.3462824736512, "y": 357.9311725900369, "vx": -0.34220084236446185, "vy": -4.432876141412855, "mass": 1.5, "color": "#6eb0cc", "radius": 4, "type": "debris" }, { "name": "Frag-8", "x": 261.6688936461246, "y": 317.85010652738714, "vx": 1.639090644965509, "vy": -4.1286167935365885, "mass": 1.5, "color": "#64b8cc", "radius": 4, "type": "debris" }, { "name": "Frag-9", "x": 281.4106422249049, "y": 281.4106422249049, "vx": 3.3319805153394637, "vy": -3.0319805153394648, "mass": 1.5, "color": "#5ac0cc", "radius": 4, "type": "debris" }, { "name": "Frag-10", "x": 315.7979856674331, "y": 256.0307379214091, "vx": 4.428616793536588, "vy": -1.3390906449655084, "mass": 1.5, "color": "#50c8cc", "radius": 4, "type": "debris" }, { "name": "Frag-11", "x": 358.97704150300876, "y": 247.3919460965502, "vx": 4.732876141412855, "vy": 0.6422008423644605, "mass": 1.5, "color": "#46d0cc", "radius": 4, "type": "debris" }, { "name": "Frag-12", "x": 403.0, "y": 258.2013071988495, "vx": 4.197114317029974, "vy": 2.5500000000000007, "mass": 1.5, "color": "#3cd8cc", "radius": 4, "type": "debris" }, { "name": "Frag-13", "x": 439.28757282750007, "y": 287.4801684377359, "vx": 2.9310939635797095, "vy": 4.036184199300462, "mass": 1.5, "color": "#32e0cc", "radius": 4, "type": "debris" }] }, "slingshot": { "description": "Spacecraft gravity assist around giant planet", "G": 0.5, "objects": [{ "name": "Sun", "x": 350.0, "y": 350.0, "vx": 0, "vy": 0, "mass": 2000, "color": "#fff200", "radius": 22, "type": "star" }, { "name": "Jupiter", "x": 630.0, "y": 400.0, "vx": 0.2, "vy": 1.75, "mass": 120, "color": "#c88b3a", "radius": 14, "type": "planet" }, { "name": "Voyager", "x": 100.0, "y": 200.0, "vx": 3.5, "vy": 1.5, "mass": 0.001, "color": "#ffffff", "radius": 3, "type": "debris" }] }, "kozai mechanism": { "description": "Kozai-Lidov mechanism \u2014 outer binary pumping inner eccentricity", "G": 0.5, "objects": [{ "name": "Star-A", "x": 350.0, "y": 350.0, "vx": 0, "vy": 0, "mass": 1500, "color": "#fff200", "radius": 18, "type": "star" }, { "name": "Inner", "x": 440.0, "y": 350.0, "vx": 0, "vy": 4.1, "mass": 1, "color": "#4fffb0", "radius": 5, "type": "planet" }, { "name": "Perturber", "x": 350.0, "y": 670.0, "vx": -2.2, "vy": 0, "mass": 600, "color": "#ff8844", "radius": 14, "type": "star" }] }, "comet": { "description": "Highly eccentric comet \u2014 fast at perihelion, slow at aphelion", "G": 0.5, "objects": [{ "name": "Sun", "x": 350.0, "y": 350.0, "vx": 0, "vy": 0, "mass": 2000, "color": "#fff200", "radius": 22, "type": "star" }, { "name": "Comet", "x": 400.0, "y": 380.0, "vx": -0.5, "vy": 4.8, "mass": 0.01, "color": "#aaddff", "radius": 4, "type": "debris" }] }, "asteroid belt": { "description": "Main belt between Mars and Jupiter \u2014 Kirkwood gaps visible", "G": 0.45, "objects": [{ "name": "Sun", "x": 350.0, "y": 350.0, "vx": 0, "vy": 0, "mass": 2000, "color": "#fff200", "radius": 22, "type": "star" }, { "name": "Jupiter", "x": 670.0, "y": 350.0, "vx": 0, "vy": 1.85, "mass": 80, "color": "#c88b3a", "radius": 13, "type": "planet" }, { "name": "Rock1", "x": 565.0, "y": 350.0, "vx": -0.0, "vy": 2.1, "mass": 0.05, "color": "#997755", "radius": 2, "type": "debris" }, { "name": "Rock2", "x": 569.3587802409103, "y": 400.06721014017074, "vx": -0.48064521734563914, "vy": 2.105844290312739, "mass": 0.05, "color": "#997755", "radius": 2, "type": "debris" }, { "name": "Rock3", "x": 561.7276839570685, "y": 451.9626786926261, "vx": -0.9632219008409791, "vy": 2.000150886743371, "mass": 0.05, "color": "#997755", "radius": 2, "type": "debris" }, { "name": "Rock4", "x": 541.5487132046674, "y": 502.7550014553897, "vx": -1.3093285839033404, "vy": 1.6418461131828626, "mass": 0.05, "color": "#997755", "radius": 2, "type": "debris" }, { "name": "Rock5", "x": 508.98989947397706, "y": 549.3670280293476, "vx": -1.6887560021309445, "vy": 1.3467379720148647, "mass": 0.05, "color": "#997755", "radius": 2, "type": "debris" }, { "name": "Rock6", "x": 443.285003910275, "y": 543.7083065990201, "vx": -2.000150886743371, "vy": 0.9632219008409793, "mass": 0.05, "color": "#997755", "radius": 2, "type": "debris" }, { "name": "Rock7", "x": 400.06721014017074, "y": 569.3587802409103, "vx": -2.04734861558183, "vy": 0.46729396130826034, "mass": 0.05, "color": "#997755", "radius": 2, "type": "debris" }, { "name": "Rock8", "x": 350.0, "y": 585.0, "vx": -2.16, "vy": 1.3226185430791415e-16, "mass": 0.05, "color": "#997755", "radius": 2, "type": "debris" }, { "name": "Rock9", "x": 295.482371180703, "y": 588.8573384845467, "vx": -2.1643399650436486, "vy": -0.4939964733830179, "mass": 0.05, "color": "#997755", "radius": 2, "type": "debris" }, { "name": "Rock10", "x": 239.3596465250227, "y": 579.7470613151169, "vx": -1.8920346225950804, "vy": -0.911155852146872, "mass": 0.05, "color": "#997755", "radius": 2, "type": "debris" }, { "name": "Rock11", "x": 215.9496926003723, "y": 518.0937687306264, "vx": -1.6887560021309447, "vy": -1.3467379720148644, "mass": 0.05, "color": "#997755", "radius": 2, "type": "debris" }, { "name": "Rock12", "x": 174.08791644469338, "y": 490.2852054182151, "vx": -1.3841473601263894, "vy": -1.7356658910790255, "mass": 0.05, "color": "#997755", "radius": 2, "type": "debris" }, { "name": "Rock13", "x": 138.27231604293152, "y": 451.9626786926262, "vx": -0.9111558521468723, "vy": -1.8920346225950802, "mass": 0.05, "color": "#997755", "radius": 2, "type": "debris" }, { "name": "Rock14", "x": 111.1426615154532, "y": 404.51762881929693, "vx": -0.4806452173456385, "vy": -2.1058442903127395, "mass": 0.05, "color": "#997755", "radius": 2, "type": "debris" }, { "name": "Rock15", "x": 95.0, "y": 350.00000000000006, "vx": -2.7187158941071245e-16, "vy": -2.22, "mass": 0.05, "color": "#997755", "radius": 2, "type": "debris" }, { "name": "Rock16", "x": 140.3904988809079, "y": 302.1579991993925, "vx": 0.46729396130825906, "vy": -2.04734861558183, "mass": 0.05, "color": "#997755", "radius": 2, "type": "debris" }, { "name": "Rock17", "x": 147.2820047219557, "y": 252.37615869854943, "vx": 0.9371888764939253, "vy": -1.9460927546692255, "mass": 0.05, "color": "#997755", "radius": 2, "type": "debris" }, { "name": "Rock18", "x": 166.26960162001305, "y": 203.47989656319754, "vx": 1.3841473601263892, "vy": -1.735665891079026, "mass": 0.05, "color": "#997755", "radius": 2, "type": "debris" }, { "name": "Rock19", "x": 197.24499854461024, "y": 158.45128679533272, "vx": 1.6418461131828623, "vy": -1.3093285839033408, "mass": 0.05, "color": "#997755", "radius": 2, "type": "debris" }, { "name": "Rock20", "x": 239.35964652502264, "y": 120.25293868488313, "vx": 1.9460927546692253, "vy": -0.937188876493926, "mass": 0.05, "color": "#997755", "radius": 2, "type": "debris" }, { "name": "Rock21", "x": 302.15799919939235, "y": 140.39049888090793, "vx": 2.1643399650436486, "vy": -0.49399647338301844, "mass": 0.05, "color": "#997755", "radius": 2, "type": "debris" }, { "name": "Rock22", "x": 349.99999999999994, "y": 125.0, "vx": 2.1, "vy": -3.8576374173141627e-16, "mass": 0.05, "color": "#997755", "radius": 2, "type": "debris" }, { "name": "Rock23", "x": 402.2924194797336, "y": 120.8919406372714, "vx": 2.1058442903127395, "vy": 0.48064521734563687, "mass": 0.05, "color": "#997755", "radius": 2, "type": "debris" }, { "name": "Rock24", "x": 456.3015160838017, "y": 129.26262736390728, "vx": 2.000150886743371, "vy": 0.9632219008409787, "mass": 0.05, "color": "#997755", "radius": 2, "type": "debris" }, { "name": "Rock25", "x": 508.989899473977, "y": 150.63297197065236, "vx": 1.641846113182863, "vy": 1.3093285839033402, "mass": 0.05, "color": "#997755", "radius": 2, "type": "debris" }, { "name": "Rock26", "x": 518.0937687306264, "y": 215.94969260037226, "vx": 1.346737972014865, "vy": 1.6887560021309442, "mass": 0.05, "color": "#997755", "radius": 2, "type": "debris" }, { "name": "Rock27", "x": 552.7179952780443, "y": 252.37615869854955, "vx": 0.9632219008409778, "vy": 2.0001508867433713, "mass": 0.05, "color": "#997755", "radius": 2, "type": "debris" }, { "name": "Rock28", "x": 579.1080593627285, "y": 297.70758052026605, "vx": 0.4672939613082608, "vy": 2.0473486155818295, "mass": 0.05, "color": "#997755", "radius": 2, "type": "debris" }] }, "double planet": { "description": "Co-orbiting twin worlds around a common star", "G": 0.5, "objects": [{ "name": "Sun", "x": 350.0, "y": 350.0, "vx": 0, "vy": 0, "mass": 2000, "color": "#fff200", "radius": 22, "type": "star" }, { "name": "World-A", "x": 540.0, "y": 332.0, "vx": 0.9, "vy": 2.95, "mass": 12, "color": "#4fffb0", "radius": 9, "type": "planet" }, { "name": "World-B", "x": 540.0, "y": 368.0, "vx": -0.9, "vy": 2.95, "mass": 12, "color": "#44aaff", "radius": 9, "type": "planet" }] }, "exoplanet system": { "description": "Hot Jupiter in tight orbit + distant super-Earth", "G": 0.5, "objects": [{ "name": "Host Star", "x": 350.0, "y": 350.0, "vx": 0, "vy": 0, "mass": 2000, "color": "#ffcc88", "radius": 20, "type": "star" }, { "name": "Hot Jupiter", "x": 410.0, "y": 350.0, "vx": 0, "vy": 6.0, "mass": 80, "color": "#ff9933", "radius": 11, "type": "planet" }, { "name": "Super Earth", "x": 610.0, "y": 350.0, "vx": 0, "vy": 2.5, "mass": 8, "color": "#44aaff", "radius": 8, "type": "planet" }] }, "binary system": { "description": "Equal-mass binary stars in circular orbit", "G": 0.5, "objects": [{ "name": "Star-A", "x": 470.0, "y": 350.0, "vx": 0, "vy": 2.0, "mass": 500, "color": "#fff7aa", "radius": 16, "type": "star" }, { "name": "Star-B", "x": 230.0, "y": 350.0, "vx": 0, "vy": -2.0, "mass": 500, "color": "#aaddff", "radius": 16, "type": "star" }] }, "contact binary": { "description": "Contact binary \u2014 shared envelope, almost touching", "G": 0.6, "objects": [{ "name": "Star-A", "x": 405.0, "y": 350.0, "vx": 0, "vy": 3.2, "mass": 600, "color": "#ff8844", "radius": 17, "type": "star" }, { "name": "Star-B", "x": 295.0, "y": 350.0, "vx": 0, "vy": -3.2, "mass": 600, "color": "#ff5588", "radius": 17, "type": "star" }] }, "eccentric binary": { "description": "High eccentricity binary e\u22480.7 \u2014 dramatic speed variation", "G": 0.5, "objects": [{ "name": "Star-A", "x": 400.0, "y": 350.0, "vx": 0, "vy": 4.2, "mass": 800, "color": "#fff200", "radius": 18, "type": "star" }, { "name": "Star-B", "x": 150.0, "y": 350.0, "vx": 0, "vy": -1.05, "mass": 800, "color": "#44aaff", "radius": 18, "type": "star" }] }, "black hole": { "description": "Black hole with accretion disk particles", "G": 0.8, "objects": [{ "name": "Black Hole", "x": 350.0, "y": 350.0, "vx": 0, "vy": 0, "mass": 5000, "color": "#220022", "radius": 18, "type": "blackhole" }, { "name": "Acc-0", "x": 405.0, "y": 350.0, "vx": -0.0, "vy": 6.2, "mass": 0.5, "color": "#b44400", "radius": 3, "type": "debris" }, { "name": "Acc-1", "x": 404.7038474194405, "y": 372.1017890115388, "vx": -2.3225608791786545, "vy": 5.748539898314082, "mass": 0.5, "color": "#b84400", "radius": 3, "type": "debris" }, { "name": "Acc-2", "x": 395.318407421335, "y": 393.7634773389168, "vx": -4.306881896845783, "vy": 4.459906762099638, "mass": 0.5, "color": "#bc4400", "radius": 3, "type": "debris" }, { "name": "Acc-3", "x": 377.2513550860786, "y": 411.20754566205426, "vx": -5.663981837384125, "vy": 2.5217671870699614, "mass": 0.5, "color": "#c04400", "radius": 3, "type": "debris" }, { "name": "Acc-4", "x": 352.4778642658776, "y": 420.9567487183558, "vx": -6.196223127518394, "vy": 0.2163768795555067, "mass": 0.5, "color": "#c44400", "radius": 3, "type": "debris" }, { "name": "Acc-5", "x": 324.34848925057486, "y": 420.47694655894315, "vx": -5.826094248872632, "vy": -2.120524888619146, "mass": 0.5, "color": "#c84400", "radius": 3, "type": "debris" }, { "name": "Acc-6", "x": 297.1386820976502, "y": 408.70844121271415, "vx": -4.6074979179598445, "vy": -4.148609759424922, "mass": 0.5, "color": "#cc4400", "radius": 3, "type": "debris" }, { "name": "Acc-7", "x": 275.4000941571691, "y": 386.3848051834934, "vx": -2.717901110092279, "vy": -5.572523087054836, "mass": 0.5, "color": "#d04400", "radius": 3, "type": "debris" }, { "name": "Acc-8", "x": 263.2119276273953, "y": 356.06881321573894, "vx": -0.43249013721357826, "vy": -6.18489711161091, "mass": 0.5, "color": "#d44400", "radius": 3, "type": "debris" }, { "name": "Acc-9", "x": 263.453857017141, "y": 321.8794535118798, "vx": 1.9159053651246731, "vy": -5.896550401029953, "mass": 0.5, "color": "#d84400", "radius": 3, "type": "debris" }, { "name": "Acc-10", "x": 277.2257779036971, "y": 288.9351770797788, "vx": 3.9852831800565434, "vy": -4.7494755473376635, "mass": 0.5, "color": "#dc4400", "radius": 3, "type": "debris" }, { "name": "Acc-11", "x": 303.5223152841968, "y": 262.58818830696623, "vx": 5.474275075725347, "vy": -2.9107236892725226, "mass": 0.5, "color": "#e04400", "radius": 3, "type": "debris" }, { "name": "Acc-12", "x": 339.2335682834317, "y": 247.56424477706784, "vx": 6.166035751283295, "vy": -0.6480764722594509, "mass": 0.5, "color": "#e44400", "radius": 3, "type": "debris" }, { "name": "Acc-13", "x": 379.4931970724189, "y": 247.1449985345999, "vx": 5.959822514817577, "vy": 1.7089516060653962, "mass": 0.5, "color": "#e84400", "radius": 3, "type": "debris" }, { "name": "Acc-14", "x": 418.3384237611481, "y": 262.53080634965386, "vx": 4.885666672361675, "vy": 3.8171011470190828, "mass": 0.5, "color": "#ec4400", "radius": 3, "type": "debris" }, { "name": "Acc-15", "x": 449.5929214352104, "y": 292.49999999999994, "vx": 3.1000000000000028, "vy": 5.369357503463518, "mass": 0.5, "color": "#f04400", "radius": 3, "type": "debris" }] }, "neutron star": { "description": "Neutron star accreting from companion giant star", "G": 0.6, "objects": [{ "name": "Neutron Star", "x": 270.0, "y": 350.0, "vx": 0, "vy": 3.5, "mass": 2000, "color": "#aaddff", "radius": 7, "type": "neutron" }, { "name": "Giant", "x": 430.0, "y": 350.0, "vx": 0, "vy": -3.5, "mass": 400, "color": "#ff8844", "radius": 20, "type": "giant" }, { "name": "Stream-0", "x": 270.0, "y": 302.0, "vx": -0.5, "vy": 1.5, "mass": 0.1, "color": "#88ccff", "radius": 2, "type": "debris" }, { "name": "Stream-1", "x": 280.0, "y": 308.0, "vx": -0.4, "vy": 1.5, "mass": 0.1, "color": "#88ccff", "radius": 2, "type": "debris" }, { "name": "Stream-2", "x": 290.0, "y": 314.0, "vx": -0.3, "vy": 1.5, "mass": 0.1, "color": "#88ccff", "radius": 2, "type": "debris" }, { "name": "Stream-3", "x": 300.0, "y": 320.0, "vx": -0.19999999999999996, "vy": 1.5, "mass": 0.1, "color": "#88ccff", "radius": 2, "type": "debris" }, { "name": "Stream-4", "x": 310.0, "y": 326.0, "vx": -0.09999999999999998, "vy": 1.5, "mass": 0.1, "color": "#88ccff", "radius": 2, "type": "debris" }, { "name": "Stream-5", "x": 320.0, "y": 332.0, "vx": 0.0, "vy": 1.5, "mass": 0.1, "color": "#88ccff", "radius": 2, "type": "debris" }, { "name": "Stream-6", "x": 330.0, "y": 338.0, "vx": 0.10000000000000009, "vy": 1.5, "mass": 0.1, "color": "#88ccff", "radius": 2, "type": "debris" }, { "name": "Stream-7", "x": 340.0, "y": 344.0, "vx": 0.20000000000000007, "vy": 1.5, "mass": 0.1, "color": "#88ccff", "radius": 2, "type": "debris" }, { "name": "Stream-8", "x": 350.0, "y": 350.0, "vx": 0.30000000000000004, "vy": 1.5, "mass": 0.1, "color": "#88ccff", "radius": 2, "type": "debris" }, { "name": "Stream-9", "x": 360.0, "y": 356.0, "vx": 0.4, "vy": 1.5, "mass": 0.1, "color": "#88ccff", "radius": 2, "type": "debris" }, { "name": "Stream-10", "x": 370.0, "y": 362.0, "vx": 0.5, "vy": 1.5, "mass": 0.1, "color": "#88ccff", "radius": 2, "type": "debris" }, { "name": "Stream-11", "x": 380.0, "y": 368.0, "vx": 0.6000000000000001, "vy": 1.5, "mass": 0.1, "color": "#88ccff", "radius": 2, "type": "debris" }, { "name": "Stream-12", "x": 390.0, "y": 374.0, "vx": 0.7000000000000002, "vy": 1.5, "mass": 0.1, "color": "#88ccff", "radius": 2, "type": "debris" }, { "name": "Stream-13", "x": 400.0, "y": 380.0, "vx": 0.8, "vy": 1.5, "mass": 0.1, "color": "#88ccff", "radius": 2, "type": "debris" }, { "name": "Stream-14", "x": 410.0, "y": 386.0, "vx": 0.9000000000000001, "vy": 1.5, "mass": 0.1, "color": "#88ccff", "radius": 2, "type": "debris" }, { "name": "Stream-15", "x": 420.0, "y": 392.0, "vx": 1.0, "vy": 1.5, "mass": 0.1, "color": "#88ccff", "radius": 2, "type": "debris" }] }, "pulsar": { "description": "Rapidly rotating pulsar with jet particles", "G": 0.5, "objects": [{ "name": "Pulsar", "x": 350.0, "y": 350.0, "vx": 0, "vy": 0, "mass": 3000, "color": "#aaffff", "radius": 8, "type": "neutron" }, { "name": "Companion", "x": 510.0, "y": 350.0, "vx": 0, "vy": 2.5, "mass": 300, "color": "#ff8844", "radius": 14, "type": "star" }, { "name": "Jet-N0", "x": 350.0, "y": 320.0, "vx": 0.4, "vy": -1.5, "mass": 0.1, "color": "#00ffff", "radius": 2, "type": "debris" }, { "name": "Jet-N1", "x": 350.0, "y": 308.0, "vx": 0.4, "vy": -1.8, "mass": 0.1, "color": "#00ffff", "radius": 2, "type": "debris" }, { "name": "Jet-N2", "x": 350.0, "y": 296.0, "vx": 0.4, "vy": -2.1, "mass": 0.1, "color": "#00ffff", "radius": 2, "type": "debris" }, { "name": "Jet-N3", "x": 350.0, "y": 284.0, "vx": 0.4, "vy": -2.4, "mass": 0.1, "color": "#00ffff", "radius": 2, "type": "debris" }, { "name": "Jet-N4", "x": 350.0, "y": 272.0, "vx": 0.4, "vy": -2.7, "mass": 0.1, "color": "#00ffff", "radius": 2, "type": "debris" }, { "name": "Jet-N5", "x": 350.0, "y": 260.0, "vx": 0.4, "vy": -3.0, "mass": 0.1, "color": "#00ffff", "radius": 2, "type": "debris" }, { "name": "Jet-S0", "x": 350.0, "y": 380.0, "vx": -0.4, "vy": 1.5, "mass": 0.1, "color": "#00ffff", "radius": 2, "type": "debris" }, { "name": "Jet-S1", "x": 350.0, "y": 392.0, "vx": -0.4, "vy": 1.8, "mass": 0.1, "color": "#00ffff", "radius": 2, "type": "debris" }, { "name": "Jet-S2", "x": 350.0, "y": 404.0, "vx": -0.4, "vy": 2.1, "mass": 0.1, "color": "#00ffff", "radius": 2, "type": "debris" }, { "name": "Jet-S3", "x": 350.0, "y": 416.0, "vx": -0.4, "vy": 2.4, "mass": 0.1, "color": "#00ffff", "radius": 2, "type": "debris" }, { "name": "Jet-S4", "x": 350.0, "y": 428.0, "vx": -0.4, "vy": 2.7, "mass": 0.1, "color": "#00ffff", "radius": 2, "type": "debris" }, { "name": "Jet-S5", "x": 350.0, "y": 440.0, "vx": -0.4, "vy": 3.0, "mass": 0.1, "color": "#00ffff", "radius": 2, "type": "debris" }] }, "white dwarf": { "description": "White dwarf accreting from red giant companion", "G": 0.55, "objects": [{ "name": "White Dwarf", "x": 250.0, "y": 350.0, "vx": 0, "vy": 2.8, "mass": 1200, "color": "#eeeeff", "radius": 8, "type": "dwarf" }, { "name": "Red Giant", "x": 450.0, "y": 350.0, "vx": 0, "vy": -2.8, "mass": 300, "color": "#ff5522", "radius": 22, "type": "giant" }, { "name": "Acc-0", "x": 290.0, "y": 350.0, "vx": -0.0, "vy": 3.0, "mass": 0.3, "color": "#ffbbaa", "radius": 2, "type": "debris" }, { "name": "Acc-1", "x": 284.6410161513776, "y": 370.0, "vx": -1.4999999999999998, "vy": 2.598076211353316, "mass": 0.3, "color": "#ffbbaa", "radius": 2, "type": "debris" }, { "name": "Acc-2", "x": 270.0, "y": 384.6410161513775, "vx": -2.598076211353316, "vy": 1.5000000000000004, "mass": 0.3, "color": "#ffbbaa", "radius": 2, "type": "debris" }, { "name": "Acc-3", "x": 250.0, "y": 390.0, "vx": -3.0, "vy": 1.8369701987210297e-16, "mass": 0.3, "color": "#ffbbaa", "radius": 2, "type": "debris" }, { "name": "Acc-4", "x": 230.0, "y": 384.6410161513775, "vx": -2.598076211353316, "vy": -1.4999999999999993, "mass": 0.3, "color": "#ffbbaa", "radius": 2, "type": "debris" }, { "name": "Acc-5", "x": 215.35898384862244, "y": 370.0, "vx": -1.4999999999999998, "vy": -2.598076211353316, "mass": 0.3, "color": "#ffbbaa", "radius": 2, "type": "debris" }, { "name": "Acc-6", "x": 210.0, "y": 350.0, "vx": -3.6739403974420594e-16, "vy": -3.0, "mass": 0.3, "color": "#ffbbaa", "radius": 2, "type": "debris" }, { "name": "Acc-7", "x": 215.35898384862247, "y": 330.0, "vx": 1.5000000000000004, "vy": -2.598076211353316, "mass": 0.3, "color": "#ffbbaa", "radius": 2, "type": "debris" }, { "name": "Acc-8", "x": 230.0, "y": 315.3589838486225, "vx": 2.598076211353315, "vy": -1.5000000000000013, "mass": 0.3, "color": "#ffbbaa", "radius": 2, "type": "debris" }, { "name": "Acc-9", "x": 250.0, "y": 310.0, "vx": 3.0, "vy": -5.51091059616309e-16, "mass": 0.3, "color": "#ffbbaa", "radius": 2, "type": "debris" }, { "name": "Acc-10", "x": 270.0, "y": 315.3589838486225, "vx": 2.598076211353316, "vy": 1.5000000000000004, "mass": 0.3, "color": "#ffbbaa", "radius": 2, "type": "debris" }, { "name": "Acc-11", "x": 284.6410161513775, "y": 330.0, "vx": 1.5000000000000013, "vy": 2.598076211353315, "mass": 0.3, "color": "#ffbbaa", "radius": 2, "type": "debris" }] }, "supernova remnant": { "description": "Supernova expanding shell with neutron star core", "G": 0.1, "objects": [{ "name": "Neutron Core", "x": 350.0, "y": 350.0, "vx": 0, "vy": 0, "mass": 2000, "color": "#aaddff", "radius": 9, "type": "neutron" }, { "name": "Shell-0", "x": 380.0, "y": 350.0, "vx": 2.5, "vy": 0.0, "mass": 0.2, "color": "#780044", "radius": 2, "type": "debris" }, { "name": "Shell-1", "x": 387.53215694261525, "y": 355.94450967152875, "vx": 2.8642961877258997, "vy": 0.45365994861666953, "mass": 0.2, "color": "#7b0544", "radius": 2, "type": "debris" }, { "name": "Shell-2", "x": 393.74859974957707, "y": 364.2147817412476, "vx": 3.1384865037740064, "vy": 1.0197560814373263, "mass": 0.2, "color": "#7e0a44", "radius": 2, "type": "debris" }, { "name": "Shell-3", "x": 398.1143523061719, "y": 374.5154869859355, "vx": 3.2967241394969613, "vy": 1.679764849036323, "mass": 0.2, "color": "#810f44", "radius": 2, "type": "debris" }, { "name": "Shell-4", "x": 400.1590536512467, "y": 386.4426856421333, "vx": 2.0225424859373686, "vy": 1.469463130731183, "mass": 0.2, "color": "#841444", "radius": 2, "type": "debris" }, { "name": "Shell-5", "x": 371.2132034355964, "y": 371.2132034355964, "vx": 2.0506096654409878, "vy": 2.0506096654409878, "mass": 0.2, "color": "#871944", "radius": 2, "type": "debris" }, { "name": "Shell-6", "x": 372.335839587114, "y": 380.742645786248, "vx": 1.9396913325651612, "vy": 2.6697560814373262, "mass": 0.2, "color": "#8a1e44", "radius": 2, "type": "debris" }, { "name": "Shell-7", "x": 370.88356298801915, "y": 390.98630011266494, "vx": 1.6797648490363233, "vy": 3.296724139496961, "mass": 0.2, "color": "#8d2344", "radius": 2, "type": "debris" }, { "name": "Shell-8", "x": 366.6869176962472, "y": 401.3570518799383, "vx": 0.7725424859373686, "vy": 2.3776412907378837, "mass": 0.2, "color": "#902844", "radius": 2, "type": "debris" }, { "name": "Shell-9", "x": 359.6989368324943, "y": 411.23667711689853, "vx": 0.45365994861666964, "vy": 2.8642961877258997, "mass": 0.2, "color": "#932d44", "radius": 2, "type": "debris" }, { "name": "Shell-10", "x": 350.0, "y": 380.0, "vx": 2.0206672185931328e-16, "vy": 3.3, "mass": 0.2, "color": "#963244", "radius": 2, "type": "debris" }, { "name": "Shell-11", "x": 344.05549032847125, "y": 387.53215694261525, "vx": -0.5788075206488532, "vy": 3.6544468602020097, "mass": 0.2, "color": "#993744", "radius": 2, "type": "debris" }, { "name": "Shell-12", "x": 335.7852182587524, "y": 393.74859974957707, "vx": -0.7725424859373684, "vy": 2.377641290737884, "mass": 0.2, "color": "#9c3c44", "radius": 2, "type": "debris" }, { "name": "Shell-13", "x": 325.4845130140645, "y": 398.1143523061719, "vx": -1.3165724492446853, "vy": 2.583918920146267, "mass": 0.2, "color": "#9f4144", "radius": 2, "type": "debris" }, { "name": "Shell-14", "x": 313.5573143578667, "y": 400.1590536512467, "vx": -1.9396913325651608, "vy": 2.6697560814373262, "mass": 0.2, "color": "#a24644", "radius": 2, "type": "debris" }, { "name": "Shell-15", "x": 328.7867965644036, "y": 371.2132034355964, "vx": -2.6162950903902256, "vy": 2.616295090390226, "mass": 0.2, "color": "#a54b44", "radius": 2, "type": "debris" }, { "name": "Shell-16", "x": 319.257354213752, "y": 372.335839587114, "vx": -2.022542485937368, "vy": 1.4694631307311832, "mass": 0.2, "color": "#a80044", "radius": 2, "type": "debris" }, { "name": "Shell-17", "x": 309.01369988733506, "y": 370.88356298801915, "vx": -2.5839189201462665, "vy": 1.3165724492446857, "mass": 0.2, "color": "#ab0544", "radius": 2, "type": "debris" }, { "name": "Shell-18", "x": 298.6429481200617, "y": 366.6869176962472, "vx": -3.1384865037740064, "vy": 1.0197560814373268, "mass": 0.2, "color": "#ae0a44", "radius": 2, "type": "debris" }, { "name": "Shell-19", "x": 288.76332288310147, "y": 359.6989368324943, "vx": -3.6544468602020097, "vy": 0.5788075206488547, "mass": 0.2, "color": "#b10f44", "radius": 2, "type": "debris" }, { "name": "Shell-20", "x": 320.0, "y": 350.0, "vx": -2.5, "vy": 3.061616997868383e-16, "mass": 0.2, "color": "#b41444", "radius": 2, "type": "debris" }, { "name": "Shell-21", "x": 312.46784305738475, "y": 344.05549032847125, "vx": -2.8642961877258997, "vy": -0.4536599486166691, "mass": 0.2, "color": "#b71944", "radius": 2, "type": "debris" }, { "name": "Shell-22", "x": 306.25140025042293, "y": 335.7852182587524, "vx": -3.1384865037740073, "vy": -1.0197560814373248, "mass": 0.2, "color": "#ba1e44", "radius": 2, "type": "debris" }, { "name": "Shell-23", "x": 301.8856476938281, "y": 325.4845130140645, "vx": -3.2967241394969613, "vy": -1.6797648490363228, "mass": 0.2, "color": "#bd2344", "radius": 2, "type": "debris" }, { "name": "Shell-24", "x": 299.8409463487533, "y": 313.5573143578667, "vx": -2.022542485937369, "vy": -1.4694631307311825, "mass": 0.2, "color": "#c02844", "radius": 2, "type": "debris" }, { "name": "Shell-25", "x": 328.7867965644036, "y": 328.7867965644036, "vx": -2.050609665440988, "vy": -2.0506096654409878, "mass": 0.2, "color": "#c32d44", "radius": 2, "type": "debris" }, { "name": "Shell-26", "x": 327.664160412886, "y": 319.257354213752, "vx": -1.9396913325651617, "vy": -2.6697560814373262, "mass": 0.2, "color": "#c63244", "radius": 2, "type": "debris" }, { "name": "Shell-27", "x": 329.11643701198085, "y": 309.01369988733506, "vx": -1.6797648490363237, "vy": -3.296724139496961, "mass": 0.2, "color": "#c93744", "radius": 2, "type": "debris" }, { "name": "Shell-28", "x": 333.3130823037528, "y": 298.6429481200617, "vx": -0.7725424859373689, "vy": -2.3776412907378837, "mass": 0.2, "color": "#cc3c44", "radius": 2, "type": "debris" }, { "name": "Shell-29", "x": 340.3010631675057, "y": 288.76332288310147, "vx": -0.45365994861667, "vy": -2.8642961877258992, "mass": 0.2, "color": "#cf4144", "radius": 2, "type": "debris" }, { "name": "Shell-30", "x": 350.0, "y": 320.0, "vx": -6.062001655779398e-16, "vy": -3.3, "mass": 0.2, "color": "#d24644", "radius": 2, "type": "debris" }, { "name": "Shell-31", "x": 355.94450967152875, "y": 312.46784305738475, "vx": 0.5788075206488535, "vy": -3.6544468602020097, "mass": 0.2, "color": "#d54b44", "radius": 2, "type": "debris" }, { "name": "Shell-32", "x": 364.2147817412476, "y": 306.25140025042293, "vx": 0.7725424859373681, "vy": -2.377641290737884, "mass": 0.2, "color": "#d80044", "radius": 2, "type": "debris" }, { "name": "Shell-33", "x": 374.5154869859355, "y": 301.8856476938281, "vx": 1.3165724492446853, "vy": -2.5839189201462673, "mass": 0.2, "color": "#db0544", "radius": 2, "type": "debris" }, { "name": "Shell-34", "x": 386.4426856421333, "y": 299.8409463487533, "vx": 1.9396913325651606, "vy": -2.6697560814373267, "mass": 0.2, "color": "#de0a44", "radius": 2, "type": "debris" }, { "name": "Shell-35", "x": 371.2132034355964, "y": 328.7867965644036, "vx": 2.616295090390225, "vy": -2.6162950903902265, "mass": 0.2, "color": "#e10f44", "radius": 2, "type": "debris" }, { "name": "Shell-36", "x": 380.742645786248, "y": 327.664160412886, "vx": 2.022542485937368, "vy": -1.4694631307311834, "mass": 0.2, "color": "#e41444", "radius": 2, "type": "debris" }, { "name": "Shell-37", "x": 390.98630011266494, "y": 329.11643701198085, "vx": 2.5839189201462665, "vy": -1.3165724492446862, "mass": 0.2, "color": "#e71944", "radius": 2, "type": "debris" }, { "name": "Shell-38", "x": 401.3570518799383, "y": 333.3130823037528, "vx": 3.1384865037740064, "vy": -1.019756081437327, "mass": 0.2, "color": "#ea1e44", "radius": 2, "type": "debris" }, { "name": "Shell-39", "x": 411.23667711689853, "y": 340.3010631675057, "vx": 3.6544468602020097, "vy": -0.5788075206488552, "mass": 0.2, "color": "#ed2344", "radius": 2, "type": "debris" }] }, "protoplanetary disk": { "description": "Young star with forming planets in disk", "G": 0.45, "objects": [{ "name": "Proto-Star", "x": 350.0, "y": 350.0, "vx": 0, "vy": 0, "mass": 1500, "color": "#ffdd66", "radius": 16, "type": "star" }, { "name": "Dust-0", "x": 430.0, "y": 350.0, "vx": -0.0, "vy": 2.6363636363636362, "mass": 0.8, "color": "#cc9944", "radius": 2, "type": "debris" }, { "name": "Dust-1", "x": 446.4250996826657, "y": 367.4985756902664, "vx": -0.4561317039856082, "vy": 2.5134928581474085, "mass": 0.8, "color": "#cc9944", "radius": 2, "type": "debris" }, { "name": "Dust-2", "x": 458.6032449942095, "y": 390.75947959343574, "vx": -0.8688541104556837, "vy": 2.3150534983091684, "mass": 0.8, "color": "#cc9944", "radius": 2, "type": "debris" }, { "name": "Dust-3", "x": 465.03213834265006, "y": 418.7285031723914, "vx": -1.2262955450704844, "vy": 2.0524730247026435, "mass": 0.8, "color": "#cc9944", "radius": 2, "type": "debris" }, { "name": "Dust-4", "x": 464.4668628325489, "y": 450.0066863428363, "vx": -1.5192403308062454, "vy": 1.7389104760447016, "mass": 0.8, "color": "#cc9944", "radius": 2, "type": "debris" }, { "name": "Dust-5", "x": 455.9932663159847, "y": 482.9113520195651, "vx": -1.7413519382242484, "vy": 1.3886818314126341, "mass": 0.8, "color": "#cc9944", "radius": 2, "type": "debris" }, { "name": "Dust-6", "x": 439.08730854492376, "y": 515.5519599890667, "vx": -1.8892776865290015, "vy": 1.016663675851161, "mass": 0.8, "color": "#cc9944", "radius": 2, "type": "debris" }, { "name": "Dust-7", "x": 374.7213595499958, "y": 426.0845213036123, "vx": -2.5073308156872227, "vy": 0.8146811669884978, "mass": 0.8, "color": "#cc9944", "radius": 2, "type": "debris" }, { "name": "Dust-8", "x": 363.15486005013025, "y": 447.1130766532576, "vx": -2.531426209607179, "vy": 0.3429049790432837, "mass": 0.8, "color": "#cc9944", "radius": 2, "type": "debris" }, { "name": "Dust-9", "x": 344.79567967934025, "y": 465.88319571879254, "vx": -2.47023740090216, "vy": -0.11093848959400038, "mass": 0.8, "color": "#cc9944", "radius": 2, "type": "debris" }, { "name": "Dust-10", "x": 320.1821948498539, "y": 480.64034023236434, "vx": -2.3309640082165415, "vy": -0.5320273239137333, "mass": 0.8, "color": "#cc9944", "radius": 2, "type": "debris" }, { "name": "Dust-11", "x": 290.26019518860363, "y": 489.76822142782055, "vx": -2.123273220255168, "vy": -0.9075305276372412, "mass": 0.8, "color": "#cc9944", "radius": 2, "type": "debris" }, { "name": "Dust-12", "x": 256.3475131531426, "y": 491.87745313262144, "vx": -1.8588222469247198, "vy": -1.2269978223251374, "mass": 0.8, "color": "#cc9944", "radius": 2, "type": "debris" }, { "name": "Dust-13", "x": 220.08022199046945, "y": 485.8854343995496, "vx": -1.5507235260296766, "vy": -1.4826435014627277, "mass": 0.8, "color": "#cc9944", "radius": 2, "type": "debris" }, { "name": "Dust-14", "x": 285.2786404500042, "y": 397.02282018339787, "vx": -1.5496156651347022, "vy": -2.132862985170316, "mass": 0.8, "color": "#cc9944", "radius": 2, "type": "debris" }, { "name": "Dust-15", "x": 261.7050509455629, "y": 392.5206064335207, "vx": -1.1083757335639444, "vy": -2.301565926187089, "mass": 0.8, "color": "#cc9944", "radius": 2, "type": "debris" }, { "name": "Dust-16", "x": 238.18030815928103, "y": 380.8602740857343, "vx": -0.6578365635830514, "vy": -2.383617255538837, "mass": 0.8, "color": "#cc9944", "radius": 2, "type": "debris" }, { "name": "Dust-17", "x": 216.53944460463796, "y": 362.0116673930601, "vx": -0.21431943856002764, "vy": -2.3812839938249803, "mass": 0.8, "color": "#cc9944", "radius": 2, "type": "debris" }, { "name": "Dust-18", "x": 198.61190731272367, "y": 336.37482504667815, "vx": 0.20698531328610978, "vy": -2.299795187952643, "mass": 0.8, "color": "#cc9944", "radius": 2, "type": "debris" }, { "name": "Dust-19", "x": 186.12631368170494, "y": 304.7737362536652, "vx": 0.5925366105803217, "vy": -2.1470081897316735, "mass": 0.8, "color": "#cc9944", "radius": 2, "type": "debris" }, { "name": "Dust-20", "x": 180.6178528343452, "y": 268.4298570458991, "vx": 0.930877840288579, "vy": -1.9329877529542812, "mass": 0.8, "color": "#cc9944", "radius": 2, "type": "debris" }, { "name": "Dust-21", "x": 285.2786404500042, "y": 302.9771798166022, "vx": 1.5496156651347015, "vy": -2.1328629851703163, "mass": 0.8, "color": "#cc9944", "radius": 2, "type": "debris" }, { "name": "Dust-22", "x": 282.27586039928724, "y": 279.16610334491565, "vx": 1.8464123339590628, "vy": -1.7653509487755372, "mass": 0.8, "color": "#cc9944", "radius": 2, "type": "debris" }, { "name": "Dust-23", "x": 286.0959501515561, "y": 253.18950256832892, "vx": 2.0636720455654025, "vy": -1.3622179904997447, "mass": 0.8, "color": "#cc9944", "radius": 2, "type": "debris" }, { "name": "Dust-24", "x": 297.3346457583742, "y": 226.78327847810561, "vx": 2.19850731073665, "vy": -0.9396871211361995, "mass": 0.8, "color": "#cc9944", "radius": 2, "type": "debris" }, { "name": "Dust-25", "x": 316.1768180386402, "y": 201.81095734836282, "vx": 2.251197179038029, "vy": -0.5138210656809445, "mass": 0.8, "color": "#cc9944", "radius": 2, "type": "debris" }, { "name": "Dust-26", "x": 342.37297884041243, "y": 180.17117868797652, "vx": 2.225030011842019, "vy": -0.09992621305342002, "mass": 0.8, "color": "#cc9944", "radius": 2, "type": "debris" }, { "name": "Dust-27", "x": 375.2358539737192, "y": 163.70144478762825, "vx": 2.126037670702115, "vy": 0.28799137029969685, "mass": 0.8, "color": "#cc9944", "radius": 2, "type": "debris" }, { "name": "Dust-28", "x": 374.7213595499958, "y": 273.9154786963877, "vx": 2.507330815687223, "vy": 0.8146811669884972, "mass": 0.8, "color": "#cc9944", "radius": 2, "type": "debris" }, { "name": "Dust-29", "x": 396.43912892235386, "y": 263.70163787803966, "vx": 2.2495213131976675, "vy": 1.2105190377719326, "mass": 0.8, "color": "#cc9944", "radius": 2, "type": "debris" }, { "name": "Dust-30", "x": 422.32481701561306, "y": 259.30754803370854, "vx": 1.9332560293754921, "vy": 1.5417202373234133, "mass": 0.8, "color": "#cc9944", "radius": 2, "type": "debris" }, { "name": "Dust-31", "x": 450.91157644448384, "y": 261.83621072407846, "vx": 1.5730716811104042, "vy": 1.800525414172269, "mass": 0.8, "color": "#cc9944", "radius": 2, "type": "debris" }, { "name": "Dust-32", "x": 480.48421662748365, "y": 272.03930983430223, "vx": 1.1843310587372746, "vy": 1.982236305226127, "mass": 0.8, "color": "#cc9944", "radius": 2, "type": "debris" }, { "name": "Dust-33", "x": 509.1599280087553, "y": 290.2662799061717, "vx": 0.7826075627266275, "vy": 2.0852503936975966, "mass": 0.8, "color": "#cc9944", "radius": 2, "type": "debris" }, { "name": "Dust-34", "x": 534.9787626565424, "y": 316.4313037778563, "vx": 0.38308570156798455, "vy": 2.110976208266151, "mass": 0.8, "color": "#cc9944", "radius": 2, "type": "debris" }] }, "nebula": { "description": "Stellar nursery \u2014 young star cluster forming", "G": 0.25, "objects": [{ "name": "Star-1", "x": 404.0, "y": 350.0, "vx": -0.3799913958218665, "vy": -0.1799765453047046, "mass": 44, "color": "#ff6688", "radius": 6, "type": "star" }, { "name": "Star-2", "x": 399.363448015713, "y": 378.5, "vx": 0.18917697133120992, "vy": 0.1413595899383291, "mass": 87, "color": "#8866ff", "radius": 7, "type": "star" }, { "name": "Star-3", "x": 404.5, "y": 444.3967690125038, "vx": -0.3304489338964671, "vy": -0.06246254425178366, "mass": 31, "color": "#44ccff", "radius": 8, "type": "star" }, { "name": "Star-4", "x": 350.0, "y": 401.0, "vx": -0.2250896201571173, "vy": 0.004284230482689888, "mass": 31, "color": "#ffcc44", "radius": 9, "type": "star" }, { "name": "Star-5", "x": 294.5, "y": 446.1288198200727, "vx": -0.24092987945068123, "vy": 0.11990755022361854, "mass": 64, "color": "#ff4444", "radius": 6, "type": "star" }, { "name": "Star-6", "x": 269.4596374480472, "y": 396.5, "vx": -0.22364750236744266, "vy": 0.07141254710072698, "mass": 81, "color": "#44ff88", "radius": 7, "type": "star" }, { "name": "Star-7", "x": 310.0, "y": 350.0, "vx": 0.20704589370381388, "vy": -0.2722725468984879, "mass": 57, "color": "#ff6688", "radius": 8, "type": "star" }, { "name": "Star-8", "x": 278.11989148589157, "y": 308.5, "vx": -0.17770292666268653, "vy": -0.22774899031392898, "mass": 78, "color": "#8866ff", "radius": 9, "type": "star" }, { "name": "Star-9", "x": 308.49999999999994, "y": 278.1198914858916, "vx": -0.31823177878412107, "vy": -0.09605815949013008, "mass": 52, "color": "#44ccff", "radius": 6, "type": "star" }, { "name": "Star-10", "x": 350.0, "y": 266.0, "vx": 0.08298082509351284, "vy": 0.24570261861950415, "mass": 76, "color": "#ffcc44", "radius": 7, "type": "star" }, { "name": "Star-11", "x": 399.0, "y": 265.12951042912505, "vx": 0.02898247316376057, "vy": 0.37849261118349653, "mass": 54, "color": "#ff4444", "radius": 8, "type": "star" }, { "name": "Star-12", "x": 393.3012701892219, "y": 325.0, "vx": 0.04163250501858162, "vy": 0.26352373140239593, "mass": 69, "color": "#44ff88", "radius": 9, "type": "star" }] }, "galaxy collision": { "description": "Two spiral galaxies merging \u2014 tidal streams visible", "G": 0.3, "objects": [{ "name": "Core-A", "x": 210.0, "y": 350.0, "vx": 1.1, "vy": 0, "mass": 800, "color": "#fff7aa", "radius": 14, "type": "star" }, { "name": "A-1", "x": 270.0, "y": 350.0, "vx": 1.1, "vy": 0.36, "mass": 15, "color": "#ffcc44", "radius": 4, "type": "star" }, { "name": "A-2", "x": 277.5499814951862, "y": 367.55, "vx": 0.9200000000000002, "vy": 0.3117691453623979, "mass": 15, "color": "#ffcc44", "radius": 4, "type": "star" }, { "name": "A-3", "x": 258.0, "y": 387.4122974434878, "vx": 0.7882308546376022, "vy": 0.18000000000000002, "mass": 15, "color": "#ffcc44", "radius": 4, "type": "star" }, { "name": "A-4", "x": 210.0, "y": 401.3, "vx": 0.7400000000000001, "vy": 2.2043642384652355e-17, "mass": 15, "color": "#ffcc44", "radius": 4, "type": "star" }, { "name": "A-5", "x": 180.0, "y": 373.38268590217984, "vx": 0.7882308546376022, "vy": -0.1799999999999999, "mass": 15, "color": "#ffcc44", "radius": 4, "type": "star" }, { "name": "A-6", "x": 142.45001850481378, "y": 367.55, "vx": 0.9200000000000002, "vy": -0.3117691453623979, "mass": 15, "color": "#ffcc44", "radius": 4, "type": "star" }, { "name": "A-7", "x": 114.0, "y": 350.0, "vx": 1.1, "vy": -0.36, "mass": 15, "color": "#ffcc44", "radius": 4, "type": "star" }, { "name": "A-8", "x": 111.27310396857399, "y": 324.35, "vx": 1.28, "vy": -0.3117691453623979, "mass": 15, "color": "#ffcc44", "radius": 4, "type": "star" }, { "name": "A-9", "x": 179.99999999999997, "y": 326.61731409782016, "vx": 1.411769145362398, "vy": -0.18000000000000016, "mass": 15, "color": "#ffcc44", "radius": 4, "type": "star" }, { "name": "A-10", "x": 209.99999999999997, "y": 314.9, "vx": 1.46, "vy": -6.613092715395706e-17, "mass": 15, "color": "#ffcc44", "radius": 4, "type": "star" }, { "name": "A-11", "x": 258.0, "y": 312.5877025565122, "vx": 1.411769145362398, "vy": 0.18000000000000002, "mass": 15, "color": "#ffcc44", "radius": 4, "type": "star" }, { "name": "A-12", "x": 308.726896031426, "y": 324.34999999999997, "vx": 1.2800000000000002, "vy": 0.3117691453623978, "mass": 15, "color": "#ffcc44", "radius": 4, "type": "star" }, { "name": "A-13", "x": 270.0, "y": 350.0, "vx": 1.1, "vy": 0.36, "mass": 15, "color": "#ffcc44", "radius": 4, "type": "star" }, { "name": "A-14", "x": 277.5499814951862, "y": 367.55, "vx": 0.9200000000000002, "vy": 0.31176914536239786, "mass": 15, "color": "#ffcc44", "radius": 4, "type": "star" }, { "name": "A-15", "x": 258.00000000000006, "y": 387.4122974434877, "vx": 0.7882308546376022, "vy": 0.1800000000000002, "mass": 15, "color": "#ffcc44", "radius": 4, "type": "star" }, { "name": "A-16", "x": 210.00000000000003, "y": 401.3, "vx": 0.7400000000000001, "vy": 1.1021821192326179e-16, "mass": 15, "color": "#ffcc44", "radius": 4, "type": "star" }, { "name": "A-17", "x": 180.00000000000006, "y": 373.38268590217984, "vx": 0.788230854637602, "vy": -0.17999999999999972, "mass": 15, "color": "#ffcc44", "radius": 4, "type": "star" }, { "name": "A-18", "x": 142.45001850481378, "y": 367.55, "vx": 0.9200000000000002, "vy": -0.3117691453623979, "mass": 15, "color": "#ffcc44", "radius": 4, "type": "star" }, { "name": "B-1", "x": 550.0, "y": 350.0, "vx": -1.1, "vy": 0.36, "mass": 15, "color": "#aaddff", "radius": 4, "type": "star" }, { "name": "B-2", "x": 557.5499814951862, "y": 367.55, "vx": -0.9200000000000002, "vy": 0.3117691453623979, "mass": 15, "color": "#aaddff", "radius": 4, "type": "star" }, { "name": "B-3", "x": 538.0, "y": 387.4122974434878, "vx": -0.7882308546376022, "vy": 0.18000000000000002, "mass": 15, "color": "#aaddff", "radius": 4, "type": "star" }, { "name": "B-4", "x": 490.0, "y": 401.3, "vx": -0.7400000000000001, "vy": 2.2043642384652355e-17, "mass": 15, "color": "#aaddff", "radius": 4, "type": "star" }, { "name": "B-5", "x": 460.0, "y": 373.38268590217984, "vx": -0.7882308546376022, "vy": -0.1799999999999999, "mass": 15, "color": "#aaddff", "radius": 4, "type": "star" }, { "name": "B-6", "x": 422.4500185048138, "y": 367.55, "vx": -0.9200000000000002, "vy": -0.3117691453623979, "mass": 15, "color": "#aaddff", "radius": 4, "type": "star" }, { "name": "B-7", "x": 394.0, "y": 350.0, "vx": -1.1, "vy": -0.36, "mass": 15, "color": "#aaddff", "radius": 4, "type": "star" }, { "name": "B-8", "x": 391.273103968574, "y": 324.35, "vx": -1.28, "vy": -0.3117691453623979, "mass": 15, "color": "#aaddff", "radius": 4, "type": "star" }, { "name": "B-9", "x": 460.0, "y": 326.61731409782016, "vx": -1.411769145362398, "vy": -0.18000000000000016, "mass": 15, "color": "#aaddff", "radius": 4, "type": "star" }, { "name": "B-10", "x": 490.0, "y": 314.9, "vx": -1.46, "vy": -6.613092715395706e-17, "mass": 15, "color": "#aaddff", "radius": 4, "type": "star" }, { "name": "B-11", "x": 538.0, "y": 312.5877025565122, "vx": -1.411769145362398, "vy": 0.18000000000000002, "mass": 15, "color": "#aaddff", "radius": 4, "type": "star" }, { "name": "B-12", "x": 588.726896031426, "y": 324.34999999999997, "vx": -1.2800000000000002, "vy": 0.3117691453623978, "mass": 15, "color": "#aaddff", "radius": 4, "type": "star" }, { "name": "B-13", "x": 550.0, "y": 350.0, "vx": -1.1, "vy": 0.36, "mass": 15, "color": "#aaddff", "radius": 4, "type": "star" }, { "name": "B-14", "x": 557.5499814951862, "y": 367.55, "vx": -0.9200000000000002, "vy": 0.31176914536239786, "mass": 15, "color": "#aaddff", "radius": 4, "type": "star" }, { "name": "B-15", "x": 538.0, "y": 387.4122974434877, "vx": -0.7882308546376022, "vy": 0.1800000000000002, "mass": 15, "color": "#aaddff", "radius": 4, "type": "star" }, { "name": "B-16", "x": 490.0, "y": 401.3, "vx": -0.7400000000000001, "vy": 1.1021821192326179e-16, "mass": 15, "color": "#aaddff", "radius": 4, "type": "star" }, { "name": "B-17", "x": 460.00000000000006, "y": 373.38268590217984, "vx": -0.788230854637602, "vy": -0.17999999999999972, "mass": 15, "color": "#aaddff", "radius": 4, "type": "star" }, { "name": "B-18", "x": 422.4500185048138, "y": 367.55, "vx": -0.9200000000000002, "vy": -0.3117691453623979, "mass": 15, "color": "#aaddff", "radius": 4, "type": "star" }, { "name": "Core-B", "x": 490.0, "y": 350.0, "vx": -1.1, "vy": 0, "mass": 800, "color": "#aaddff", "radius": 14, "type": "star" }] }, "globular cluster": { "description": "13 ancient stars in gravitational equilibrium", "G": 0.35, "objects": [{ "name": "S-1", "x": 462.0, "y": 350.0, "vx": -0.0, "vy": 1.3530788245481569, "mass": 62, "color": "#ffaaaa", "radius": 5, "type": "star" }, { "name": "S-2", "x": 397.81462538527336, "y": 375.0950512903635, "vx": -0.3853112881258644, "vy": 0.7341493223219653, "mass": 179, "color": "#fff7aa", "radius": 6, "type": "star" }, { "name": "S-3", "x": 372.1545251225151, "y": 382.09637076985257, "vx": -0.4751518009267702, "vy": 0.3279736075496724, "mass": 67, "color": "#ffaaaa", "radius": 6, "type": "star" }, { "name": "S-4", "x": 356.3884440535321, "y": 402.61357032719684, "vx": -0.988680986046491, "vy": 0.12004760609990499, "mass": 194, "color": "#fff7aa", "radius": 5, "type": "star" }, { "name": "S-5", "x": 319.1493748272994, "y": 431.3464131136311, "vx": -0.9981890481834915, "vy": -0.378563171974001, "mass": 65, "color": "#ddffdd", "radius": 9, "type": "star" }, { "name": "S-6", "x": 251.94509198958576, "y": 436.86906822954415, "vx": -0.3611567467042226, "vy": -0.4076616947455527, "mass": 61, "color": "#ffddaa", "radius": 9, "type": "star" }, { "name": "S-7", "x": 287.85972368473267, "y": 365.3162025144037, "vx": -0.18203506701185837, "vy": -0.7385452988459317, "mass": 188, "color": "#ffddaa", "radius": 5, "type": "star" }, { "name": "S-8", "x": 245.13828371798638, "y": 324.1539082569438, "vx": 0.24032834032201209, "vy": -0.9750504056051182, "mass": 76, "color": "#ffddaa", "radius": 9, "type": "star" }, { "name": "S-9", "x": 291.6161616426541, "y": 298.276432657218, "vx": 0.5538120527295617, "vy": -0.6251245810759957, "mass": 66, "color": "#ddffdd", "radius": 9, "type": "star" }, { "name": "S-10", "x": 334.04278008308586, "y": 307.9242690791563, "vx": 0.9884137429385346, "vy": -0.37485588770026673, "mass": 186, "color": "#ffaaaa", "radius": 8, "type": "star" }, { "name": "S-11", "x": 363.25903482808553, "y": 240.80202384921407, "vx": 0.9123408306631173, "vy": 0.1107782330337604, "mass": 142, "color": "#ffaaaa", "radius": 7, "type": "star" }, { "name": "S-12", "x": 402.8300214459974, "y": 273.4625004718899, "vx": 0.9998772799678093, "vy": 0.6901654544471274, "mass": 70, "color": "#ffddaa", "radius": 9, "type": "star" }, { "name": "S-13", "x": 443.85833871924024, "y": 300.7393437633606, "vx": 0.4520254726996835, "vy": 0.8612625808832689, "mass": 164, "color": "#aaddff", "radius": 7, "type": "star" }] }, "star cluster": { "description": "Open star cluster \u2014 loosely bound young stars", "G": 0.25, "objects": [{ "name": "Star-1", "x": 481.0, "y": 342.0, "vx": -0.0, "vy": 0.4744546146031826, "mass": 38, "color": "#aaddff", "radius": 6, "type": "star" }, { "name": "Star-2", "x": 458.5471104240922, "y": 380.59615533584656, "vx": -0.12932732902199698, "vy": 0.3553239162063152, "mass": 23, "color": "#aaddff", "radius": 8, "type": "star" }, { "name": "Star-3", "x": 413.47608876694596, "y": 420.1364600911616, "vx": -0.5158974185808313, "vy": 0.6148226020037847, "mass": 38, "color": "#fff7aa", "radius": 5, "type": "star" }, { "name": "Star-4", "x": 428.5, "y": 448.9852262806237, "vx": -0.689199647554429, "vy": 0.3979096020409449, "mass": 52, "color": "#aaffcc", "radius": 7, "type": "star" }, { "name": "Star-5", "x": 376.66413314236473, "y": 463.19212260845273, "vx": -0.583076402459287, "vy": 0.1028121015679999, "mass": 75, "color": "#aaffcc", "radius": 7, "type": "star" }, { "name": "Star-6", "x": 341.37166400997626, "y": 437.6326977710987, "vx": -0.4998761455452798, "vy": -0.08814165147218436, "mass": 90, "color": "#ffaaaa", "radius": 9, "type": "star" }, { "name": "Star-7", "x": 305.0, "y": 421.4063879557373, "vx": -0.4886356135843284, "vy": -0.28211390303854983, "mass": 57, "color": "#aaffcc", "radius": 6, "type": "star" }, { "name": "Star-8", "x": 265.5653334725073, "y": 416.49269901708664, "vx": -0.3944247495939763, "vy": -0.4700571123366927, "mass": 53, "color": "#ffaaaa", "radius": 9, "type": "star" }, { "name": "Star-9", "x": 229.900266677046, "y": 394.8046387756626, "vx": -0.1838202382119901, "vy": -0.5050419537262123, "mass": 90, "color": "#aaddff", "radius": 6, "type": "star" }, { "name": "Star-10", "x": 219.0, "y": 337.0, "vx": -1.0188727183094163e-16, "vy": -0.8319727116575939, "mass": 75, "color": "#ffaaaa", "radius": 8, "type": "star" }, { "name": "Star-11", "x": 214.58887329504057, "y": 307.6187972112187, "vx": 0.1030536149210518, "vy": -0.2831374799887618, "mass": 25, "color": "#aaffcc", "radius": 6, "type": "star" }, { "name": "Star-12", "x": 281.4597334605781, "y": 281.29238947009225, "vx": 0.3849117268928884, "vy": -0.4587199333562416, "mass": 40, "color": "#aaffcc", "radius": 8, "type": "star" }, { "name": "Star-13", "x": 278.99999999999994, "y": 249.61284993072962, "vx": 0.7202867123848596, "vy": -0.4158577272891098, "mass": 100, "color": "#ffaaaa", "radius": 7, "type": "star" }, { "name": "Star-14", "x": 329.48590171028246, "y": 166.93210366864386, "vx": 0.7188177321436975, "vy": -0.12674696038860428, "mass": 97, "color": "#aaddff", "radius": 6, "type": "star" }, { "name": "Star-15", "x": 385.47220922371594, "y": 172.84095018671707, "vx": 0.42054187752978356, "vy": 0.07415287952629562, "mass": 95, "color": "#fff7aa", "radius": 5, "type": "star" }, { "name": "Star-16", "x": 415.4999999999999, "y": 213.2301640285497, "vx": 0.5627564133631525, "vy": 0.3249075667434038, "mass": 44, "color": "#ffaaaa", "radius": 6, "type": "star" }, { "name": "Star-17", "x": 404.4119109944701, "y": 291.43469034758454, "vx": 0.540179907523577, "vy": 0.6437613454384306, "mass": 96, "color": "#aaddff", "radius": 9, "type": "star" }, { "name": "Star-18", "x": 547.9988315363958, "y": 276.937991478192, "vx": 0.24526077251556924, "vy": 0.6738484343645236, "mass": 31, "color": "#aaffcc", "radius": 9, "type": "star" }] }, "dark matter halo": { "description": "Galaxy with flat rotation curve from dark matter halo", "G": 0.3, "objects": [{ "name": "Galaxy Core", "x": 350.0, "y": 350.0, "vx": 0, "vy": 0, "mass": 2000, "color": "#fff7aa", "radius": 16, "type": "star" }, { "name": "Star-1", "x": 430.0, "y": 350.0, "vx": -0.0, "vy": 1.8, "mass": 10, "color": "#ccddff", "radius": 5, "type": "star" }, { "name": "Star-2", "x": 452.7141037598766, "y": 383.3738353924943, "vx": -0.5871322893124001, "vy": 1.8070073809607918, "mass": 10, "color": "#ccddff", "radius": 5, "type": "star" }, { "name": "Star-3", "x": 460.0263112349928, "y": 429.93879431177635, "vx": -1.1755705045849463, "vy": 1.618033988749895, "mass": 10, "color": "#ccddff", "radius": 5, "type": "star" }, { "name": "Star-4", "x": 446.3967813759656, "y": 482.6787870774914, "vx": -1.4562305898749055, "vy": 1.0580134541264516, "mass": 10, "color": "#ccddff", "radius": 5, "type": "star" }, { "name": "Star-5", "x": 409.3312629199899, "y": 532.6028511286695, "vx": -1.8070073809607918, "vy": 0.5871322893124002, "mass": 10, "color": "#ccddff", "radius": 5, "type": "star" }, { "name": "Star-6", "x": 350.0, "y": 430.0, "vx": -2.0, "vy": 1.2246467991473532e-16, "mass": 10, "color": "#ccddff", "radius": 5, "type": "star" }, { "name": "Star-7", "x": 316.6261646075057, "y": 452.7141037598766, "vx": -1.7119017293312766, "vy": -0.5562305898749053, "mass": 10, "color": "#ccddff", "radius": 5, "type": "star" }, { "name": "Star-8", "x": 270.06120568822365, "y": 460.0263112349928, "vx": -1.5371322893124002, "vy": -1.1167919793556988, "mass": 10, "color": "#ccddff", "radius": 5, "type": "star" }, { "name": "Star-9", "x": 217.32121292250864, "y": 446.3967813759656, "vx": -1.1755705045849465, "vy": -1.6180339887498947, "mass": 10, "color": "#ccddff", "radius": 5, "type": "star" }, { "name": "Star-10", "x": 167.39714887133053, "y": 409.3312629199899, "vx": -0.5562305898749055, "vy": -1.7119017293312764, "mass": 10, "color": "#ccddff", "radius": 5, "type": "star" }, { "name": "Star-11", "x": 270.0, "y": 350.0, "vx": -2.3268289183799714e-16, "vy": -1.9000000000000001, "mass": 10, "color": "#ccddff", "radius": 5, "type": "star" }, { "name": "Star-12", "x": 247.2858962401234, "y": 316.62616460750576, "vx": 0.6180339887498938, "vy": -1.9021130325903075, "mass": 10, "color": "#ccddff", "radius": 5, "type": "star" }, { "name": "Star-13", "x": 239.97368876500713, "y": 270.06120568822365, "vx": 1.0580134541264514, "vy": -1.4562305898749057, "mass": 10, "color": "#ccddff", "radius": 5, "type": "star" }, { "name": "Star-14", "x": 253.60321862403438, "y": 217.32121292250864, "vx": 1.5371322893124, "vy": -1.1167919793556993, "mass": 10, "color": "#ccddff", "radius": 5, "type": "star" }, { "name": "Star-15", "x": 290.6687370800101, "y": 167.39714887133053, "vx": 1.902113032590307, "vy": -0.6180339887498951, "mass": 10, "color": "#ccddff", "radius": 5, "type": "star" }, { "name": "Star-16", "x": 350.0, "y": 270.0, "vx": 1.8, "vy": -3.3065463576978537e-16, "mass": 10, "color": "#ccddff", "radius": 5, "type": "star" }, { "name": "Star-17", "x": 383.3738353924943, "y": 247.2858962401234, "vx": 1.807007380960792, "vy": 0.5871322893123998, "mass": 10, "color": "#ccddff", "radius": 5, "type": "star" }, { "name": "Star-18", "x": 429.9387943117763, "y": 239.97368876500713, "vx": 1.6180339887498951, "vy": 1.1755705045849458, "mass": 10, "color": "#ccddff", "radius": 5, "type": "star" }, { "name": "Star-19", "x": 482.6787870774914, "y": 253.60321862403435, "vx": 1.058013454126452, "vy": 1.4562305898749053, "mass": 10, "color": "#ccddff", "radius": 5, "type": "star" }, { "name": "Star-20", "x": 532.6028511286695, "y": 290.66873708001003, "vx": 0.5871322893124005, "vy": 1.8070073809607918, "mass": 10, "color": "#ccddff", "radius": 5, "type": "star" }, { "name": "DM-1", "x": 590.0, "y": 350.0, "vx": -0.0, "vy": 1.8, "mass": 50, "color": "#113344", "radius": 2, "type": "debris" }, { "name": "DM-2", "x": 571.7310878027088, "y": 441.84402376762154, "vx": -0.6888301782571616, "vy": 1.662983158520316, "mass": 50, "color": "#113344", "radius": 2, "type": "debris" }, { "name": "DM-3", "x": 519.7056274847714, "y": 519.7056274847714, "vx": -1.2727922061357855, "vy": 1.2727922061357857, "mass": 50, "color": "#113344", "radius": 2, "type": "debris" }, { "name": "DM-4", "x": 441.8440237676216, "y": 571.7310878027088, "vx": -1.662983158520316, "vy": 0.6888301782571618, "mass": 50, "color": "#113344", "radius": 2, "type": "debris" }, { "name": "DM-5", "x": 350.0, "y": 590.0, "vx": -1.8, "vy": 1.1021821192326179e-16, "mass": 50, "color": "#113344", "radius": 2, "type": "debris" }, { "name": "DM-6", "x": 258.15597623237846, "y": 571.7310878027088, "vx": -1.662983158520316, "vy": -0.6888301782571615, "mass": 50, "color": "#113344", "radius": 2, "type": "debris" }, { "name": "DM-7", "x": 180.29437251522862, "y": 519.7056274847714, "vx": -1.2727922061357857, "vy": -1.2727922061357855, "mass": 50, "color": "#113344", "radius": 2, "type": "debris" }, { "name": "DM-8", "x": 128.26891219729117, "y": 441.8440237676216, "vx": -0.6888301782571619, "vy": -1.662983158520316, "mass": 50, "color": "#113344", "radius": 2, "type": "debris" }, { "name": "DM-9", "x": 110.0, "y": 350.00000000000006, "vx": -2.2043642384652358e-16, "vy": -1.8, "mass": 50, "color": "#113344", "radius": 2, "type": "debris" }, { "name": "DM-10", "x": 128.26891219729114, "y": 258.15597623237846, "vx": 0.6888301782571614, "vy": -1.6629831585203163, "mass": 50, "color": "#113344", "radius": 2, "type": "debris" }, { "name": "DM-11", "x": 180.29437251522856, "y": 180.29437251522862, "vx": 1.2727922061357855, "vy": -1.272792206135786, "mass": 50, "color": "#113344", "radius": 2, "type": "debris" }, { "name": "DM-12", "x": 258.1559762323783, "y": 128.26891219729123, "vx": 1.6629831585203159, "vy": -0.6888301782571626, "mass": 50, "color": "#113344", "radius": 2, "type": "debris" }, { "name": "DM-13", "x": 349.99999999999994, "y": 110.0, "vx": 1.8, "vy": -3.3065463576978537e-16, "mass": 50, "color": "#113344", "radius": 2, "type": "debris" }, { "name": "DM-14", "x": 441.8440237676216, "y": 128.2689121972912, "vx": 1.6629831585203159, "vy": 0.688830178257162, "mass": 50, "color": "#113344", "radius": 2, "type": "debris" }, { "name": "DM-15", "x": 519.7056274847714, "y": 180.29437251522856, "vx": 1.272792206135786, "vy": 1.2727922061357853, "mass": 50, "color": "#113344", "radius": 2, "type": "debris" }, { "name": "DM-16", "x": 571.7310878027088, "y": 258.1559762323783, "vx": 0.6888301782571628, "vy": 1.6629831585203159, "mass": 50, "color": "#113344", "radius": 2, "type": "debris" }] }, "quasar": { "description": "Quasar \u2014 supermassive black hole with relativistic jets", "G": 0.8, "objects": [{ "name": "Sgr-SMBH", "x": 350.0, "y": 350.0, "vx": 0, "vy": 0, "mass": 8000, "color": "#110011", "radius": 22, "type": "blackhole" }, { "name": "Acc-0", "x": 400.0, "y": 350.0, "vx": -0.0, "vy": 5.1, "mass": 0.5, "color": "#ff6600", "radius": 3, "type": "debris" }, { "name": "Acc-1", "x": 410.14032773029817, "y": 371.8892891728428, "vx": -1.7059964749084353, "vy": 4.6871867924801105, "mass": 0.5, "color": "#ff6600", "radius": 3, "type": "debris" }, { "name": "Acc-2", "x": 409.7514665632803, "y": 400.13743355555005, "vx": -3.1342323848315656, "vy": 3.735232704648137, "mass": 0.5, "color": "#ff6600", "radius": 3, "type": "debris" }, { "name": "Acc-3", "x": 396.0, "y": 429.6743371481683, "vx": -4.125745023629066, "vy": 2.3820000000000006, "mass": 0.5, "color": "#ff6600", "radius": 3, "type": "debris" }, { "name": "Acc-4", "x": 368.4067068326946, "y": 454.38962181929406, "vx": -4.581325667012792, "vy": 0.8078113225065603, "mass": 0.5, "color": "#ff6600", "radius": 3, "type": "debris" }, { "name": "Acc-5", "x": 341.3175911166535, "y": 399.2403876506104, "vx": -5.022519540362261, "vy": -0.8856057061013445, "mass": 0.5, "color": "#ff6600", "radius": 3, "type": "debris" }, { "name": "Acc-6", "x": 318.0, "y": 405.42562584220406, "vx": -4.3197347140767794, "vy": -2.493999999999999, "mass": 0.5, "color": "#ff6600", "radius": 3, "type": "debris" }, { "name": "Acc-7", "x": 290.24853343671975, "y": 400.1374335555501, "vx": -3.1342323848315665, "vy": -3.7352327046481366, "mass": 0.5, "color": "#ff6600", "radius": 3, "type": "debris" }, { "name": "Acc-8", "x": 263.5482788876964, "y": 381.4658531859615, "vx": -1.6293839628034865, "vy": -4.476695645424067, "mass": 0.5, "color": "#ff6600", "radius": 3, "type": "debris" }, { "name": "Acc-9", "x": 244.0, "y": 350.0, "vx": -5.697056909633487e-16, "vy": -4.652, "mass": 0.5, "color": "#ff6600", "radius": 3, "type": "debris" }, { "name": "Acc-10", "x": 303.01536896070456, "y": 332.8989928337166, "vx": 1.74430273096091, "vy": -4.792432366008133, "mass": 0.5, "color": "#ff6600", "radius": 3, "type": "debris" }, { "name": "Acc-11", "x": 300.97315564038536, "y": 308.8615929800615, "vx": 3.206224597116456, "vy": -3.8210296822774636, "mass": 0.5, "color": "#ff6600", "radius": 3, "type": "debris" }, { "name": "Acc-12", "x": 310.99999999999994, "y": 282.4500185048138, "vx": 4.222739868852922, "vy": -2.4380000000000024, "mass": 0.5, "color": "#ff6600", "radius": 3, "type": "debris" }, { "name": "Acc-13", "x": 334.0243676546424, "y": 259.39768672287687, "vx": 4.6916241353501595, "vy": -0.8272599184052561, "mass": 0.5, "color": "#ff6600", "radius": 3, "type": "debris" }, { "name": "Acc-14", "x": 368.40670683269457, "y": 245.61037818070594, "vx": 4.581325667012792, "vy": 0.8078113225065583, "mass": 0.5, "color": "#ff6600", "radius": 3, "type": "debris" }, { "name": "Acc-15", "x": 374.99999999999994, "y": 306.69872981077805, "vx": 4.416729559300639, "vy": 2.5499999999999963, "mass": 0.5, "color": "#ff6600", "radius": 3, "type": "debris" }, { "name": "Acc-16", "x": 399.0268443596146, "y": 308.86159298006146, "vx": 3.206224597116459, "vy": 3.821029682277461, "mass": 0.5, "color": "#ff6600", "radius": 3, "type": "debris" }, { "name": "Acc-17", "x": 423.29602442130084, "y": 323.32242882059785, "vx": 1.6676902188559601, "vy": 4.58194121895209, "mass": 0.5, "color": "#ff6600", "radius": 3, "type": "debris" }, { "name": "Jet-N0", "x": 350.0, "y": 305.0, "vx": 0.8, "vy": -2.0, "mass": 0.1, "color": "#ff00cc", "radius": 2, "type": "debris" }, { "name": "Jet-S0", "x": 350.0, "y": 395.0, "vx": -0.8, "vy": 2.0, "mass": 0.1, "color": "#ff00cc", "radius": 2, "type": "debris" }, { "name": "Jet-N1", "x": 350.0, "y": 285.0, "vx": 0.8, "vy": -2.5, "mass": 0.1, "color": "#ff00cc", "radius": 2, "type": "debris" }, { "name": "Jet-S1", "x": 350.0, "y": 415.0, "vx": -0.8, "vy": 2.5, "mass": 0.1, "color": "#ff00cc", "radius": 2, "type": "debris" }, { "name": "Jet-N2", "x": 350.0, "y": 265.0, "vx": 0.8, "vy": -3.0, "mass": 0.1, "color": "#ff00cc", "radius": 2, "type": "debris" }, { "name": "Jet-S2", "x": 350.0, "y": 435.0, "vx": -0.8, "vy": 3.0, "mass": 0.1, "color": "#ff00cc", "radius": 2, "type": "debris" }, { "name": "Jet-N3", "x": 350.0, "y": 245.0, "vx": 0.8, "vy": -3.5, "mass": 0.1, "color": "#ff00cc", "radius": 2, "type": "debris" }, { "name": "Jet-S3", "x": 350.0, "y": 455.0, "vx": -0.8, "vy": 3.5, "mass": 0.1, "color": "#ff00cc", "radius": 2, "type": "debris" }, { "name": "Jet-N4", "x": 350.0, "y": 225.0, "vx": 0.8, "vy": -4.0, "mass": 0.1, "color": "#ff00cc", "radius": 2, "type": "debris" }, { "name": "Jet-S4", "x": 350.0, "y": 475.0, "vx": -0.8, "vy": 4.0, "mass": 0.1, "color": "#ff00cc", "radius": 2, "type": "debris" }, { "name": "Jet-N5", "x": 350.0, "y": 205.0, "vx": 0.8, "vy": -4.5, "mass": 0.1, "color": "#ff00cc", "radius": 2, "type": "debris" }, { "name": "Jet-S5", "x": 350.0, "y": 495.0, "vx": -0.8, "vy": 4.5, "mass": 0.1, "color": "#ff00cc", "radius": 2, "type": "debris" }, { "name": "Jet-N6", "x": 350.0, "y": 185.0, "vx": 0.8, "vy": -5.0, "mass": 0.1, "color": "#ff00cc", "radius": 2, "type": "debris" }, { "name": "Jet-S6", "x": 350.0, "y": 515.0, "vx": -0.8, "vy": 5.0, "mass": 0.1, "color": "#ff00cc", "radius": 2, "type": "debris" }] }, "milky way core": { "description": "Sgr A* supermassive black hole with S-star orbits", "G": 0.9, "objects": [{ "name": "Sgr A*", "x": 350.0, "y": 350.0, "vx": 0, "vy": 0, "mass": 6000, "color": "#220022", "radius": 20, "type": "blackhole" }, { "name": "S2", "x": 402.0, "y": 350.0, "vx": 0, "vy": 6.8, "mass": 30, "color": "#fff7aa", "radius": 5, "type": "star" }, { "name": "S14", "x": 440.0, "y": 370.0, "vx": -1.2, "vy": 4.8, "mass": 20, "color": "#aaddff", "radius": 5, "type": "star" }, { "name": "S38", "x": 420.0, "y": 320.0, "vx": 1.0, "vy": 5.5, "mass": 18, "color": "#ffaaaa", "radius": 5, "type": "star" }, { "name": "S55", "x": 390.0, "y": 360.0, "vx": -0.5, "vy": 8.0, "mass": 15, "color": "#aaffcc", "radius": 5, "type": "star" }, { "name": "S62", "x": 460.0, "y": 335.0, "vx": -0.8, "vy": 4.2, "mass": 22, "color": "#ffddaa", "radius": 5, "type": "star" }, { "name": "S29", "x": 380.0, "y": 330.0, "vx": 1.8, "vy": 9.2, "mass": 12, "color": "#ddaaff", "radius": 5, "type": "star" }] } };
+
+    var TYPE_GLOW = {
+      star: 3.5, giant: 4.5, blackhole: 7, neutron: 6, dwarf: 3, planet: 2.8, galaxy: 5,
+      gas: 2, debris: 1.5, asteroid: 1.5, jet: 3.5, spacecraft: 2, comet: 5, moon: 2.5, accretion: 3.5, darkmatter: 4
     };
-    var fpsCount = 0, fpsLast = Date.now(), fps = 0;
+    var simState = {
+      objects: [], originals: [], playing: false, showTrails: true, showGlow: true, showLabels: true,
+      speed: 3, trailAlpha: 0.12, G: 0.4, tick: 0, animId: null, currentKey: '', description: ''
+    };
+    var fpsCount = 0, fpsLast = Date.now(), fps = 0, currentView = 'sim';
 
-    // ── STARFIELD ─────────────────────────────────────────────────
+    // ── STARFIELD ────────────────────────────────────────────────
     (function () {
-      var c = document.getElementById('starfield');
-      var ctx = c.getContext('2d');
-      var stars = [];
-      function resize() { c.width = window.innerWidth; c.height = window.innerHeight; }
-      function init() {
-        stars = [];
-        for (var i = 0; i < 400; i++) {
-          stars.push({
-            x: Math.random() * c.width, y: Math.random() * c.height,
-            r: Math.random() * 1.6 + 0.1,
-            a: Math.random() * Math.PI * 2,
-            s: Math.random() * 0.3 + 0.02,
-            hue: Math.random() * 60 + 200
-          });
-        }
-      }
-      function draw() {
-        ctx.clearRect(0, 0, c.width, c.height);
-        for (var i = 0; i < stars.length; i++) {
-          var s = stars[i];
-          s.a += s.s * 0.008;
-          var al = ((Math.sin(s.a) + 1) / 2) * 0.75 + 0.05;
-          ctx.beginPath();
-          ctx.arc(s.x, s.y, s.r, 0, Math.PI * 2);
-          ctx.fillStyle = 'hsla(' + s.hue + ',60%,85%,' + al + ')';
-          ctx.fill();
-        }
-        requestAnimationFrame(draw);
-      }
-      resize(); init(); draw();
-      window.addEventListener('resize', function () { resize(); init(); });
+      var c = document.getElementById('starfield'), ctx = c.getContext('2d'), stars = [];
+      function rs() { c.width = window.innerWidth; c.height = window.innerHeight; }
+      function init() { stars = []; for (var i = 0; i < 500; i++) stars.push({ x: Math.random() * c.width, y: Math.random() * c.height, r: Math.random() * 1.8 + 0.1, a: Math.random() * Math.PI * 2, s: Math.random() * 0.4 + 0.02, h: Math.random() * 80 + 190 }); }
+      function draw() { ctx.clearRect(0, 0, c.width, c.height); for (var i = 0; i < stars.length; i++) { var s = stars[i]; s.a += s.s * 0.01; var al = ((Math.sin(s.a) + 1) / 2) * 0.8 + 0.05; ctx.beginPath(); ctx.arc(s.x, s.y, s.r, 0, Math.PI * 2); ctx.fillStyle = 'hsla(' + s.h + ',50%,90%,' + al + ')'; ctx.fill(); } requestAnimationFrame(draw); }
+      rs(); init(); draw(); window.addEventListener('resize', function () { rs(); init(); });
     })();
 
-    // ── CHIP CATEGORIES ───────────────────────────────────────────
-    var CHIP_CATS = {
-      orbital: [
-        { key: 'solar system', icon: '🪐', label: 'Solar System' },
-        { key: 'binary system', icon: '⭐', label: 'Binary Star' },
-        { key: 'three body', icon: '🔺', label: 'Three Body' },
-        { key: 'figure-8 orbit', icon: '∞', label: 'Figure-8' },
-        { key: 'lagrange points', icon: '⚖', label: 'Lagrange' },
-        { key: 'hohmann transfer', icon: '🚀', label: 'Hohmann' },
-        { key: 'resonance chain', icon: '🎵', label: 'Resonance' },
-        { key: 'stellar flyby', icon: '💨', label: 'Flyby' },
-        { key: 'roche limit', icon: '💔', label: 'Roche Limit' },
-        { key: 'slingshot', icon: '🎯', label: 'Slingshot' },
-        { key: 'kozai mechanism', icon: '🔄', label: 'Kozai' },
-        { key: 'comet', icon: '☄', label: 'Comet' },
-        { key: 'asteroid belt', icon: '🪨', label: 'Asteroids' },
-        { key: 'double planet', icon: '🌐', label: 'Double Planet' },
-      ],
-      stellar: [
-        { key: 'black hole', icon: '🕳', label: 'Black Hole' },
-        { key: 'neutron star', icon: '💫', label: 'Neutron Star' },
-        { key: 'pulsar', icon: '📡', label: 'Pulsar' },
-        { key: 'white dwarf', icon: '⚪', label: 'White Dwarf' },
-        { key: 'supernova remnant', icon: '💥', label: 'Supernova' },
-        { key: 'protoplanetary disk', icon: '🌀', label: 'Proto. Disk' },
-        { key: 'nebula', icon: '🌸', label: 'Nebula' },
-        { key: 'magnetic braking', icon: '🧲', label: 'Mag. Braking' },
-        { key: 'exoplanet system', icon: '🌍', label: 'Exoplanet' },
-        { key: 'contact binary', icon: '🔴', label: 'Contact Binary' },
-        { key: 'eccentric binary', icon: '🌀', label: 'Eccentric Bin.' },
-      ],
-      galactic: [
-        { key: 'galaxy collision', icon: '🌌', label: 'Galaxy Merge' },
-        { key: 'globular cluster', icon: '🔮', label: 'Globular Cluster' },
-        { key: 'star cluster', icon: '✨', label: 'Star Cluster' },
-        { key: 'dark matter halo', icon: '🌑', label: 'Dark Matter' },
-        { key: 'quasar', icon: '⚡', label: 'Quasar' },
-        { key: 'milky way core', icon: '🏛', label: 'Milky Way Core' },
-      ]
-    };
-
-    // ── CANVAS SETUP ──────────────────────────────────────────────
-    var canvas = document.getElementById('sim-canvas');
-    var ctx = canvas.getContext('2d');
-
-    function resizeCanvas() {
-      var area = document.getElementById('canvas-area');
-      canvas.width = area.offsetWidth;
-      canvas.height = area.offsetHeight;
-    }
-
-    // ── LOAD SCENARIO DATA ────────────────────────────────────────
-    function loadData(cb) {
-      var xhr = new XMLHttpRequest();
-      xhr.open('GET', '/astro-data.json', true);
-      xhr.onload = function () {
-        if (xhr.status === 200) { astroData = JSON.parse(xhr.responseText); cb(); }
-      };
-      xhr.send();
-    }
-
-    // ── BUILD CHIPS ───────────────────────────────────────────────
-    function buildChips() {
-      function makeGrid(containerId, chips) {
-        var grid = document.getElementById(containerId);
-        grid.innerHTML = '';
-        chips.forEach(function (c) {
-          if (!astroData[c.key]) return;
-          var div = document.createElement('div');
-          div.className = 'chip';
-          div.setAttribute('data-key', c.key);
-          div.innerHTML = '<span class="chip-icon">' + c.icon + '</span>' + c.label;
-          div.addEventListener('click', (function (k) { return function () { loadScenario(k); }; })(c.key));
-          grid.appendChild(div);
+    // ── BUILD SCENARIO LIST ──────────────────────────────────────
+    (function () {
+      var list = document.getElementById('sc-list'), cats = {};
+      SCENARIOS.forEach(function (s) { if (!cats[s.cat]) cats[s.cat] = []; cats[s.cat].push(s); });
+      Object.keys(cats).forEach(function (cat) {
+        var lbl = document.createElement('div'); lbl.className = 'cat-lbl'; lbl.textContent = cat; list.appendChild(lbl);
+        cats[cat].forEach(function (sc) {
+          var div = document.createElement('div'); div.className = 'sc-item'; div.setAttribute('data-key', sc.key);
+          div.innerHTML = '<span class="sc-icon">' + sc.icon + '</span><div class="sc-info"><div class="sc-name">' + sc.name + '</div><div class="sc-desc">' + sc.desc + '</div></div>';
+          div.addEventListener('click', function () { loadScenario(sc.key); });
+          list.appendChild(div);
         });
-      }
-      makeGrid('chip-grid-orbital', CHIP_CATS.orbital);
-      makeGrid('chip-grid-stellar', CHIP_CATS.stellar);
-      makeGrid('chip-grid-galactic', CHIP_CATS.galactic);
+      });
+    })();
+
+    // ── VIEW TOGGLE ──────────────────────────────────────────────
+    function setView(v) {
+      currentView = v;
+      document.getElementById('vtab-sim').className = v === 'sim' ? 'vtab active' : 'vtab';
+      document.getElementById('vtab-plot').className = v === 'plot' ? 'vtab active' : 'vtab';
+      document.getElementById('canvas-wrap').style.display = v === 'sim' ? 'block' : 'none';
+      var pw = document.getElementById('plot-wrap');
+      pw.style.display = v === 'plot' ? 'flex' : 'none';
+      document.getElementById('h-vw').textContent = v === 'sim' ? 'SIM' : 'PLOT';
     }
 
-    // ── PHYSICS ENGINE ────────────────────────────────────────────
-    var TYPE_GLOW = {
-      star: 3.5, giant: 4.5, blackhole: 7, neutron: 6, dwarf: 3,
-      planet: 2.5, galaxy: 5, gas: 2, debris: 1.5, asteroid: 1.5,
-      jet: 3, spacecraft: 2, comet: 4.5, moon: 2, accretion: 3.5, darkmatter: 4
-    };
+    // ── CANVAS ───────────────────────────────────────────────────
+    var canvas = document.getElementById('sim-canvas'), ctx = canvas.getContext('2d');
+    function resizeCanvas() {
+      var wrap = document.getElementById('canvas-wrap');
+      canvas.width = wrap.offsetWidth;
+      canvas.height = wrap.offsetHeight;
+    }
 
-    function deepCopy(arr) {
+    // ── DEEP COPY ────────────────────────────────────────────────
+    function dc(arr) {
       return arr.map(function (o) {
         return {
-          name: o.name, x: o.x, y: o.y, vx: o.vx, vy: o.vy,
-          mass: o.mass, color: o.color, radius: o.radius, type: o.type || 'star'
+          name: o.name, x: o.x, y: o.y, vx: o.vx, vy: o.vy, mass: o.mass,
+          color: o.color, radius: o.radius, type: o.type || 'star'
         };
       });
     }
 
+    // ── LOAD SCENARIO ────────────────────────────────────────────
     function loadScenario(key) {
-      var data = astroData[key]; if (!data) return;
-      var objects = data.objects || data;
-      var G = data.G || 0.4;
-      var desc = data.description || '';
+      var entry = astroData[key];
+      if (!entry) { console.warn('Scenario not found:', key); return; }
+
+      var objects = entry.objects || [];
+      var G = entry.G || 0.4;
+      var desc = entry.description || '';
 
       if (simState.animId) { cancelAnimationFrame(simState.animId); simState.animId = null; }
+
+      // Scale objects to current canvas size
+      resizeCanvas();
+      var W = canvas.width, H = canvas.height;
+      var cx = W / 2, cy = H / 2;
+      // astro-data was generated with 700x700 reference, re-center to actual canvas
+      var scaleX = W / 700, scaleY = H / 700;
+      var scaled = objects.map(function (o) {
+        return {
+          name: o.name, color: o.color, radius: o.radius,
+          type: o.type || 'star', mass: o.mass,
+          x: (o.x - 350) * scaleX + cx,
+          y: (o.y - 350) * scaleY + cy,
+          vx: o.vx, vy: o.vy
+        };
+      });
+
       simState.G = G;
-      simState.objects = deepCopy(objects);
-      simState.originals = deepCopy(objects);
-      simState.tick = 0; simState.currentKey = key; simState.description = desc;
+      simState.objects = scaled;
+      simState.originals = dc(scaled);
+      simState.tick = 0;
+      simState.currentKey = key;
+      simState.description = desc;
       simState.playing = true;
 
-      resizeCanvas();
-      ctx.fillStyle = '#000005'; ctx.fillRect(0, 0, canvas.width, canvas.height);
+      ctx.fillStyle = '#000008';
+      ctx.fillRect(0, 0, W, H);
 
       document.getElementById('empty-state').style.display = 'none';
-      document.getElementById('h-scenario').textContent = key.replace(/ /g, '_').toUpperCase().slice(0, 12);
-      document.getElementById('h-bodies').textContent = simState.objects.length;
-      document.getElementById('cv-scenario').textContent = key.toUpperCase();
-      document.getElementById('cv-info').innerHTML = key.toUpperCase() + '<br>' + simState.objects.length + ' BODIES';
+      document.getElementById('h-sc').textContent = key.slice(0, 10).toUpperCase();
+      document.getElementById('h-bd').textContent = simState.objects.length;
+      document.getElementById('cv-sc').textContent = key.toUpperCase();
+      document.getElementById('cv-info').textContent = simState.objects.length + ' BODIES  G=' + G;
       document.getElementById('cv-desc').textContent = desc;
-      document.getElementById('scenario-watermark').textContent = key.toUpperCase();
-      document.getElementById('play-btn').textContent = '⏸ PAUSE';
+      document.getElementById('watermark').textContent = key.toUpperCase();
+      document.getElementById('play-btn').textContent = '&#9646;&#9646; Pause';
       document.getElementById('play-btn').className = 'btn on';
 
-      document.querySelectorAll('.chip').forEach(function (c) {
-        c.className = c.getAttribute('data-key') === key ? 'chip active' : 'chip';
+      document.querySelectorAll('.sc-item').forEach(function (el) {
+        el.className = el.getAttribute('data-key') === key ? 'sc-item active' : 'sc-item';
       });
 
-      var list = document.getElementById('obj-list'); list.innerHTML = '';
+      var ol = document.getElementById('obj-list'); ol.innerHTML = '';
       simState.objects.forEach(function (o) {
-        var item = document.createElement('div'); item.className = 'obj-item';
-        item.innerHTML = '<div class="obj-dot" style="background:' + o.color + '"></div>' +
-          '<span class="obj-name">' + o.name + '</span>' +
-          '<span class="obj-mass">' + o.mass + 'M</span>';
-        list.appendChild(item);
+        var d = document.createElement('div'); d.className = 'obj-row';
+        d.innerHTML = '<div class="obj-dot" style="background:' + o.color + '"></div><span class="obj-n">' + o.name + '</span><span class="obj-m">' + o.mass + 'M</span>';
+        ol.appendChild(d);
       });
 
-      loop();
+      setView('sim');
+      if (!simState.animId) loop();
+    }
+
+    // ── PHYSICS ──────────────────────────────────────────────────
+    function hexRgb(h) {
+      h = h.replace('#', '');
+      if (h.length === 3) h = h[0] + h[0] + h[1] + h[1] + h[2] + h[2];
+      return parseInt(h.slice(0, 2), 16) + ',' + parseInt(h.slice(2, 4), 16) + ',' + parseInt(h.slice(4, 6), 16);
     }
 
     function updatePhysics() {
-      var G = simState.G, objs = simState.objects, n = objs.length;
+      var G = simState.G, o = simState.objects, n = o.length;
       var ax = new Array(n), ay = new Array(n);
       for (var i = 0; i < n; i++) { ax[i] = 0; ay[i] = 0; }
-      for (var i = 0; i < n; i++) {
+      for (var i = 0; i < n - 1; i++) {
         for (var j = i + 1; j < n; j++) {
-          var dx = objs[j].x - objs[i].x, dy = objs[j].y - objs[i].y;
-          var d2 = dx * dx + dy * dy;
-          var soft = Math.max(4, Math.sqrt(objs[i].mass + objs[j].mass) * 0.05);
-          d2 += soft * soft;
-          var d = Math.sqrt(d2), f = G / d2;
-          var fx = f * dx / d, fy = f * dy / d;
-          ax[i] += fx * objs[j].mass; ay[i] += fy * objs[j].mass;
-          ax[j] -= fx * objs[i].mass; ay[j] -= fy * objs[i].mass;
+          var dx = o[j].x - o[i].x, dy = o[j].y - o[i].y;
+          var soft = Math.max(4, Math.sqrt(o[i].mass + o[j].mass) * 0.05);
+          var d2 = dx * dx + dy * dy + soft * soft, d = Math.sqrt(d2);
+          var f = G / d2, fx = f * dx / d, fy = f * dy / d;
+          ax[i] += fx * o[j].mass; ay[i] += fy * o[j].mass;
+          ax[j] -= fx * o[i].mass; ay[j] -= fy * o[i].mass;
         }
       }
       for (var i = 0; i < n; i++) {
-        objs[i].vx += ax[i] * simState.speed * 0.016;
-        objs[i].vy += ay[i] * simState.speed * 0.016;
-        objs[i].x += objs[i].vx * simState.speed * 0.5;
-        objs[i].y += objs[i].vy * simState.speed * 0.5;
+        o[i].vx += ax[i] * simState.speed * 0.016;
+        o[i].vy += ay[i] * simState.speed * 0.016;
+        o[i].x += o[i].vx * simState.speed * 0.5;
+        o[i].y += o[i].vy * simState.speed * 0.5;
       }
-    }
-
-    function hexToRgb(hex) {
-      hex = hex.replace('#', '');
-      if (hex.length === 3) hex = hex[0] + hex[0] + hex[1] + hex[1] + hex[2] + hex[2];
-      return { r: parseInt(hex.slice(0, 2), 16), g: parseInt(hex.slice(2, 4), 16), b: parseInt(hex.slice(4, 6), 16) };
     }
 
     function drawFrame() {
       var W = canvas.width, H = canvas.height;
-      if (simState.showTrails) {
-        ctx.fillStyle = 'rgba(0,0,5,' + simState.trailAlpha + ')';
-      } else {
-        ctx.fillStyle = '#000005';
-      }
+      ctx.fillStyle = simState.showTrails ? 'rgba(0,0,8,' + simState.trailAlpha + ')' : '#000008';
       ctx.fillRect(0, 0, W, H);
-
       simState.objects.forEach(function (obj) {
         var r = obj.radius || Math.max(2, Math.sqrt(obj.mass) * 0.08);
-        var rgb = hexToRgb(obj.color);
-        var rs = rgb.r + ',' + rgb.g + ',' + rgb.b;
-        var gm = TYPE_GLOW[obj.type] || 3;
-
+        var rgb = hexRgb(obj.color), gm = TYPE_GLOW[obj.type] || 3;
         if (simState.showGlow) {
-          // Outer halo
           var g1 = ctx.createRadialGradient(obj.x, obj.y, 0, obj.x, obj.y, r * gm * 3);
-          g1.addColorStop(0, 'rgba(' + rs + ',0.1)');
-          g1.addColorStop(1, 'rgba(' + rs + ',0)');
-          ctx.beginPath(); ctx.arc(obj.x, obj.y, r * gm * 3, 0, Math.PI * 2);
-          ctx.fillStyle = g1; ctx.fill();
-
-          // Inner glow
+          g1.addColorStop(0, 'rgba(' + rgb + ',0.12)'); g1.addColorStop(1, 'rgba(' + rgb + ',0)');
+          ctx.beginPath(); ctx.arc(obj.x, obj.y, r * gm * 3, 0, Math.PI * 2); ctx.fillStyle = g1; ctx.fill();
           var g2 = ctx.createRadialGradient(obj.x, obj.y, 0, obj.x, obj.y, r * gm);
-          g2.addColorStop(0, 'rgba(' + rs + ',0.6)');
-          g2.addColorStop(0.5, 'rgba(' + rs + ',0.2)');
-          g2.addColorStop(1, 'rgba(' + rs + ',0)');
-          ctx.beginPath(); ctx.arc(obj.x, obj.y, r * gm, 0, Math.PI * 2);
-          ctx.fillStyle = g2; ctx.fill();
+          g2.addColorStop(0, 'rgba(' + rgb + ',0.65)'); g2.addColorStop(0.5, 'rgba(' + rgb + ',0.2)'); g2.addColorStop(1, 'rgba(' + rgb + ',0)');
+          ctx.beginPath(); ctx.arc(obj.x, obj.y, r * gm, 0, Math.PI * 2); ctx.fillStyle = g2; ctx.fill();
         }
-
-        // Core
-        ctx.beginPath(); ctx.arc(obj.x, obj.y, r, 0, Math.PI * 2);
-        ctx.fillStyle = obj.color; ctx.fill();
-
-        // Specular
+        ctx.beginPath(); ctx.arc(obj.x, obj.y, r, 0, Math.PI * 2); ctx.fillStyle = obj.color; ctx.fill();
         if (r > 5 && simState.showGlow) {
-          var gr = ctx.createRadialGradient(obj.x - r * 0.3, obj.y - r * 0.3, 0, obj.x, obj.y, r);
-          gr.addColorStop(0, 'rgba(255,255,255,0.4)');
-          gr.addColorStop(0.5, 'rgba(255,255,255,0.08)');
-          gr.addColorStop(1, 'rgba(255,255,255,0)');
-          ctx.beginPath(); ctx.arc(obj.x, obj.y, r, 0, Math.PI * 2);
-          ctx.fillStyle = gr; ctx.fill();
+          var gs = ctx.createRadialGradient(obj.x - r * 0.3, obj.y - r * 0.3, 0, obj.x, obj.y, r);
+          gs.addColorStop(0, 'rgba(255,255,255,0.45)'); gs.addColorStop(0.5, 'rgba(255,255,255,0.1)'); gs.addColorStop(1, 'rgba(255,255,255,0)');
+          ctx.beginPath(); ctx.arc(obj.x, obj.y, r, 0, Math.PI * 2); ctx.fillStyle = gs; ctx.fill();
         }
-
-        // Black hole rings
         if (obj.type === 'blackhole') {
-          [1.8, 2.6, 3.6].forEach(function (m, i) {
+          [1.8, 2.5, 3.4].forEach(function (m, i) {
             ctx.beginPath(); ctx.arc(obj.x, obj.y, r * m, 0, Math.PI * 2);
-            ctx.strokeStyle = 'rgba(' + rs + ',' + (0.4 - i * 0.12) + ')';
-            ctx.lineWidth = 1.5 - i * 0.4; ctx.stroke();
+            ctx.strokeStyle = 'rgba(' + rgb + ',' + (0.5 - i * 0.14) + ')'; ctx.lineWidth = 1.8 - i * 0.5; ctx.stroke();
           });
         }
-
-        // Labels
-        if (simState.showLabels && simState.objects.length <= 24) {
-          ctx.font = 'bold 8px JetBrains Mono, monospace';
-          ctx.fillStyle = 'rgba(180,200,255,0.5)';
-          ctx.fillText(obj.name, obj.x + r + 4, obj.y - 2);
+        if (simState.showLabels && simState.objects.length <= 20) {
+          ctx.font = '600 9px "Space Grotesk",sans-serif';
+          ctx.fillStyle = 'rgba(180,210,255,0.65)';
+          ctx.fillText(obj.name, obj.x + r + 5, obj.y + 3);
         }
       });
-
-      // FPS counter
       fpsCount++;
       var now = Date.now();
-      if (now - fpsLast >= 1000) {
-        fps = fpsCount; fpsCount = 0; fpsLast = now;
-        document.getElementById('h-fps').textContent = fps;
-      }
-      document.getElementById('h-tick').textContent = simState.tick;
+      if (now - fpsLast >= 1000) { fps = fpsCount; fpsCount = 0; fpsLast = now; document.getElementById('h-fp').textContent = fps; }
+      document.getElementById('h-tk').textContent = simState.tick;
     }
 
     function loop() {
       if (simState.playing) {
-        var sub = simState.speed > 6 ? 3 : 2;
-        for (var i = 0; i < sub; i++) updatePhysics();
+        var steps = simState.speed > 6 ? 3 : 2;
+        for (var i = 0; i < steps; i++) updatePhysics();
         simState.tick++;
       }
       drawFrame();
       simState.animId = requestAnimationFrame(loop);
     }
 
-    // ── API CHAT ──────────────────────────────────────────────────
+    // ── CONTROLS ─────────────────────────────────────────────────
+    function initControls() {
+      document.getElementById('play-btn').addEventListener('click', function () {
+        simState.playing = !simState.playing;
+        this.innerHTML = simState.playing ? '&#9646;&#9646; Pause' : '&#9654; Play';
+        this.className = simState.playing ? 'btn on' : 'btn';
+      });
+      document.getElementById('reset-btn').addEventListener('click', function () {
+        if (!simState.currentKey) return;
+        simState.objects = dc(simState.originals);
+        simState.tick = 0;
+        ctx.fillStyle = '#000008'; ctx.fillRect(0, 0, canvas.width, canvas.height);
+      });
+      document.getElementById('trail-btn').addEventListener('click', function () {
+        simState.showTrails = !simState.showTrails;
+        this.textContent = simState.showTrails ? 'Trails On' : 'Trails Off';
+        this.className = simState.showTrails ? 'btn on' : 'btn';
+      });
+      document.getElementById('glow-btn').addEventListener('click', function () {
+        simState.showGlow = !simState.showGlow;
+        this.textContent = simState.showGlow ? 'Glow On' : 'Glow Off';
+        this.className = simState.showGlow ? 'btn on' : 'btn';
+      });
+      document.getElementById('lbl-btn').addEventListener('click', function () {
+        simState.showLabels = !simState.showLabels;
+        this.textContent = simState.showLabels ? 'Labels On' : 'Labels Off';
+        this.className = simState.showLabels ? 'btn on' : 'btn';
+      });
+      document.getElementById('spd-sl').addEventListener('input', function () {
+        simState.speed = parseInt(this.value);
+        document.getElementById('spd-v').textContent = simState.speed + 'x';
+      });
+      document.getElementById('trl-sl').addEventListener('input', function () {
+        var v = parseInt(this.value);
+        var n = ['', 'Very Long', 'Long', 'Long', 'Medium', 'Medium', 'Short', 'Short', 'Fast', 'Very Fast', 'Instant'];
+        simState.trailAlpha = v * 0.025 + 0.02;
+        document.getElementById('trl-v').textContent = n[v];
+      });
+    }
+
+    // ── CHAT ─────────────────────────────────────────────────────
+    function fill(t) { document.getElementById('chat-in').value = t; document.getElementById('chat-in').focus(); }
+
     function checkAPI() {
-      fetch(API_BASE + '/api/health')
+      fetch(API + '/api/health')
         .then(function (r) { return r.json(); })
         .then(function (d) {
-          document.getElementById('api-dot').className = 'api-dot online';
-          document.getElementById('api-label').textContent = 'Llama 3.1 + RAG Online (' + d.rag_docs + ' docs)';
-          document.getElementById('h-rag').textContent = d.rag_docs;
+          document.getElementById('api-dot').className = 'api-dot on';
+          document.getElementById('api-lbl').textContent = 'Llama 3.1  RAG ' + d.rag_docs + ' docs  Online';
         })
         .catch(function () {
-          document.getElementById('api-dot').className = 'api-dot offline';
-          document.getElementById('api-label').textContent = 'API Offline — run api_server.py';
+          document.getElementById('api-dot').className = 'api-dot off';
+          document.getElementById('api-lbl').textContent = 'API Offline — run api_server.py';
         });
     }
 
-    function fillInput(text) {
-      document.getElementById('chat-input').value = text;
-      document.getElementById('chat-input').focus();
+    function addMsg(type, content) {
+      var msgs = document.getElementById('chat-msgs'), div = document.createElement('div');
+      if (type === 'u') {
+        div.className = 'msg msg-u'; div.textContent = content;
+      } else if (type === 'sys') {
+        div.className = 'msg msg-sys'; div.textContent = content;
+      } else if (type === 'err') {
+        div.className = 'msg msg-err'; div.textContent = content;
+      } else {
+        div.className = 'msg msg-a';
+        div.innerHTML = '<div class="msg-a-tag">AI  Llama 3.1</div>';
+        var p = document.createElement('p'); p.textContent = content.text || ''; div.appendChild(p);
+        if (content.data) {
+          var tbl = document.createElement('table'); tbl.className = 'dtable';
+          Object.entries(content.data).forEach(function (kv) {
+            if (typeof kv[1] === 'object') return;
+            var tr = document.createElement('tr');
+            tr.innerHTML = '<td>' + String(kv[0]).replace(/_/g, ' ') + '</td><td>' + kv[1] + '</td>';
+            tbl.appendChild(tr);
+          });
+          div.appendChild(tbl);
+        }
+        if (content.plot) {
+          var wrap = document.createElement('div'); wrap.className = 'chat-plot-wrap';
+          wrap.title = 'Click to view in center panel';
+          var img = document.createElement('img'); img.className = 'chat-plot';
+          img.src = 'data:image/png;base64,' + content.plot; img.alt = 'Plot';
+          var ov = document.createElement('div'); ov.className = 'plot-ov'; ov.textContent = 'VIEW IN CENTER';
+          wrap.appendChild(img); wrap.appendChild(ov);
+          wrap.addEventListener('click', function () { showPlot(content.plot); });
+          div.appendChild(wrap);
+        }
+      }
+      msgs.appendChild(div); msgs.scrollTop = msgs.scrollHeight;
     }
 
-    function addMsg(type, content) {
-      var msgs = document.getElementById('chat-messages');
-      var div = document.createElement('div');
-      div.className = 'msg msg-' + type;
-      if (typeof content === 'string') {
-        div.textContent = content;
-      } else {
-        msgs.appendChild(content);
-        msgs.scrollTop = msgs.scrollHeight;
-        return content;
-      }
-      msgs.appendChild(div);
-      msgs.scrollTop = msgs.scrollHeight;
-      return div;
+    function showPlot(b64) {
+      var img = document.getElementById('plot-img');
+      img.src = 'data:image/png;base64,' + b64;
+      img.style.display = 'block';
+      document.getElementById('plot-empty').style.display = 'none';
+      setView('plot');
     }
 
     function addTyping() {
-      var msgs = document.getElementById('chat-messages');
-      var div = document.createElement('div');
-      div.className = 'msg msg-assistant typing';
-      div.id = 'typing-indicator';
-      div.innerHTML = '<span></span><span></span><span></span>';
-      msgs.appendChild(div);
-      msgs.scrollTop = msgs.scrollHeight;
+      var msgs = document.getElementById('chat-msgs'), d = document.createElement('div');
+      d.className = 'msg msg-a typing'; d.id = 'typing';
+      d.innerHTML = '<span></span><span></span><span></span>';
+      msgs.appendChild(d); msgs.scrollTop = msgs.scrollHeight;
     }
+    function removeTyping() { var t = document.getElementById('typing'); if (t) t.remove(); }
 
-    function removeTyping() {
-      var t = document.getElementById('typing-indicator');
-      if (t) t.remove();
-    }
-
-    function sendMessage() {
-      var input = document.getElementById('chat-input');
-      var msg = input.value.trim();
+    function sendMsg() {
+      var inp = document.getElementById('chat-in'), msg = inp.value.trim();
       if (!msg) return;
-
-      addMsg('user', msg);
-      input.value = '';
-      document.getElementById('send-btn').disabled = true;
+      addMsg('u', msg); inp.value = '';
+      document.getElementById('send').disabled = true;
       addTyping();
-
-      fetch(API_BASE + '/api/chat', {
+      fetch(API + '/api/chat', {
         method: 'POST',
         headers: { 'Content-Type': 'application/json' },
         body: JSON.stringify({ message: msg })
@@ -1594,127 +1550,43 @@
         .then(function (r) { return r.json(); })
         .then(function (data) {
           removeTyping();
-
-          // Text answer
-          var msgDiv = document.createElement('div');
-          msgDiv.className = 'msg msg-assistant';
-
-          var textP = document.createElement('p');
-          textP.textContent = data.text || 'No response';
-          msgDiv.appendChild(textP);
-
-          // Numerical data table
-          if (data.data) {
-            var tbl = document.createElement('table');
-            tbl.className = 'data-table';
-            Object.entries(data.data).forEach(function (kv) {
-              var tr = document.createElement('tr');
-              tr.innerHTML = '<td>' + kv[0].replace(/_/g, ' ') + '</td><td>' + kv[1] + '</td>';
-              tbl.appendChild(tr);
-            });
-            msgDiv.appendChild(tbl);
-          }
-
-          // Plot image
-          if (data.plot) {
-            var img = document.createElement('img');
-            img.src = 'data:image/png;base64,' + data.plot;
-            img.className = 'chat-plot';
-            img.alt = 'Orbital plot';
-            msgDiv.appendChild(img);
-          }
-
-          var msgs = document.getElementById('chat-messages');
-          msgs.appendChild(msgDiv);
-          msgs.scrollTop = msgs.scrollHeight;
-
-          // If simulation intent detected, load scenario
-          if (data.intent && data.intent.body && astroData) {
-            var body = data.intent.body.toLowerCase();
-            // Map body to scenario key
-            var bodyToScenario = {
-              'mars': 'solar system', 'earth': 'solar system', 'jupiter': 'solar system',
-              'saturn': 'solar system', 'venus': 'solar system', 'mercury': 'solar system'
+          addMsg('a', { text: data.text, data: data.data, plot: data.plot });
+          if (data.intent && data.intent.body) {
+            var body = (data.intent.body || '').toLowerCase();
+            var bm = {
+              mars: 'solar system', earth: 'solar system', jupiter: 'solar system',
+              saturn: 'solar system', venus: 'solar system', mercury: 'solar system'
             };
-            var scenarioKey = bodyToScenario[body] || body;
-            if (astroData[scenarioKey]) {
-              loadScenario(scenarioKey);
-              addMsg('system', '↑ Loaded simulation: ' + scenarioKey);
-            }
+            var sk = bm[body] || body;
+            if (astroData[sk]) { loadScenario(sk); addMsg('sys', 'Simulation loaded: ' + sk); }
           }
-
-          document.getElementById('send-btn').disabled = false;
+          if (data.plot) { showPlot(data.plot); addMsg('sys', 'Plot displayed in center panel'); }
+          document.getElementById('send').disabled = false;
         })
-        .catch(function (err) {
+        .catch(function () {
           removeTyping();
-          addMsg('error', 'Connection error: Is api_server.py running on port 8000?');
-          document.getElementById('send-btn').disabled = false;
+          addMsg('err', 'Connection failed — is api_server.py running on port 8000?');
+          document.getElementById('send').disabled = false;
         });
     }
 
-    // ── CONTROLS ──────────────────────────────────────────────────
+    // ── INIT ─────────────────────────────────────────────────────
     window.addEventListener('load', function () {
       resizeCanvas();
+      initControls();
       checkAPI();
       setInterval(checkAPI, 30000);
 
-      loadData(function () {
-        buildChips();
-      });
+      // Auto-load Solar System on startup
+      loadScenario('solar system');
 
-      document.getElementById('play-btn').addEventListener('click', function () {
-        simState.playing = !simState.playing;
-        this.textContent = simState.playing ? '⏸ PAUSE' : '▶ PLAY';
-        this.className = simState.playing ? 'btn on' : 'btn';
+      document.getElementById('send').addEventListener('click', sendMsg);
+      document.getElementById('chat-in').addEventListener('keydown', function (e) {
+        if (e.key === 'Enter' && !e.shiftKey) { e.preventDefault(); sendMsg(); }
       });
-
-      document.getElementById('reset-btn').addEventListener('click', function () {
-        if (!simState.currentKey) return;
-        simState.objects = deepCopy(simState.originals);
-        simState.tick = 0;
-        ctx.fillStyle = '#000005'; ctx.fillRect(0, 0, canvas.width, canvas.height);
-      });
-
-      document.getElementById('trail-btn').addEventListener('click', function () {
-        simState.showTrails = !simState.showTrails;
-        this.textContent = simState.showTrails ? '◎ TRAILS' : '◎ NO TRAILS';
-        this.className = simState.showTrails ? 'btn on' : 'btn';
-      });
-
-      document.getElementById('glow-btn').addEventListener('click', function () {
-        simState.showGlow = !simState.showGlow;
-        this.textContent = simState.showGlow ? '✦ GLOW' : '✦ NO GLOW';
-        this.className = simState.showGlow ? 'btn on' : 'btn';
-      });
-
-      document.getElementById('label-btn').addEventListener('click', function () {
-        simState.showLabels = !simState.showLabels;
-        this.textContent = simState.showLabels ? '⌖ LABELS' : '⌖ NO LABELS';
-        this.className = simState.showLabels ? 'btn on' : 'btn';
-      });
-
-      document.getElementById('speed-slider').addEventListener('input', function () {
-        simState.speed = parseInt(this.value);
-        document.getElementById('speed-val').textContent = simState.speed + '×';
-      });
-
-      document.getElementById('trail-slider').addEventListener('input', function () {
-        var v = parseInt(this.value);
-        var lbls = ['', 'very long', 'long', 'long', 'medium', 'medium', 'short', 'short', 'fast', 'very fast', 'instant'];
-        simState.trailAlpha = v * 0.025 + 0.02;
-        document.getElementById('trail-val').textContent = lbls[v] || v;
-      });
-
-      document.getElementById('send-btn').addEventListener('click', sendMessage);
-      document.getElementById('chat-input').addEventListener('keydown', function (e) {
-        if (e.key === 'Enter' && !e.shiftKey) { e.preventDefault(); sendMessage(); }
-      });
-
       window.addEventListener('resize', function () {
         resizeCanvas();
-        if (simState.objects.length > 0) {
-          ctx.fillStyle = '#000005'; ctx.fillRect(0, 0, canvas.width, canvas.height);
-        }
+        if (simState.currentKey) loadScenario(simState.currentKey);
       });
     });
   </script>
