@@ -1,0 +1,1723 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>ASTRO THESAURUS — Orbital Intelligence Engine</title>
+  <style>
+    @import url('https://fonts.googleapis.com/css2?family=Orbitron:wght@400;600;700;900&family=JetBrains+Mono:wght@300;400;500;700&family=Rajdhani:wght@300;400;500;600;700&display=swap');
+
+    :root {
+      --void: #00000a;
+      --deep: #020310;
+      --panel: rgba(2, 5, 22, 0.85);
+      --glass: rgba(10, 20, 60, 0.4);
+      --border: rgba(60, 120, 255, 0.15);
+      --glow: rgba(60, 120, 255, 0.08);
+      --accent: #3d7fff;
+      --pulse: #00d4ff;
+      --fire: #ff6b35;
+      --nova: #ff3d8f;
+      --star: #fff7aa;
+      --nebula: #c084fc;
+      --text: #d0dcff;
+      --muted: #3a4a70;
+      --bright: #ffffff;
+    }
+
+    *,
+    *::before,
+    *::after {
+      margin: 0;
+      padding: 0;
+      box-sizing: border-box;
+    }
+
+    html,
+    body {
+      width: 100%;
+      height: 100%;
+      background: var(--void);
+      color: var(--text);
+      font-family: 'JetBrains Mono', monospace;
+      overflow: hidden;
+      cursor: crosshair;
+    }
+
+    /* ── NEBULA BACKGROUND ── */
+    #nebula-bg {
+      position: fixed;
+      inset: 0;
+      z-index: 0;
+      background:
+        radial-gradient(ellipse 80% 60% at 20% 50%, rgba(30, 0, 80, 0.4) 0%, transparent 60%),
+        radial-gradient(ellipse 60% 80% at 80% 20%, rgba(0, 40, 120, 0.3) 0%, transparent 60%),
+        radial-gradient(ellipse 40% 40% at 60% 80%, rgba(80, 0, 40, 0.2) 0%, transparent 50%),
+        #00000a;
+      animation: nebulaShift 20s ease-in-out infinite alternate;
+    }
+
+    @keyframes nebulaShift {
+      0% {
+        filter: hue-rotate(0deg) brightness(1);
+      }
+
+      50% {
+        filter: hue-rotate(15deg) brightness(1.05);
+      }
+
+      100% {
+        filter: hue-rotate(-10deg) brightness(0.95);
+      }
+    }
+
+    /* ── STAR CANVAS ── */
+    #starfield {
+      position: fixed;
+      inset: 0;
+      z-index: 1;
+      pointer-events: none;
+    }
+
+    /* ── SCAN LINES ── */
+    #scanlines {
+      position: fixed;
+      inset: 0;
+      z-index: 2;
+      pointer-events: none;
+      background: repeating-linear-gradient(0deg,
+          transparent,
+          transparent 2px,
+          rgba(0, 0, 0, 0.03) 2px,
+          rgba(0, 0, 0, 0.03) 4px);
+    }
+
+    /* ── LAYOUT ── */
+    .app {
+      position: relative;
+      z-index: 3;
+      display: grid;
+      grid-template-rows: 56px 1fr;
+      grid-template-columns: 320px 1fr 380px;
+      height: 100vh;
+      gap: 0;
+    }
+
+    /* ── HEADER ── */
+    header {
+      grid-column: 1/-1;
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      padding: 0 24px;
+      background: rgba(0, 0, 10, 0.9);
+      border-bottom: 1px solid var(--border);
+      backdrop-filter: blur(20px);
+      position: relative;
+      overflow: hidden;
+    }
+
+    header::after {
+      content: '';
+      position: absolute;
+      bottom: 0;
+      left: 0;
+      right: 0;
+      height: 1px;
+      background: linear-gradient(90deg, transparent, var(--accent), var(--pulse), var(--accent), transparent);
+      animation: scanH 4s linear infinite;
+    }
+
+    @keyframes scanH {
+      0% {
+        transform: translateX(-100%);
+      }
+
+      100% {
+        transform: translateX(100%);
+      }
+    }
+
+    .logo-group {
+      display: flex;
+      align-items: center;
+      gap: 16px;
+    }
+
+    .logo-icon {
+      width: 36px;
+      height: 36px;
+      border: 1px solid var(--accent);
+      border-radius: 50%;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      font-size: 16px;
+      box-shadow: 0 0 20px rgba(61, 127, 255, 0.3), inset 0 0 10px rgba(61, 127, 255, 0.1);
+      animation: iconPulse 3s ease-in-out infinite;
+    }
+
+    @keyframes iconPulse {
+
+      0%,
+      100% {
+        box-shadow: 0 0 20px rgba(61, 127, 255, 0.3), inset 0 0 10px rgba(61, 127, 255, 0.1);
+      }
+
+      50% {
+        box-shadow: 0 0 35px rgba(61, 127, 255, 0.6), inset 0 0 15px rgba(61, 127, 255, 0.2);
+      }
+    }
+
+    .logo-text {
+      font-family: 'Orbitron', sans-serif;
+      font-size: 18px;
+      font-weight: 900;
+      letter-spacing: 4px;
+      background: linear-gradient(90deg, #fff 0%, var(--accent) 40%, var(--pulse) 70%, var(--nebula) 100%);
+      -webkit-background-clip: text;
+      -webkit-text-fill-color: transparent;
+      background-clip: text;
+    }
+
+    .logo-sub {
+      font-size: 8px;
+      letter-spacing: 3px;
+      color: var(--muted);
+      text-transform: uppercase;
+      margin-top: 2px;
+    }
+
+    .header-stats {
+      display: flex;
+      gap: 24px;
+    }
+
+    .hstat {
+      text-align: center;
+      padding: 4px 12px;
+      border: 1px solid var(--border);
+      border-radius: 2px;
+      background: var(--glow);
+    }
+
+    .hstat-label {
+      font-size: 7px;
+      letter-spacing: 2px;
+      color: var(--muted);
+      display: block;
+      text-transform: uppercase;
+    }
+
+    .hstat-value {
+      font-family: 'Orbitron', sans-serif;
+      font-size: 12px;
+      color: var(--pulse);
+      font-weight: 600;
+    }
+
+    .header-right {
+      display: flex;
+      align-items: center;
+      gap: 12px;
+    }
+
+    .status-dot {
+      width: 8px;
+      height: 8px;
+      border-radius: 50%;
+      background: #00ff88;
+      box-shadow: 0 0 10px #00ff88;
+      animation: blink 2s ease-in-out infinite;
+    }
+
+    @keyframes blink {
+
+      0%,
+      100% {
+        opacity: 1
+      }
+
+      50% {
+        opacity: 0.3
+      }
+    }
+
+    .status-text {
+      font-size: 9px;
+      letter-spacing: 2px;
+      color: #00ff88;
+      text-transform: uppercase;
+    }
+
+    /* ── LEFT PANEL — SIMULATION ── */
+    #sim-panel {
+      grid-column: 1;
+      grid-row: 2;
+      background: var(--panel);
+      border-right: 1px solid var(--border);
+      backdrop-filter: blur(20px);
+      display: flex;
+      flex-direction: column;
+      overflow: hidden;
+    }
+
+    .panel-header {
+      padding: 12px 16px 10px;
+      border-bottom: 1px solid var(--border);
+      display: flex;
+      align-items: center;
+      gap: 8px;
+    }
+
+    .panel-tag {
+      font-family: 'Orbitron', sans-serif;
+      font-size: 7px;
+      letter-spacing: 3px;
+      color: var(--accent);
+      text-transform: uppercase;
+    }
+
+    .panel-tag-line {
+      flex: 1;
+      height: 1px;
+      background: linear-gradient(90deg, var(--border), transparent);
+    }
+
+    .sim-scroll {
+      flex: 1;
+      overflow-y: auto;
+      padding: 12px;
+      display: flex;
+      flex-direction: column;
+      gap: 10px;
+    }
+
+    .sim-scroll::-webkit-scrollbar {
+      width: 2px;
+    }
+
+    .sim-scroll::-webkit-scrollbar-thumb {
+      background: var(--accent);
+      border-radius: 2px;
+    }
+
+    /* Scenario chips */
+    .scenario-section-title {
+      font-size: 8px;
+      letter-spacing: 2px;
+      color: var(--muted);
+      text-transform: uppercase;
+      padding: 4px 0;
+    }
+
+    .chip-grid {
+      display: grid;
+      grid-template-columns: 1fr 1fr;
+      gap: 4px;
+    }
+
+    .chip {
+      padding: 8px 6px;
+      border: 1px solid var(--border);
+      border-radius: 3px;
+      background: rgba(0, 0, 0, 0.3);
+      color: var(--muted);
+      font-family: 'JetBrains Mono', monospace;
+      font-size: 8px;
+      cursor: pointer;
+      transition: all 0.2s;
+      text-align: center;
+      line-height: 1.6;
+      position: relative;
+      overflow: hidden;
+    }
+
+    .chip::before {
+      content: '';
+      position: absolute;
+      inset: 0;
+      background: linear-gradient(135deg, transparent 40%, rgba(61, 127, 255, 0.05) 100%);
+      opacity: 0;
+      transition: opacity 0.2s;
+    }
+
+    .chip:hover {
+      border-color: var(--accent);
+      color: var(--text);
+    }
+
+    .chip:hover::before {
+      opacity: 1;
+    }
+
+    .chip.active {
+      border-color: var(--pulse);
+      color: var(--pulse);
+      background: rgba(0, 212, 255, 0.06);
+      box-shadow: 0 0 12px rgba(0, 212, 255, 0.15);
+    }
+
+    .chip-icon {
+      display: block;
+      font-size: 13px;
+      margin-bottom: 2px;
+    }
+
+    /* Controls */
+    .ctrl-group {
+      display: flex;
+      flex-direction: column;
+      gap: 6px;
+    }
+
+    .ctrl-row {
+      display: flex;
+      gap: 4px;
+    }
+
+    .btn {
+      flex: 1;
+      padding: 8px 4px;
+      border: 1px solid var(--border);
+      border-radius: 3px;
+      background: rgba(0, 0, 0, 0.3);
+      color: var(--muted);
+      font-family: 'JetBrains Mono', monospace;
+      font-size: 8px;
+      cursor: pointer;
+      transition: all 0.2s;
+      letter-spacing: 1px;
+      text-align: center;
+      text-transform: uppercase;
+    }
+
+    .btn:hover {
+      border-color: var(--accent);
+      color: var(--text);
+    }
+
+    .btn.on {
+      background: rgba(61, 127, 255, 0.15);
+      border-color: var(--accent);
+      color: var(--accent);
+    }
+
+    .btn.danger.on {
+      background: rgba(255, 107, 53, 0.15);
+      border-color: var(--fire);
+      color: var(--fire);
+    }
+
+    .slider-wrap {
+      display: flex;
+      flex-direction: column;
+      gap: 4px;
+    }
+
+    .slider-label {
+      display: flex;
+      justify-content: space-between;
+      font-size: 8px;
+      color: var(--muted);
+      letter-spacing: 1px;
+    }
+
+    input[type=range] {
+      width: 100%;
+      accent-color: var(--accent);
+      height: 2px;
+    }
+
+    /* Object list */
+    .obj-list {
+      display: flex;
+      flex-direction: column;
+      gap: 2px;
+      max-height: 140px;
+      overflow-y: auto;
+    }
+
+    .obj-item {
+      display: flex;
+      align-items: center;
+      gap: 6px;
+      padding: 4px 6px;
+      border-radius: 2px;
+      background: rgba(0, 0, 0, 0.2);
+      font-size: 8px;
+      color: var(--muted);
+      border-left: 2px solid transparent;
+      transition: all 0.15s;
+    }
+
+    .obj-item:hover {
+      background: rgba(61, 127, 255, 0.05);
+      border-left-color: var(--accent);
+    }
+
+    .obj-dot {
+      width: 6px;
+      height: 6px;
+      border-radius: 50%;
+      flex-shrink: 0;
+    }
+
+    .obj-name {
+      flex: 1;
+    }
+
+    .obj-mass {
+      color: var(--muted);
+      font-size: 7px;
+    }
+
+    /* ── CENTER — CANVAS ── */
+    #canvas-area {
+      grid-column: 2;
+      grid-row: 2;
+      position: relative;
+      background: #000005;
+      overflow: hidden;
+    }
+
+    #sim-canvas {
+      display: block;
+      width: 100%;
+      height: 100%;
+    }
+
+    /* Canvas overlays */
+    .cv-tl,
+    .cv-tr,
+    .cv-bl,
+    .cv-br {
+      position: absolute;
+      pointer-events: none;
+      font-family: 'JetBrains Mono', monospace;
+    }
+
+    .cv-tl {
+      top: 14px;
+      left: 16px;
+    }
+
+    .cv-tr {
+      top: 14px;
+      right: 16px;
+      text-align: right;
+    }
+
+    .cv-bl {
+      bottom: 14px;
+      left: 16px;
+    }
+
+    .cv-br {
+      bottom: 14px;
+      right: 16px;
+      text-align: right;
+    }
+
+    .cv-label {
+      font-size: 8px;
+      letter-spacing: 2px;
+      color: rgba(61, 127, 255, 0.3);
+      text-transform: uppercase;
+      line-height: 1.8;
+    }
+
+    /* Corner decorations */
+    .corner {
+      position: absolute;
+      pointer-events: none;
+      width: 20px;
+      height: 20px;
+    }
+
+    .corner-tl {
+      top: 8px;
+      left: 8px;
+      border-top: 1px solid rgba(61, 127, 255, 0.3);
+      border-left: 1px solid rgba(61, 127, 255, 0.3);
+    }
+
+    .corner-tr {
+      top: 8px;
+      right: 8px;
+      border-top: 1px solid rgba(61, 127, 255, 0.3);
+      border-right: 1px solid rgba(61, 127, 255, 0.3);
+    }
+
+    .corner-bl {
+      bottom: 8px;
+      left: 8px;
+      border-bottom: 1px solid rgba(61, 127, 255, 0.3);
+      border-left: 1px solid rgba(61, 127, 255, 0.3);
+    }
+
+    .corner-br {
+      bottom: 8px;
+      right: 8px;
+      border-bottom: 1px solid rgba(61, 127, 255, 0.3);
+      border-right: 1px solid rgba(61, 127, 255, 0.3);
+    }
+
+    #scenario-watermark {
+      position: absolute;
+      bottom: 50px;
+      left: 50%;
+      transform: translateX(-50%);
+      font-family: 'Orbitron', sans-serif;
+      font-size: 28px;
+      font-weight: 900;
+      color: rgba(255, 255, 255, 0.03);
+      letter-spacing: 6px;
+      white-space: nowrap;
+      text-transform: uppercase;
+      pointer-events: none;
+    }
+
+    /* Reticle crosshair */
+    #reticle {
+      position: absolute;
+      pointer-events: none;
+      top: 50%;
+      left: 50%;
+      transform: translate(-50%, -50%);
+      width: 60px;
+      height: 60px;
+      opacity: 0.06;
+    }
+
+    #reticle::before,
+    #reticle::after {
+      content: '';
+      position: absolute;
+      background: var(--accent);
+    }
+
+    #reticle::before {
+      top: 50%;
+      left: 0;
+      right: 0;
+      height: 1px;
+      transform: translateY(-50%);
+    }
+
+    #reticle::after {
+      left: 50%;
+      top: 0;
+      bottom: 0;
+      width: 1px;
+      transform: translateX(-50%);
+    }
+
+    /* Empty state */
+    #empty-state {
+      position: absolute;
+      top: 50%;
+      left: 50%;
+      transform: translate(-50%, -50%);
+      text-align: center;
+      pointer-events: none;
+    }
+
+    .empty-orb {
+      width: 120px;
+      height: 120px;
+      border-radius: 50%;
+      border: 1px solid rgba(61, 127, 255, 0.1);
+      margin: 0 auto 20px;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      font-size: 40px;
+      opacity: 0.15;
+      box-shadow: 0 0 40px rgba(61, 127, 255, 0.05);
+      animation: orbFloat 4s ease-in-out infinite;
+    }
+
+    @keyframes orbFloat {
+
+      0%,
+      100% {
+        transform: translateY(0)
+      }
+
+      50% {
+        transform: translateY(-8px)
+      }
+    }
+
+    .empty-text {
+      font-size: 8px;
+      letter-spacing: 3px;
+      color: rgba(61, 127, 255, 0.3);
+      text-transform: uppercase;
+      line-height: 2;
+    }
+
+    /* ── RIGHT PANEL — CHAT ── */
+    #chat-panel {
+      grid-column: 3;
+      grid-row: 2;
+      background: var(--panel);
+      border-left: 1px solid var(--border);
+      backdrop-filter: blur(20px);
+      display: flex;
+      flex-direction: column;
+      overflow: hidden;
+    }
+
+    /* Chat messages */
+    #chat-messages {
+      flex: 1;
+      overflow-y: auto;
+      padding: 14px;
+      display: flex;
+      flex-direction: column;
+      gap: 10px;
+      scroll-behavior: smooth;
+    }
+
+    #chat-messages::-webkit-scrollbar {
+      width: 2px;
+    }
+
+    #chat-messages::-webkit-scrollbar-thumb {
+      background: var(--accent);
+    }
+
+    /* Welcome message */
+    .welcome-msg {
+      padding: 14px;
+      border: 1px solid rgba(61, 127, 255, 0.15);
+      border-radius: 4px;
+      background: rgba(61, 127, 255, 0.04);
+      position: relative;
+      overflow: hidden;
+    }
+
+    .welcome-msg::before {
+      content: '';
+      position: absolute;
+      top: 0;
+      left: 0;
+      right: 0;
+      height: 1px;
+      background: linear-gradient(90deg, transparent, var(--accent), transparent);
+    }
+
+    .welcome-title {
+      font-family: 'Orbitron', sans-serif;
+      font-size: 10px;
+      letter-spacing: 2px;
+      color: var(--pulse);
+      margin-bottom: 8px;
+    }
+
+    .welcome-body {
+      font-size: 9px;
+      color: var(--muted);
+      line-height: 1.8;
+    }
+
+    .welcome-examples {
+      margin-top: 10px;
+      display: flex;
+      flex-direction: column;
+      gap: 4px;
+    }
+
+    .example-chip {
+      padding: 5px 8px;
+      border: 1px solid rgba(61, 127, 255, 0.1);
+      border-radius: 2px;
+      font-size: 8px;
+      color: rgba(61, 127, 255, 0.5);
+      cursor: pointer;
+      transition: all 0.2s;
+      background: rgba(0, 0, 0, 0.2);
+    }
+
+    .example-chip:hover {
+      border-color: var(--accent);
+      color: var(--pulse);
+      background: rgba(61, 127, 255, 0.06);
+    }
+
+    /* Message bubbles */
+    .msg {
+      max-width: 100%;
+      animation: msgIn 0.3s ease;
+    }
+
+    @keyframes msgIn {
+      from {
+        opacity: 0;
+        transform: translateY(8px)
+      }
+
+      to {
+        opacity: 1;
+        transform: translateY(0)
+      }
+    }
+
+    .msg-user {
+      align-self: flex-end;
+      background: rgba(61, 127, 255, 0.12);
+      border: 1px solid rgba(61, 127, 255, 0.25);
+      border-radius: 4px 4px 1px 4px;
+      padding: 8px 12px;
+      font-size: 10px;
+      color: var(--text);
+      max-width: 85%;
+    }
+
+    .msg-assistant {
+      align-self: flex-start;
+      background: rgba(0, 212, 255, 0.06);
+      border: 1px solid rgba(0, 212, 255, 0.12);
+      border-radius: 4px 4px 4px 1px;
+      padding: 10px 12px;
+      font-size: 10px;
+      color: var(--text);
+      line-height: 1.7;
+      width: 100%;
+      position: relative;
+    }
+
+    .msg-assistant::before {
+      content: 'AI';
+      position: absolute;
+      top: -8px;
+      left: 8px;
+      font-size: 6px;
+      letter-spacing: 2px;
+      color: var(--pulse);
+      background: var(--deep);
+      padding: 1px 4px;
+      border: 1px solid rgba(0, 212, 255, 0.2);
+      border-radius: 1px;
+    }
+
+    .msg-error {
+      background: rgba(255, 61, 143, 0.08);
+      border: 1px solid rgba(255, 61, 143, 0.2);
+      border-radius: 4px;
+      padding: 8px 12px;
+      font-size: 10px;
+      color: var(--nova);
+    }
+
+    .msg-system {
+      align-self: center;
+      font-size: 8px;
+      letter-spacing: 2px;
+      color: var(--muted);
+      text-transform: uppercase;
+      padding: 4px 10px;
+      border: 1px solid var(--border);
+      border-radius: 10px;
+      background: rgba(0, 0, 0, 0.2);
+    }
+
+    /* Plot in chat */
+    .chat-plot {
+      width: 100%;
+      border-radius: 4px;
+      border: 1px solid var(--border);
+      margin-top: 6px;
+      display: block;
+    }
+
+    /* Data table */
+    .data-table {
+      margin-top: 8px;
+      width: 100%;
+      border-collapse: collapse;
+      font-size: 8px;
+    }
+
+    .data-table td {
+      padding: 3px 6px;
+      border-bottom: 1px solid rgba(61, 127, 255, 0.06);
+    }
+
+    .data-table td:first-child {
+      color: var(--muted);
+    }
+
+    .data-table td:last-child {
+      color: var(--pulse);
+      text-align: right;
+      font-weight: 500;
+    }
+
+    /* Typing indicator */
+    .typing {
+      display: flex;
+      gap: 4px;
+      padding: 10px 12px;
+    }
+
+    .typing span {
+      width: 5px;
+      height: 5px;
+      border-radius: 50%;
+      background: var(--muted);
+      animation: typingDot 1.2s ease-in-out infinite;
+    }
+
+    .typing span:nth-child(2) {
+      animation-delay: 0.2s
+    }
+
+    .typing span:nth-child(3) {
+      animation-delay: 0.4s
+    }
+
+    @keyframes typingDot {
+
+      0%,
+      60%,
+      100% {
+        transform: translateY(0);
+        opacity: 0.4
+      }
+
+      30% {
+        transform: translateY(-6px);
+        opacity: 1
+      }
+    }
+
+    /* Chat input */
+    .chat-input-area {
+      padding: 12px;
+      border-top: 1px solid var(--border);
+      background: rgba(0, 0, 0, 0.3);
+    }
+
+    .input-wrap {
+      display: flex;
+      gap: 6px;
+      align-items: flex-end;
+    }
+
+    #chat-input {
+      flex: 1;
+      background: rgba(0, 0, 0, 0.5);
+      border: 1px solid var(--border);
+      border-radius: 4px;
+      color: var(--text);
+      font-family: 'JetBrains Mono', monospace;
+      font-size: 10px;
+      padding: 9px 12px;
+      resize: none;
+      min-height: 38px;
+      max-height: 100px;
+      outline: none;
+      transition: border-color 0.2s;
+      line-height: 1.5;
+    }
+
+    #chat-input:focus {
+      border-color: var(--accent);
+      box-shadow: 0 0 0 1px rgba(61, 127, 255, 0.1);
+    }
+
+    #chat-input::placeholder {
+      color: var(--muted);
+    }
+
+    #send-btn {
+      width: 38px;
+      height: 38px;
+      flex-shrink: 0;
+      background: linear-gradient(135deg, var(--accent), #2a5acc);
+      border: none;
+      border-radius: 4px;
+      color: white;
+      font-size: 14px;
+      cursor: pointer;
+      transition: all 0.2s;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+    }
+
+    #send-btn:hover {
+      transform: translateY(-1px);
+      box-shadow: 0 4px 20px rgba(61, 127, 255, 0.4);
+    }
+
+    #send-btn:active {
+      transform: translateY(0);
+    }
+
+    #send-btn:disabled {
+      opacity: 0.4;
+      cursor: not-allowed;
+      transform: none;
+    }
+
+    .api-status {
+      display: flex;
+      align-items: center;
+      gap: 6px;
+      margin-bottom: 8px;
+      padding: 5px 8px;
+      border: 1px solid var(--border);
+      border-radius: 2px;
+      background: rgba(0, 0, 0, 0.2);
+    }
+
+    .api-dot {
+      width: 5px;
+      height: 5px;
+      border-radius: 50%;
+    }
+
+    .api-dot.online {
+      background: #00ff88;
+      box-shadow: 0 0 8px #00ff88;
+    }
+
+    .api-dot.offline {
+      background: #ff4444;
+      box-shadow: 0 0 8px #ff4444;
+    }
+
+    .api-dot.checking {
+      background: #ffaa00;
+      animation: blink 1s infinite;
+    }
+
+    .api-label {
+      font-size: 7px;
+      letter-spacing: 2px;
+      color: var(--muted);
+      text-transform: uppercase;
+    }
+
+    /* ── RESPONSIVE DIVIDERS ── */
+    .vdivider {
+      width: 1px;
+      background: var(--border);
+      position: relative;
+    }
+
+    .vdivider::before {
+      content: '';
+      position: absolute;
+      top: 0;
+      left: 0;
+      right: 0;
+      height: 60px;
+      background: linear-gradient(180deg, var(--accent), transparent);
+      animation: divFlow 3s ease-in-out infinite;
+    }
+
+    @keyframes divFlow {
+      0% {
+        top: 0%
+      }
+
+      50% {
+        top: 40%
+      }
+
+      100% {
+        top: 0%
+      }
+    }
+  </style>
+</head>
+
+<body>
+
+  <div id="nebula-bg"></div>
+  <canvas id="starfield"></canvas>
+  <div id="scanlines"></div>
+
+  <div class="app">
+
+    <!-- ── HEADER ── -->
+    <header>
+      <div class="logo-group">
+        <div class="logo-icon">⚛</div>
+        <div>
+          <div class="logo-text">ASTRO THESAURUS</div>
+          <div class="logo-sub">Orbital Intelligence Engine v2.0</div>
+        </div>
+      </div>
+
+      <div class="header-stats">
+        <div class="hstat">
+          <span class="hstat-label">Scenario</span>
+          <span class="hstat-value" id="h-scenario">—</span>
+        </div>
+        <div class="hstat">
+          <span class="hstat-label">Bodies</span>
+          <span class="hstat-value" id="h-bodies">0</span>
+        </div>
+        <div class="hstat">
+          <span class="hstat-label">Tick</span>
+          <span class="hstat-value" id="h-tick">0</span>
+        </div>
+        <div class="hstat">
+          <span class="hstat-label">FPS</span>
+          <span class="hstat-value" id="h-fps">—</span>
+        </div>
+        <div class="hstat">
+          <span class="hstat-label">RAG Docs</span>
+          <span class="hstat-value" id="h-rag">1226</span>
+        </div>
+      </div>
+
+      <div class="header-right">
+        <div class="status-dot"></div>
+        <div class="status-text">Systems Online</div>
+      </div>
+    </header>
+
+    <!-- ── LEFT: SIMULATION PANEL ── -->
+    <div id="sim-panel">
+      <div class="panel-header">
+        <span class="panel-tag">Simulation Library</span>
+        <div class="panel-tag-line"></div>
+      </div>
+      <div class="sim-scroll">
+
+        <div>
+          <div class="scenario-section-title">Orbital Mechanics</div>
+          <div class="chip-grid" id="chip-grid-orbital"></div>
+        </div>
+
+        <div>
+          <div class="scenario-section-title">Stellar Objects</div>
+          <div class="chip-grid" id="chip-grid-stellar"></div>
+        </div>
+
+        <div>
+          <div class="scenario-section-title">Galactic Scale</div>
+          <div class="chip-grid" id="chip-grid-galactic"></div>
+        </div>
+
+        <div class="ctrl-group">
+          <div class="scenario-section-title">Playback Controls</div>
+          <div class="ctrl-row">
+            <button class="btn on" id="play-btn">⏸ PAUSE</button>
+            <button class="btn" id="reset-btn">↺ RESET</button>
+          </div>
+          <div class="ctrl-row">
+            <button class="btn on" id="trail-btn">◎ TRAILS</button>
+            <button class="btn on" id="glow-btn">✦ GLOW</button>
+            <button class="btn on" id="label-btn">⌖ LABELS</button>
+          </div>
+          <div class="slider-wrap">
+            <div class="slider-label"><span>SPEED</span><span id="speed-val">3×</span></div>
+            <input type="range" id="speed-slider" min="1" max="12" value="3">
+          </div>
+          <div class="slider-wrap">
+            <div class="slider-label"><span>TRAIL FADE</span><span id="trail-val">medium</span></div>
+            <input type="range" id="trail-slider" min="1" max="10" value="4">
+          </div>
+        </div>
+
+        <div>
+          <div class="scenario-section-title">Active Objects</div>
+          <div class="obj-list" id="obj-list">
+            <div style="font-size:9px;color:var(--muted);padding:4px">No simulation loaded</div>
+          </div>
+        </div>
+
+      </div>
+    </div>
+
+    <!-- ── CENTER: CANVAS ── -->
+    <div id="canvas-area">
+      <canvas id="sim-canvas"></canvas>
+
+      <div class="corner corner-tl"></div>
+      <div class="corner corner-tr"></div>
+      <div class="corner corner-bl"></div>
+      <div class="corner corner-br"></div>
+      <div id="reticle"></div>
+
+      <div class="cv-tl">
+        <div class="cv-label">ASTRO THESAURUS // N-BODY PHYSICS</div>
+        <div class="cv-label" id="cv-scenario">AWAITING INPUT</div>
+      </div>
+      <div class="cv-tr">
+        <div class="cv-label" id="cv-info">SELECT SCENARIO<br>OR USE CHAT</div>
+      </div>
+      <div class="cv-bl">
+        <div class="cv-label" id="cv-desc"></div>
+      </div>
+      <div class="cv-br">
+        <div class="cv-label">G=0.4 // LEAPFROG INTEGRATOR</div>
+      </div>
+
+      <div id="scenario-watermark">ORBITAL MECHANICS</div>
+
+      <div id="empty-state">
+        <div class="empty-orb">🌌</div>
+        <div class="empty-text">
+          SELECT A SCENARIO<br>
+          OR ASK THE AI ASSISTANT<br>
+          TO SIMULATE AN ORBIT
+        </div>
+      </div>
+    </div>
+
+    <!-- ── RIGHT: CHAT PANEL ── -->
+    <div id="chat-panel">
+      <div class="panel-header">
+        <span class="panel-tag">AI Orbital Assistant</span>
+        <div class="panel-tag-line"></div>
+      </div>
+
+      <div id="chat-messages">
+        <div class="welcome-msg">
+          <div class="welcome-title">⚡ ORBITAL INTELLIGENCE ONLINE</div>
+          <div class="welcome-body">
+            Powered by Llama 3.1 + ChromaDB RAG<br>
+            Domain: Orbital Mechanics &amp; Dynamics
+          </div>
+          <div class="welcome-examples">
+            <div class="example-chip" onclick="fillInput('Simulate Mars orbit for 2 years')">
+              → Simulate Mars orbit for 2 years
+            </div>
+            <div class="example-chip" onclick="fillInput('Show Earth to Mars Hohmann transfer')">
+              → Show Earth to Mars Hohmann transfer
+            </div>
+            <div class="example-chip" onclick="fillInput('What are Lagrange points?')">
+              → What are Lagrange points?
+            </div>
+            <div class="example-chip" onclick="fillInput('Show all inner planets orbiting the sun')">
+              → Show all inner planets
+            </div>
+            <div class="example-chip" onclick="fillInput('Explain Kepler third law with Mars data')">
+              → Explain Kepler third law
+            </div>
+          </div>
+        </div>
+      </div>
+
+      <div class="chat-input-area">
+        <div class="api-status">
+          <div class="api-dot checking" id="api-dot"></div>
+          <span class="api-label" id="api-label">Checking API connection...</span>
+        </div>
+        <div class="input-wrap">
+          <textarea id="chat-input" placeholder="Ask about any orbit, transfer, or orbital mechanics concept..."
+            rows="2"></textarea>
+          <button id="send-btn" title="Send">➤</button>
+        </div>
+      </div>
+    </div>
+
+  </div>
+
+  <script>
+    "use strict";
+
+    var API_BASE = 'http://localhost:8000';
+    var astroData = {};
+    var simState = {
+      objects: [], originals: [],
+      playing: false, showTrails: true, showGlow: true, showLabels: true,
+      speed: 3, trailAlpha: 0.12,
+      G: 0.4, tick: 0, animId: null,
+      currentKey: '', description: ''
+    };
+    var fpsCount = 0, fpsLast = Date.now(), fps = 0;
+
+    // ── STARFIELD ─────────────────────────────────────────────────
+    (function () {
+      var c = document.getElementById('starfield');
+      var ctx = c.getContext('2d');
+      var stars = [];
+      function resize() { c.width = window.innerWidth; c.height = window.innerHeight; }
+      function init() {
+        stars = [];
+        for (var i = 0; i < 400; i++) {
+          stars.push({
+            x: Math.random() * c.width, y: Math.random() * c.height,
+            r: Math.random() * 1.6 + 0.1,
+            a: Math.random() * Math.PI * 2,
+            s: Math.random() * 0.3 + 0.02,
+            hue: Math.random() * 60 + 200
+          });
+        }
+      }
+      function draw() {
+        ctx.clearRect(0, 0, c.width, c.height);
+        for (var i = 0; i < stars.length; i++) {
+          var s = stars[i];
+          s.a += s.s * 0.008;
+          var al = ((Math.sin(s.a) + 1) / 2) * 0.75 + 0.05;
+          ctx.beginPath();
+          ctx.arc(s.x, s.y, s.r, 0, Math.PI * 2);
+          ctx.fillStyle = 'hsla(' + s.hue + ',60%,85%,' + al + ')';
+          ctx.fill();
+        }
+        requestAnimationFrame(draw);
+      }
+      resize(); init(); draw();
+      window.addEventListener('resize', function () { resize(); init(); });
+    })();
+
+    // ── CHIP CATEGORIES ───────────────────────────────────────────
+    var CHIP_CATS = {
+      orbital: [
+        { key: 'solar system', icon: '🪐', label: 'Solar System' },
+        { key: 'binary system', icon: '⭐', label: 'Binary Star' },
+        { key: 'three body', icon: '🔺', label: 'Three Body' },
+        { key: 'figure-8 orbit', icon: '∞', label: 'Figure-8' },
+        { key: 'lagrange points', icon: '⚖', label: 'Lagrange' },
+        { key: 'hohmann transfer', icon: '🚀', label: 'Hohmann' },
+        { key: 'resonance chain', icon: '🎵', label: 'Resonance' },
+        { key: 'stellar flyby', icon: '💨', label: 'Flyby' },
+        { key: 'roche limit', icon: '💔', label: 'Roche Limit' },
+        { key: 'slingshot', icon: '🎯', label: 'Slingshot' },
+        { key: 'kozai mechanism', icon: '🔄', label: 'Kozai' },
+        { key: 'comet', icon: '☄', label: 'Comet' },
+        { key: 'asteroid belt', icon: '🪨', label: 'Asteroids' },
+        { key: 'double planet', icon: '🌐', label: 'Double Planet' },
+      ],
+      stellar: [
+        { key: 'black hole', icon: '🕳', label: 'Black Hole' },
+        { key: 'neutron star', icon: '💫', label: 'Neutron Star' },
+        { key: 'pulsar', icon: '📡', label: 'Pulsar' },
+        { key: 'white dwarf', icon: '⚪', label: 'White Dwarf' },
+        { key: 'supernova remnant', icon: '💥', label: 'Supernova' },
+        { key: 'protoplanetary disk', icon: '🌀', label: 'Proto. Disk' },
+        { key: 'nebula', icon: '🌸', label: 'Nebula' },
+        { key: 'magnetic braking', icon: '🧲', label: 'Mag. Braking' },
+        { key: 'exoplanet system', icon: '🌍', label: 'Exoplanet' },
+        { key: 'contact binary', icon: '🔴', label: 'Contact Binary' },
+        { key: 'eccentric binary', icon: '🌀', label: 'Eccentric Bin.' },
+      ],
+      galactic: [
+        { key: 'galaxy collision', icon: '🌌', label: 'Galaxy Merge' },
+        { key: 'globular cluster', icon: '🔮', label: 'Globular Cluster' },
+        { key: 'star cluster', icon: '✨', label: 'Star Cluster' },
+        { key: 'dark matter halo', icon: '🌑', label: 'Dark Matter' },
+        { key: 'quasar', icon: '⚡', label: 'Quasar' },
+        { key: 'milky way core', icon: '🏛', label: 'Milky Way Core' },
+      ]
+    };
+
+    // ── CANVAS SETUP ──────────────────────────────────────────────
+    var canvas = document.getElementById('sim-canvas');
+    var ctx = canvas.getContext('2d');
+
+    function resizeCanvas() {
+      var area = document.getElementById('canvas-area');
+      canvas.width = area.offsetWidth;
+      canvas.height = area.offsetHeight;
+    }
+
+    // ── LOAD SCENARIO DATA ────────────────────────────────────────
+    function loadData(cb) {
+      var xhr = new XMLHttpRequest();
+      xhr.open('GET', '/astro-data.json', true);
+      xhr.onload = function () {
+        if (xhr.status === 200) { astroData = JSON.parse(xhr.responseText); cb(); }
+      };
+      xhr.send();
+    }
+
+    // ── BUILD CHIPS ───────────────────────────────────────────────
+    function buildChips() {
+      function makeGrid(containerId, chips) {
+        var grid = document.getElementById(containerId);
+        grid.innerHTML = '';
+        chips.forEach(function (c) {
+          if (!astroData[c.key]) return;
+          var div = document.createElement('div');
+          div.className = 'chip';
+          div.setAttribute('data-key', c.key);
+          div.innerHTML = '<span class="chip-icon">' + c.icon + '</span>' + c.label;
+          div.addEventListener('click', (function (k) { return function () { loadScenario(k); }; })(c.key));
+          grid.appendChild(div);
+        });
+      }
+      makeGrid('chip-grid-orbital', CHIP_CATS.orbital);
+      makeGrid('chip-grid-stellar', CHIP_CATS.stellar);
+      makeGrid('chip-grid-galactic', CHIP_CATS.galactic);
+    }
+
+    // ── PHYSICS ENGINE ────────────────────────────────────────────
+    var TYPE_GLOW = {
+      star: 3.5, giant: 4.5, blackhole: 7, neutron: 6, dwarf: 3,
+      planet: 2.5, galaxy: 5, gas: 2, debris: 1.5, asteroid: 1.5,
+      jet: 3, spacecraft: 2, comet: 4.5, moon: 2, accretion: 3.5, darkmatter: 4
+    };
+
+    function deepCopy(arr) {
+      return arr.map(function (o) {
+        return {
+          name: o.name, x: o.x, y: o.y, vx: o.vx, vy: o.vy,
+          mass: o.mass, color: o.color, radius: o.radius, type: o.type || 'star'
+        };
+      });
+    }
+
+    function loadScenario(key) {
+      var data = astroData[key]; if (!data) return;
+      var objects = data.objects || data;
+      var G = data.G || 0.4;
+      var desc = data.description || '';
+
+      if (simState.animId) { cancelAnimationFrame(simState.animId); simState.animId = null; }
+      simState.G = G;
+      simState.objects = deepCopy(objects);
+      simState.originals = deepCopy(objects);
+      simState.tick = 0; simState.currentKey = key; simState.description = desc;
+      simState.playing = true;
+
+      resizeCanvas();
+      ctx.fillStyle = '#000005'; ctx.fillRect(0, 0, canvas.width, canvas.height);
+
+      document.getElementById('empty-state').style.display = 'none';
+      document.getElementById('h-scenario').textContent = key.replace(/ /g, '_').toUpperCase().slice(0, 12);
+      document.getElementById('h-bodies').textContent = simState.objects.length;
+      document.getElementById('cv-scenario').textContent = key.toUpperCase();
+      document.getElementById('cv-info').innerHTML = key.toUpperCase() + '<br>' + simState.objects.length + ' BODIES';
+      document.getElementById('cv-desc').textContent = desc;
+      document.getElementById('scenario-watermark').textContent = key.toUpperCase();
+      document.getElementById('play-btn').textContent = '⏸ PAUSE';
+      document.getElementById('play-btn').className = 'btn on';
+
+      document.querySelectorAll('.chip').forEach(function (c) {
+        c.className = c.getAttribute('data-key') === key ? 'chip active' : 'chip';
+      });
+
+      var list = document.getElementById('obj-list'); list.innerHTML = '';
+      simState.objects.forEach(function (o) {
+        var item = document.createElement('div'); item.className = 'obj-item';
+        item.innerHTML = '<div class="obj-dot" style="background:' + o.color + '"></div>' +
+          '<span class="obj-name">' + o.name + '</span>' +
+          '<span class="obj-mass">' + o.mass + 'M</span>';
+        list.appendChild(item);
+      });
+
+      loop();
+    }
+
+    function updatePhysics() {
+      var G = simState.G, objs = simState.objects, n = objs.length;
+      var ax = new Array(n), ay = new Array(n);
+      for (var i = 0; i < n; i++) { ax[i] = 0; ay[i] = 0; }
+      for (var i = 0; i < n; i++) {
+        for (var j = i + 1; j < n; j++) {
+          var dx = objs[j].x - objs[i].x, dy = objs[j].y - objs[i].y;
+          var d2 = dx * dx + dy * dy;
+          var soft = Math.max(4, Math.sqrt(objs[i].mass + objs[j].mass) * 0.05);
+          d2 += soft * soft;
+          var d = Math.sqrt(d2), f = G / d2;
+          var fx = f * dx / d, fy = f * dy / d;
+          ax[i] += fx * objs[j].mass; ay[i] += fy * objs[j].mass;
+          ax[j] -= fx * objs[i].mass; ay[j] -= fy * objs[i].mass;
+        }
+      }
+      for (var i = 0; i < n; i++) {
+        objs[i].vx += ax[i] * simState.speed * 0.016;
+        objs[i].vy += ay[i] * simState.speed * 0.016;
+        objs[i].x += objs[i].vx * simState.speed * 0.5;
+        objs[i].y += objs[i].vy * simState.speed * 0.5;
+      }
+    }
+
+    function hexToRgb(hex) {
+      hex = hex.replace('#', '');
+      if (hex.length === 3) hex = hex[0] + hex[0] + hex[1] + hex[1] + hex[2] + hex[2];
+      return { r: parseInt(hex.slice(0, 2), 16), g: parseInt(hex.slice(2, 4), 16), b: parseInt(hex.slice(4, 6), 16) };
+    }
+
+    function drawFrame() {
+      var W = canvas.width, H = canvas.height;
+      if (simState.showTrails) {
+        ctx.fillStyle = 'rgba(0,0,5,' + simState.trailAlpha + ')';
+      } else {
+        ctx.fillStyle = '#000005';
+      }
+      ctx.fillRect(0, 0, W, H);
+
+      simState.objects.forEach(function (obj) {
+        var r = obj.radius || Math.max(2, Math.sqrt(obj.mass) * 0.08);
+        var rgb = hexToRgb(obj.color);
+        var rs = rgb.r + ',' + rgb.g + ',' + rgb.b;
+        var gm = TYPE_GLOW[obj.type] || 3;
+
+        if (simState.showGlow) {
+          // Outer halo
+          var g1 = ctx.createRadialGradient(obj.x, obj.y, 0, obj.x, obj.y, r * gm * 3);
+          g1.addColorStop(0, 'rgba(' + rs + ',0.1)');
+          g1.addColorStop(1, 'rgba(' + rs + ',0)');
+          ctx.beginPath(); ctx.arc(obj.x, obj.y, r * gm * 3, 0, Math.PI * 2);
+          ctx.fillStyle = g1; ctx.fill();
+
+          // Inner glow
+          var g2 = ctx.createRadialGradient(obj.x, obj.y, 0, obj.x, obj.y, r * gm);
+          g2.addColorStop(0, 'rgba(' + rs + ',0.6)');
+          g2.addColorStop(0.5, 'rgba(' + rs + ',0.2)');
+          g2.addColorStop(1, 'rgba(' + rs + ',0)');
+          ctx.beginPath(); ctx.arc(obj.x, obj.y, r * gm, 0, Math.PI * 2);
+          ctx.fillStyle = g2; ctx.fill();
+        }
+
+        // Core
+        ctx.beginPath(); ctx.arc(obj.x, obj.y, r, 0, Math.PI * 2);
+        ctx.fillStyle = obj.color; ctx.fill();
+
+        // Specular
+        if (r > 5 && simState.showGlow) {
+          var gr = ctx.createRadialGradient(obj.x - r * 0.3, obj.y - r * 0.3, 0, obj.x, obj.y, r);
+          gr.addColorStop(0, 'rgba(255,255,255,0.4)');
+          gr.addColorStop(0.5, 'rgba(255,255,255,0.08)');
+          gr.addColorStop(1, 'rgba(255,255,255,0)');
+          ctx.beginPath(); ctx.arc(obj.x, obj.y, r, 0, Math.PI * 2);
+          ctx.fillStyle = gr; ctx.fill();
+        }
+
+        // Black hole rings
+        if (obj.type === 'blackhole') {
+          [1.8, 2.6, 3.6].forEach(function (m, i) {
+            ctx.beginPath(); ctx.arc(obj.x, obj.y, r * m, 0, Math.PI * 2);
+            ctx.strokeStyle = 'rgba(' + rs + ',' + (0.4 - i * 0.12) + ')';
+            ctx.lineWidth = 1.5 - i * 0.4; ctx.stroke();
+          });
+        }
+
+        // Labels
+        if (simState.showLabels && simState.objects.length <= 24) {
+          ctx.font = 'bold 8px JetBrains Mono, monospace';
+          ctx.fillStyle = 'rgba(180,200,255,0.5)';
+          ctx.fillText(obj.name, obj.x + r + 4, obj.y - 2);
+        }
+      });
+
+      // FPS counter
+      fpsCount++;
+      var now = Date.now();
+      if (now - fpsLast >= 1000) {
+        fps = fpsCount; fpsCount = 0; fpsLast = now;
+        document.getElementById('h-fps').textContent = fps;
+      }
+      document.getElementById('h-tick').textContent = simState.tick;
+    }
+
+    function loop() {
+      if (simState.playing) {
+        var sub = simState.speed > 6 ? 3 : 2;
+        for (var i = 0; i < sub; i++) updatePhysics();
+        simState.tick++;
+      }
+      drawFrame();
+      simState.animId = requestAnimationFrame(loop);
+    }
+
+    // ── API CHAT ──────────────────────────────────────────────────
+    function checkAPI() {
+      fetch(API_BASE + '/api/health')
+        .then(function (r) { return r.json(); })
+        .then(function (d) {
+          document.getElementById('api-dot').className = 'api-dot online';
+          document.getElementById('api-label').textContent = 'Llama 3.1 + RAG Online (' + d.rag_docs + ' docs)';
+          document.getElementById('h-rag').textContent = d.rag_docs;
+        })
+        .catch(function () {
+          document.getElementById('api-dot').className = 'api-dot offline';
+          document.getElementById('api-label').textContent = 'API Offline — run api_server.py';
+        });
+    }
+
+    function fillInput(text) {
+      document.getElementById('chat-input').value = text;
+      document.getElementById('chat-input').focus();
+    }
+
+    function addMsg(type, content) {
+      var msgs = document.getElementById('chat-messages');
+      var div = document.createElement('div');
+      div.className = 'msg msg-' + type;
+      if (typeof content === 'string') {
+        div.textContent = content;
+      } else {
+        msgs.appendChild(content);
+        msgs.scrollTop = msgs.scrollHeight;
+        return content;
+      }
+      msgs.appendChild(div);
+      msgs.scrollTop = msgs.scrollHeight;
+      return div;
+    }
+
+    function addTyping() {
+      var msgs = document.getElementById('chat-messages');
+      var div = document.createElement('div');
+      div.className = 'msg msg-assistant typing';
+      div.id = 'typing-indicator';
+      div.innerHTML = '<span></span><span></span><span></span>';
+      msgs.appendChild(div);
+      msgs.scrollTop = msgs.scrollHeight;
+    }
+
+    function removeTyping() {
+      var t = document.getElementById('typing-indicator');
+      if (t) t.remove();
+    }
+
+    function sendMessage() {
+      var input = document.getElementById('chat-input');
+      var msg = input.value.trim();
+      if (!msg) return;
+
+      addMsg('user', msg);
+      input.value = '';
+      document.getElementById('send-btn').disabled = true;
+      addTyping();
+
+      fetch(API_BASE + '/api/chat', {
+        method: 'POST',
+        headers: { 'Content-Type': 'application/json' },
+        body: JSON.stringify({ message: msg })
+      })
+        .then(function (r) { return r.json(); })
+        .then(function (data) {
+          removeTyping();
+
+          // Text answer
+          var msgDiv = document.createElement('div');
+          msgDiv.className = 'msg msg-assistant';
+
+          var textP = document.createElement('p');
+          textP.textContent = data.text || 'No response';
+          msgDiv.appendChild(textP);
+
+          // Numerical data table
+          if (data.data) {
+            var tbl = document.createElement('table');
+            tbl.className = 'data-table';
+            Object.entries(data.data).forEach(function (kv) {
+              var tr = document.createElement('tr');
+              tr.innerHTML = '<td>' + kv[0].replace(/_/g, ' ') + '</td><td>' + kv[1] + '</td>';
+              tbl.appendChild(tr);
+            });
+            msgDiv.appendChild(tbl);
+          }
+
+          // Plot image
+          if (data.plot) {
+            var img = document.createElement('img');
+            img.src = 'data:image/png;base64,' + data.plot;
+            img.className = 'chat-plot';
+            img.alt = 'Orbital plot';
+            msgDiv.appendChild(img);
+          }
+
+          var msgs = document.getElementById('chat-messages');
+          msgs.appendChild(msgDiv);
+          msgs.scrollTop = msgs.scrollHeight;
+
+          // If simulation intent detected, load scenario
+          if (data.intent && data.intent.body && astroData) {
+            var body = data.intent.body.toLowerCase();
+            // Map body to scenario key
+            var bodyToScenario = {
+              'mars': 'solar system', 'earth': 'solar system', 'jupiter': 'solar system',
+              'saturn': 'solar system', 'venus': 'solar system', 'mercury': 'solar system'
+            };
+            var scenarioKey = bodyToScenario[body] || body;
+            if (astroData[scenarioKey]) {
+              loadScenario(scenarioKey);
+              addMsg('system', '↑ Loaded simulation: ' + scenarioKey);
+            }
+          }
+
+          document.getElementById('send-btn').disabled = false;
+        })
+        .catch(function (err) {
+          removeTyping();
+          addMsg('error', 'Connection error: Is api_server.py running on port 8000?');
+          document.getElementById('send-btn').disabled = false;
+        });
+    }
+
+    // ── CONTROLS ──────────────────────────────────────────────────
+    window.addEventListener('load', function () {
+      resizeCanvas();
+      checkAPI();
+      setInterval(checkAPI, 30000);
+
+      loadData(function () {
+        buildChips();
+      });
+
+      document.getElementById('play-btn').addEventListener('click', function () {
+        simState.playing = !simState.playing;
+        this.textContent = simState.playing ? '⏸ PAUSE' : '▶ PLAY';
+        this.className = simState.playing ? 'btn on' : 'btn';
+      });
+
+      document.getElementById('reset-btn').addEventListener('click', function () {
+        if (!simState.currentKey) return;
+        simState.objects = deepCopy(simState.originals);
+        simState.tick = 0;
+        ctx.fillStyle = '#000005'; ctx.fillRect(0, 0, canvas.width, canvas.height);
+      });
+
+      document.getElementById('trail-btn').addEventListener('click', function () {
+        simState.showTrails = !simState.showTrails;
+        this.textContent = simState.showTrails ? '◎ TRAILS' : '◎ NO TRAILS';
+        this.className = simState.showTrails ? 'btn on' : 'btn';
+      });
+
+      document.getElementById('glow-btn').addEventListener('click', function () {
+        simState.showGlow = !simState.showGlow;
+        this.textContent = simState.showGlow ? '✦ GLOW' : '✦ NO GLOW';
+        this.className = simState.showGlow ? 'btn on' : 'btn';
+      });
+
+      document.getElementById('label-btn').addEventListener('click', function () {
+        simState.showLabels = !simState.showLabels;
+        this.textContent = simState.showLabels ? '⌖ LABELS' : '⌖ NO LABELS';
+        this.className = simState.showLabels ? 'btn on' : 'btn';
+      });
+
+      document.getElementById('speed-slider').addEventListener('input', function () {
+        simState.speed = parseInt(this.value);
+        document.getElementById('speed-val').textContent = simState.speed + '×';
+      });
+
+      document.getElementById('trail-slider').addEventListener('input', function () {
+        var v = parseInt(this.value);
+        var lbls = ['', 'very long', 'long', 'long', 'medium', 'medium', 'short', 'short', 'fast', 'very fast', 'instant'];
+        simState.trailAlpha = v * 0.025 + 0.02;
+        document.getElementById('trail-val').textContent = lbls[v] || v;
+      });
+
+      document.getElementById('send-btn').addEventListener('click', sendMessage);
+      document.getElementById('chat-input').addEventListener('keydown', function (e) {
+        if (e.key === 'Enter' && !e.shiftKey) { e.preventDefault(); sendMessage(); }
+      });
+
+      window.addEventListener('resize', function () {
+        resizeCanvas();
+        if (simState.objects.length > 0) {
+          ctx.fillStyle = '#000005'; ctx.fillRect(0, 0, canvas.width, canvas.height);
+        }
+      });
+    });
+  </script>
+</body>
+
+</html>
