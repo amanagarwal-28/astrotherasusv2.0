@@ -1,0 +1,15 @@
+# Ignore the virtual environment
+venv/
+.venv/
+env/
+
+# Ignore the local vector database (it's too big and should be built locally)
+chroma_db/
+
+# Ignore Python cache
+__pycache__/
+*.pyc
+
+# Ignore OS files
+.DS_Store
+Thumbs.db
