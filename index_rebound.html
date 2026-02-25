@@ -1580,7 +1580,21 @@
       this.textContent = simState.playing ? '⏸ Pause' : '▶ Play';
       this.className = simState.playing ? 'btn on' : 'btn';
     });
-    document.getElementById('btn-reset').addEventListener('click', function () { wsSend({ action: 'reset' }); });
+    document.getElementById('btn-reset').addEventListener('click', function () {
+      wsSend({ action: 'reset' });
+      // Clear trails
+      for (var i = 0; i < simState.trails.length; i++) {
+        simState.trails[i].length = 0;
+      }
+      // Reset UI state
+      simState.playing = false;
+      var pauseBtn = document.getElementById('btn-pause');
+      pauseBtn.textContent = '▶ Play';
+      pauseBtn.className = 'btn';
+      // Clear canvas
+      ctx.fillStyle = '#000010';
+      ctx.fillRect(0, 0, canvas.width, canvas.height);
+    });
     document.getElementById('btn-trail').addEventListener('click', function () { simState.showTrails = !simState.showTrails; this.className = simState.showTrails ? 'btn on' : 'btn'; });
     document.getElementById('btn-glow').addEventListener('click', function () { simState.showGlow = !simState.showGlow; this.className = simState.showGlow ? 'btn on' : 'btn'; });
     document.getElementById('btn-lbl').addEventListener('click', function () { simState.showLabels = !simState.showLabels; this.className = simState.showLabels ? 'btn on' : 'btn'; });

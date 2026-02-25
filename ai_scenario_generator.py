@@ -75,16 +75,55 @@ MASS REFERENCE (solar masses):
 - Massive star: 10-100
 
 VELOCITY FORMULA for circular orbit:
-  v_circ = 2π * sqrt(1/a)    [AU/yr around 1 Msun star]
-  Example: a=1 AU → v=6.28 AU/yr
-  Example: a=0.1 AU → v=19.86 AU/yr
-  Example: a=5 AU → v=2.81 AU/yr
+  v_circ = 2π * sqrt(M/r)    [where M = mass of central body, r = orbital radius]
+  For orbit around Sun (1 Msun): v = 2π * sqrt(1/r)
+  Example: r=1 AU → v=6.28 AU/yr
+  Example: r=0.1 AU → v=19.86 AU/yr
+  Example: r=5 AU → v=2.81 AU/yr
 
-CIRCULAR ORBIT SETUP (body orbiting at radius r from central mass M):
-  vy = 2π * sqrt(M/r)   [body at (r, 0) moving in +y direction]
+CRITICAL ORBITAL SETUP RULES:
 
-ALWAYS place the primary body (star/BH) at (0,0) or use move_to_com offset.
-For MULTIPLE stars (binary/trinary): place at ±separation/2, give equal/opposite velocities.
+1. PLANET ORBITING STAR (star at origin):
+   Star: x=0, y=0, vx=0, vy=0
+   Planet: x=r, y=0, vx=0, vy=2π*sqrt(M_star/r)
+   
+2. MOON ORBITING PLANET (planet-moon system):
+   IMPORTANT: Use barycentric frame! Both bodies orbit their common center of mass.
+   
+   Method: For moon at distance d from planet:
+   - r_com = d * m_moon / (m_planet + m_moon)  [distance of planet from COM]
+   - Planet: x = -r_com, y = 0
+   - Moon: x = d - r_com, y = 0
+   - v_orbit = 2π * sqrt((m_planet + m_moon) / d)
+   - Planet: vx=0, vy = -v_orbit * m_moon / (m_planet + m_moon)
+   - Moon: vx=0, vy = v_orbit * m_planet / (m_planet + m_moon)
+   
+   Example Earth-Moon (d=0.00257 AU):
+   - Earth: x=-0.000032, y=0, vx=0, vy=-0.079
+   - Moon: x=0.00254, y=0, vx=0, vy=6.317
+
+3. BINARY STARS (equal mass stars):
+   Place at x=±separation/2, y=0
+   v_circ = 2π * sqrt(M_star / separation)
+   Star1: vx=0, vy=+v_circ
+   Star2: vx=0, vy=-v_circ
+
+4. PLANET WITH MULTIPLE MOONS:
+   Place planet near origin, calculate each moon's barycentric position separately
+   Each moon velocity: vy = 2π * sqrt(m_planet / r_moon) approximately
+
+5. SATELLITE AROUND PLANET (like Jupiter's moons):
+   Treat Jupiter as massive → place at origin
+   Satellite: x=r, y=0, vx=0, vy=2π*sqrt(M_jupiter/r)
+   Use Jupiter mass = 0.001 Msun
+
+COMMON MISTAKES TO AVOID:
+❌ Setting planet velocity to 0 when it has a moon → moon will fall!
+❌ Using Sun's mass for moon orbiting planet → wrong velocity!
+❌ Forgetting barycentric frame for similar-mass systems
+✓ ALWAYS calculate velocities based on the ACTUAL central body mass
+✓ For moon systems, use planet mass, not Sun mass
+✓ Use barycentric frame when masses are comparable (>1% ratio)
 
 BODY TYPES: "star", "planet", "debris", "blackhole", "neutron", "dwarf", "giant", "moon", "comet", "spacecraft"
 
@@ -106,6 +145,42 @@ User: "hot jupiter system"
     {"name": "Host Star", "mass": 1.1, "x": 0, "y": 0, "vx": 0, "vy": 0, "color": "#ffcc88", "radius": 18, "type": "star"},
     {"name": "Hot Jupiter", "mass": 0.001, "x": 0.05, "y": 0, "vx": 0, "vy": 28.06, "color": "#ff9933", "radius": 11, "type": "planet"},
     {"name": "Super Earth", "mass": 1e-5, "x": 0.5, "y": 0, "vx": 0, "vy": 8.89, "color": "#44aaff", "radius": 6, "type": "planet"}
+  ]
+}
+
+User: "Jupiter with its 4 Galilean moons"
+{
+  "name": "Jupiter System",
+  "description": "Jupiter with Io, Europa, Ganymede, and Callisto",
+  "units": "solar", "integrator": "whfast", "t_per_frame": 0.0002, "scale": 1200,
+  "bodies": [
+    {"name": "Jupiter", "mass": 0.001, "x": 0, "y": 0, "vx": 0, "vy": 0, "color": "#c88b3a", "radius": 16, "type": "planet"},
+    {"name": "Io", "mass": 1e-8, "x": 0.00282, "y": 0, "vx": 0, "vy": 11.15, "color": "#ffdd88", "radius": 4, "type": "moon"},
+    {"name": "Europa", "mass": 8e-9, "x": 0.00448, "y": 0, "vx": 0, "vy": 8.85, "color": "#ddffff", "radius": 3, "type": "moon"},
+    {"name": "Ganymede", "mass": 2.5e-8, "x": 0.00716, "y": 0, "vx": 0, "vy": 7.00, "color": "#ccaa88", "radius": 5, "type": "moon"},
+    {"name": "Callisto", "mass": 1.8e-8, "x": 0.01259, "y": 0, "vx": 0, "vy": 5.28, "color": "#998877", "radius": 5, "type": "moon"}
+  ]
+}
+
+User: "Earth and Moon"
+{
+  "name": "Earth-Moon System",
+  "description": "Earth and Moon in barycentric frame",
+  "units": "solar", "integrator": "ias15", "t_per_frame": 0.0001, "scale": 3000,
+  "bodies": [
+    {"name": "Earth", "mass": 3.003e-6, "x": -0.000032, "y": 0, "vx": 0, "vy": -0.079, "color": "#4fffb0", "radius": 14, "type": "planet"},
+    {"name": "Moon", "mass": 3.694e-8, "x": 0.00254, "y": 0, "vx": 0, "vy": 6.317, "color": "#cccccc", "radius": 7, "type": "moon"}
+  ]
+}
+
+User: "Pluto and Charon binary"
+{
+  "name": "Pluto-Charon",
+  "description": "Pluto-Charon binary system with extreme mass ratio",
+  "units": "solar", "integrator": "ias15", "t_per_frame": 0.0005, "scale": 2500,
+  "bodies": [
+    {"name": "Pluto", "mass": 2.2e-9, "x": -0.00045, "y": 0, "vx": 0, "vy": -1.02, "color": "#ccaa88", "radius": 8, "type": "dwarf"},
+    {"name": "Charon", "mass": 2.7e-10, "x": 0.00130, "y": 0, "vx": 0, "vy": 8.33, "color": "#998877", "radius": 5, "type": "moon"}
   ]
 }
 
@@ -235,11 +310,15 @@ KNOWN_SCENARIOS = {
     },
     "earth moon": {
         "name": "Earth-Moon System",
-        "description": "Earth and Moon — real orbital data",
+        "description": "Earth and Moon in barycentric frame",
         "units": "solar", "integrator": "ias15", "t_per_frame": 0.0001, "scale": 3000,
         "bodies": [
-            {"name": "Earth", "mass": 3.003e-6,  "x": 0,        "y": 0,   "vx": 0, "vy": 0, "color": "#4fffb0", "radius": 14, "type": "planet"},
-            {"name": "Moon",  "mass": 3.694e-8,  "x": 0.00257,  "y": 0,   "vx": 0, "vy": 6.396, "color": "#cccccc", "radius": 7,  "type": "moon"},
+            # Place Earth and Moon in center of mass frame
+            # Moon orbits Earth at distance 0.00257 AU (384,400 km)
+            # Mass ratio: m_moon/m_earth = 0.0123
+            # For circular orbit: v = 2π * sqrt(M_total / r) where M_total in solar masses
+            {"name": "Earth", "mass": 3.003e-6,  "x": -0.000032,  "y": 0,   "vx": 0, "vy": -0.079, "color": "#4fffb0", "radius": 14, "type": "planet"},
+            {"name": "Moon",  "mass": 3.694e-8,  "x": 0.00254,    "y": 0,   "vx": 0, "vy": 6.317, "color": "#cccccc", "radius": 7,  "type": "moon"},
         ]
     },
     "figure-8": {
@@ -250,6 +329,40 @@ KNOWN_SCENARIOS = {
             {"name": "Body A", "mass": 1.0, "x":  0.9700436, "y": -0.2430870, "vx":  0.2330018, "vy":  0.2161829, "color": "#ff6b35", "radius": 9, "type": "star"},
             {"name": "Body B", "mass": 1.0, "x": -0.9700436, "y":  0.2430870, "vx":  0.2330018, "vy":  0.2161829, "color": "#4fffb0", "radius": 9, "type": "star"},
             {"name": "Body C", "mass": 1.0, "x":  0.0,       "y":  0.0,       "vx": -0.4660035, "vy": -0.4323658, "color": "#bf7fff", "radius": 9, "type": "star"},
+        ]
+    },
+    "jupiter moons": {
+        "name": "Jupiter's Galilean Moons",
+        "description": "Jupiter with Io, Europa, Ganymede, and Callisto",
+        "units": "solar", "integrator": "whfast", "t_per_frame": 0.0002, "scale": 1200,
+        "bodies": [
+            {"name": "Jupiter", "mass": 0.001, "x": 0, "y": 0, "vx": 0, "vy": 0, "color": "#c88b3a", "radius": 16, "type": "planet"},
+            {"name": "Io", "mass": 1e-8, "x": 0.00282, "y": 0, "vx": 0, "vy": 11.15, "color": "#ffdd88", "radius": 4, "type": "moon"},
+            {"name": "Europa", "mass": 8e-9, "x": 0.00448, "y": 0, "vx": 0, "vy": 8.85, "color": "#ddffff", "radius": 3, "type": "moon"},
+            {"name": "Ganymede", "mass": 2.5e-8, "x": 0.00716, "y": 0, "vx": 0, "vy": 7.00, "color": "#ccaa88", "radius": 5, "type": "moon"},
+            {"name": "Callisto", "mass": 1.8e-8, "x": 0.01259, "y": 0, "vx": 0, "vy": 5.28, "color": "#998877", "radius": 5, "type": "moon"}
+        ]
+    },
+    "pluto charon": {
+        "name": "Pluto-Charon Binary",
+        "description": "Pluto and Charon in barycentric frame",
+        "units": "solar", "integrator": "ias15", "t_per_frame": 0.0005, "scale": 2500,
+        "bodies": [
+            {"name": "Pluto", "mass": 2.2e-9, "x": -0.00045, "y": 0, "vx": 0, "vy": -1.02, "color": "#ccaa88", "radius": 8, "type": "dwarf"},
+            {"name": "Charon", "mass": 2.7e-10, "x": 0.00130, "y": 0, "vx": 0, "vy": 8.33, "color": "#998877", "radius": 5, "type": "moon"}
+        ]
+    },
+    "saturn rings": {
+        "name": "Saturn with Rings",
+        "description": "Saturn with major moons: Titan, Rhea, Iapetus, Dione, Tethys",
+        "units": "solar", "integrator": "whfast", "t_per_frame": 0.0008, "scale": 600,
+        "bodies": [
+            {"name": "Saturn", "mass": 0.0002857, "x": 0, "y": 0, "vx": 0, "vy": 0, "color": "#e4d191", "radius": 15, "type": "planet"},
+            {"name": "Titan", "mass": 2.3e-8, "x": 0.00817, "y": 0, "vx": 0, "vy": 6.56, "color": "#ffaa66", "radius": 6, "type": "moon"},
+            {"name": "Rhea", "mass": 4e-9, "x": 0.00352, "y": 0, "vx": 0, "vy": 9.98, "color": "#cccccc", "radius": 3, "type": "moon"},
+            {"name": "Iapetus", "mass": 3e-9, "x": 0.02381, "y": 0, "vx": 0, "vy": 3.84, "color": "#998877", "radius": 3, "type": "moon"},
+            {"name": "Dione", "mass": 2e-9, "x": 0.00252, "y": 0, "vx": 0, "vy": 11.79, "color": "#dddddd", "radius": 2, "type": "moon"},
+            {"name": "Tethys", "mass": 1e-9, "x": 0.00197, "y": 0, "vx": 0, "vy": 13.33, "color": "#eeeeff", "radius": 2, "type": "moon"}
         ]
     },
 }

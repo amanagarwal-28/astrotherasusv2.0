@@ -112,6 +112,13 @@ def plot_orbit(orbit_data, title=None):
     ax.set_title(f'{body} — Orbital Path', fontsize=11)
     ax.legend(fontsize=8, loc='upper right')
     ax.set_aspect('equal')
+    
+    # Auto-scale axes with padding to prevent overflow
+    x_range = max(abs(x.min()), abs(x.max()))
+    y_range = max(abs(y.min()), abs(y.max()))
+    max_range = max(x_range, y_range) * 1.15  # 15% padding
+    ax.set_xlim(-max_range, max_range)
+    ax.set_ylim(-max_range, max_range)
 
     # ── RIGHT: Distance & Speed vs Time ─────────────────────
     ax2 = axes[1]
@@ -221,6 +228,11 @@ def plot_hohmann(transfer_data):
                  fontsize=13, fontweight='bold')
     ax.legend(fontsize=9, loc='lower right')
     ax.set_aspect('equal')
+    
+    # Auto-scale to fit both orbits with padding
+    max_r = max(r1, r2) * 1.15
+    ax.set_xlim(-max_r, max_r)
+    ax.set_ylim(-max_r, max_r)
 
     plt.tight_layout()
     return fig_to_base64(fig)
@@ -252,6 +264,17 @@ def plot_multi_orbit(orbits_data, title="Solar System Orbits"):
     ax.set_title(title, fontsize=13, fontweight='bold')
     ax.legend(fontsize=8, loc='upper right')
     ax.set_aspect('equal')
+    
+    # Auto-scale to fit all orbits
+    max_range = 0
+    for orbit in orbits_data:
+        x = np.array(orbit['x'])
+        y = np.array(orbit['y'])
+        orbit_max = max(abs(x.min()), abs(x.max()), abs(y.min()), abs(y.max()))
+        max_range = max(max_range, orbit_max)
+    max_range *= 1.15  # 15% padding
+    ax.set_xlim(-max_range, max_range)
+    ax.set_ylim(-max_range, max_range)
 
     plt.tight_layout()
     return fig_to_base64(fig)
