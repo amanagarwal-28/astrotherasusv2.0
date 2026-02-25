@@ -51,9 +51,18 @@ class ReboundEngine:
     def __init__(self):
         self.sim = None
         self.meta = {}        # scenario metadata
+        self.bodies = []
+        self.initial_scenario = None
         self.body_info = []   # colors, radii, types for rendering
         self.t_per_frame = 0.01   # simulation time per frame
         self.scale = 1.0      # AU → canvas pixels
+    
+    def reset(self):
+        if self.initial_scenario:
+            self.load_scenario(self.initial_scenario)
+        else:
+            self.sim = None
+            self.bodies = []
 
     # ── LOAD SCENARIO ────────────────────────────────────────
 

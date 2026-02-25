@@ -94,7 +94,7 @@ async def websocket_sim(websocket: WebSocket):
 
                     # Generate scenario
                     try:
-                        from step3_ai_scenario_generator import get_scenario
+                        from ai_scenario_generator import get_scenario
                         result = get_scenario(prompt)
                     except ImportError:
                         from ai_scenario_generator import get_scenario
@@ -110,7 +110,7 @@ async def websocket_sim(websocket: WebSocket):
                     # Initialize REBOUND engine
                     try:
                         import rebound
-                        from step2_rebound_engine import ReboundEngine
+                        from rebound_engine import ReboundEngine
                     except ImportError:
                         from rebound_engine import ReboundEngine
 
@@ -211,7 +211,7 @@ async def simulate_once(req: SimRequest):
     Useful for generating trajectory plots without WebSocket.
     """
     try:
-        from step3_ai_scenario_generator import get_scenario
+        from ai_scenario_generator import get_scenario
     except ImportError:
         from ai_scenario_generator import get_scenario
 
@@ -223,7 +223,7 @@ async def simulate_once(req: SimRequest):
 
     try:
         import rebound
-        from step2_rebound_engine import ReboundEngine
+        from rebound_engine import ReboundEngine
     except ImportError:
         from rebound_engine import ReboundEngine
 

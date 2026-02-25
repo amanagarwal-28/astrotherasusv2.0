@@ -30,6 +30,6 @@ http.createServer(function (req, res) {
   console.log('  ║   API:      http://localhost:8000     ║');
   console.log('  ╚══════════════════════════════════════╝');
   console.log('');
-  console.log('  Make sure api_server.py is running!');
+  console.log('  Make sure websocket_server.py is running!');
   console.log('');
 });
