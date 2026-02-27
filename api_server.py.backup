@@ -30,7 +30,7 @@ async def chat(req: ChatRequest):
         # Domain check
         if not is_orbital_query(msg):
             return {
-                "text": "I specialize in orbital mechanics. Ask about planet orbits, transfers, Lagrange points, Kepler's laws related to orbital dynamics! Try asking about planet orbits, Hohmann transfers, Lagrange points, Kepler's laws, exoplanets, comets, or asteroids.",
+                "text": "I specialize in orbital mechanics and dynamics only. Try asking about planet orbits, Hohmann transfers, Lagrange points, Kepler's laws, exoplanets, comets, or asteroids.",
                 "plot": None,
                 "data": None,
                 "intent": None
