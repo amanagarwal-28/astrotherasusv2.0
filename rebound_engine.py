@@ -112,6 +112,11 @@ class ReboundEngine:
         if softening > 0:
             self.sim.softening = softening
 
+        # Collision detection — merge bodies on contact
+        if scenario.get("collisions", True):
+            self.sim.collision         = "direct"
+            self.sim.collision_resolve = "merge"
+
         # Timestep (only for fixed-step integrators)
         if integrator in ("whfast", "leapfrog", "saba"):
             self.sim.dt = scenario.get("dt", 0.001)
@@ -149,6 +154,7 @@ class ReboundEngine:
 
         # Record initial energy for conservation monitoring
         self._E0 = self.sim.energy()
+        self._prev_N = self.sim.N  # track body count for collision detection
         
         # Store scenario for reset functionality
         self.initial_scenario = scenario
@@ -190,6 +196,7 @@ class ReboundEngine:
 
         self.sim.move_to_com()
         self._E0 = self.sim.energy()
+        self._prev_N = self.sim.N  # track body count for collision detection
         self.t_per_frame = 0.005
         self.scale = 200.0
         self.meta = {
@@ -253,11 +260,16 @@ class ReboundEngine:
         E_now = self.sim.energy()
         drift = abs((E_now - self._E0) / self._E0) if self._E0 != 0 else 0.0
 
+        # Collision detection — did a body disappear since last frame?
+        collision_occurred = self.sim.N < self._prev_N
+        self._prev_N = self.sim.N
+
         return {
-            "t":      round(self.sim.t, 6),
-            "N":      self.sim.N,
-            "bodies": bodies,
-            "energy_drift": round(drift, 12),
+            "t":                 round(self.sim.t, 6),
+            "N":                 self.sim.N,
+            "bodies":            bodies,
+            "energy_drift":      round(drift, 12),
+            "collision":         collision_occurred,
         }
 
     def get_orbital_elements(self) -> list:
