@@ -90,16 +90,13 @@ def validate_and_fix_scenario(scenario: dict, auto_fix: bool = True) -> dict:
         
         # Apply fix if needed
         if fix_needed and auto_fix:
-            # Fix by setting to circular orbit velocity
-            # Determine direction: perpendicular to radius vector
-            if abs(x) > abs(y):
-                # Mostly horizontal → give vertical velocity
-                new_vx = 0
-                new_vy = v_circular if x > 0 else -v_circular
-            else:
-                # Mostly vertical → give horizontal velocity
-                new_vx = -v_circular if y > 0 else v_circular
-                new_vy = 0
+            # Fix by setting to circular orbit velocity.
+            # Use true perpendicular-to-radius vector (counter-clockwise / prograde).
+            # Formula: unit_perp = (-y/r, x/r)  →  multiply by v_circular
+            # This works correctly for ANY position, not just bodies on the axes.
+            r_len = math.sqrt(x**2 + y**2)
+            new_vx = (-y / r_len) * v_circular
+            new_vy = ( x / r_len) * v_circular
             
             fixed_body = body.copy()
             fixed_body["vx"] = new_vx
