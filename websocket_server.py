@@ -20,6 +20,16 @@ sys.path.append(os.path.dirname(__file__))
 app = FastAPI(title="Astro Thesaurus — REBOUND Server")
 app.add_middleware(CORSMiddleware, allow_origins=["*"], allow_methods=["*"], allow_headers=["*"])
 
+# ── HELPER: live RAG doc count ────────────────────────────────
+def get_rag_doc_count() -> int:
+    try:
+        import chromadb
+        client = chromadb.PersistentClient(path="./chroma_db")
+        col = client.get_collection("orbital_dynamics")
+        return col.count()
+    except Exception:
+        return 0
+
 # ── REQUEST MODELS ────────────────────────────────────────────
 
 class SimRequest(BaseModel):
@@ -320,11 +330,68 @@ async def health():
     except:
         rb_ver = "not installed"
     return {
-        "status":    "online",
-        "rebound":   rb_ver,
-        "model":     "llama3.1",
-        "rag_docs":  1226,
+        "status": "online",
+        "rebound": rb_ver,
+        "model": "llama3.1",
+        "rag_docs": get_rag_doc_count(),   # live count, not hardcoded
     }
+
+@app.get("/api/horizons")
+async def horizons_scenario():
+    """
+    Return a scenario dict built from live NASA JPL Horizons data.
+    REBOUND fetches actual positions/velocities for today's date.
+    The frontend can POST this straight to the WebSocket 'start' action.
+    """
+    BODIES = ["Sun","Mercury","Venus","Earth","Mars","Jupiter","Saturn","Uranus","Neptune"]
+    STYLES = {
+        "Sun":     {"color":"#fff200","radius":22,"type":"star"},
+        "Mercury": {"color":"#b5b5b5","radius":4, "type":"planet"},
+        "Venus":   {"color":"#e8cda0","radius":6, "type":"planet"},
+        "Earth":   {"color":"#4fffb0","radius":7, "type":"planet"},
+        "Mars":    {"color":"#ff6b35","radius":5, "type":"planet"},
+        "Jupiter": {"color":"#c88b3a","radius":14,"type":"planet"},
+        "Saturn":  {"color":"#e4d191","radius":12,"type":"planet"},
+        "Uranus":  {"color":"#7de8e8","radius":9, "type":"planet"},
+        "Neptune": {"color":"#3f54ba","radius":9, "type":"planet"},
+    }
+    try:
+        import rebound, math
+        sim = rebound.Simulation()
+        sim.units = ('AU','yr','Msun')
+        for name in BODIES:
+            sim.add(name)
+        sim.move_to_com()
+
+        bodies = []
+        for i, p in enumerate(sim.particles):
+            name  = BODIES[i]
+            style = STYLES.get(name, {"color":"#aaaaaa","radius":5,"type":"planet"})
+            bodies.append({
+                "name":   name,
+                "mass":   p.m,
+                "x":      round(p.x,  8),
+                "y":      round(p.y,  8),
+                "vx":     round(p.vx, 8),
+                "vy":     round(p.vy, 8),
+                **style,
+            })
+
+        return {
+            "ok": True,
+            "scenario": {
+                "name":        "Solar System — Live NASA Data",
+                "description": "Real positions from NASA JPL Horizons (today)",
+                "units":       "solar",
+                "integrator":  "whfast",
+                "t_per_frame": 0.005,
+                "scale":       45.0,
+                "collisions":  False,
+                "bodies":      bodies,
+            }
+        }
+    except Exception as e:
+        return JSONResponse({"ok": False, "error": str(e)}, status_code=500)
 
 @app.get("/api/examples")
 async def examples():
