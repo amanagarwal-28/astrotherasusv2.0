@@ -1525,19 +1525,7 @@
       eb.textContent = 'ΔE/E: ' + dE.toExponential(1);
       eb.style.color = dE < 1e-6 ? '#00ff88' : dE < 1e-3 ? '#ffcc44' : '#ff4444';
       var bodies = data.bodies || []; simState.currentBodies = bodies;
-
-      // Z-ORDER FIX: Render stars first (background), then planets by distance
-      var sortedBodies = bodies.slice().sort(function(a, b) {
-        // Stars always in back
-        if (a.type === 'star' && b.type !== 'star') return -1;
-        if (b.type === 'star' && a.type !== 'star') return 1;
-        // Render farther bodies first (they go behind)
-        var distA = a.x * a.x + a.y * a.y;
-        var distB = b.x * b.x + b.y * b.y;
-        return distB - distA;
-      });
-
-      sortedBodies.forEach(function (b) {
+      bodies.forEach(function (b) {
         var px = cx + b.x * scale, py = cy + b.y * scale, r = b.radius || 5;
         var rgb = hexRgb(b.color || '#ffffff'), gm = TYPE_GLOW[b.type] || 3;
         if (simState.showGlow) {
