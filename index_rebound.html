@@ -1208,6 +1208,471 @@
       cursor: not-allowed;
       transform: none;
     }
+
+    /* ====== SCREENSHOT + NASA BUTTONS ====== */
+    .btn-screenshot {
+      padding: 4px 10px;
+      background: rgba(0, 220, 180, 0.08);
+      border: 1px solid rgba(0, 220, 180, 0.3);
+      border-radius: 3px;
+      color: var(--teal);
+      font-size: 9px;
+      font-family: 'JetBrains Mono', monospace;
+      letter-spacing: 1px;
+      cursor: pointer;
+      transition: all .15s;
+      white-space: nowrap;
+    }
+
+    .btn-screenshot:hover {
+      background: rgba(0, 220, 180, 0.18);
+      box-shadow: 0 0 10px rgba(0, 220, 180, 0.2);
+    }
+
+    .btn-nasa {
+      padding: 4px 10px;
+      background: rgba(50, 128, 255, 0.08);
+      border: 1px solid rgba(50, 128, 255, 0.3);
+      border-radius: 3px;
+      color: var(--accent);
+      font-size: 9px;
+      font-family: 'JetBrains Mono', monospace;
+      letter-spacing: 1px;
+      cursor: pointer;
+      transition: all .15s;
+      white-space: nowrap;
+    }
+
+    .btn-nasa:hover {
+      background: rgba(50, 128, 255, 0.18);
+      box-shadow: 0 0 10px rgba(50, 128, 255, 0.2);
+    }
+
+    .btn-nasa:disabled {
+      opacity: .4;
+      cursor: not-allowed;
+    }
+
+    /* ====== COLLISION FLASH ====== */
+    #collision-flash {
+      position: absolute;
+      inset: 0;
+      pointer-events: none;
+      opacity: 0;
+      background: radial-gradient(ellipse at center,
+          rgba(255, 200, 50, 0.45) 0%, rgba(255, 100, 20, 0.2) 40%, transparent 70%);
+      transition: opacity 0.05s ease-in;
+      z-index: 5;
+    }
+
+    #collision-flash.flash {
+      opacity: 1;
+    }
+
+    /* ====== RECORD BUTTON ====== */
+    .btn-record {
+      padding: 4px 10px;
+      background: rgba(255, 60, 60, 0.08);
+      border: 1px solid rgba(255, 60, 60, 0.3);
+      border-radius: 3px;
+      color: #ff5555;
+      font-size: 9px;
+      font-family: 'JetBrains Mono', monospace;
+      letter-spacing: 1px;
+      cursor: pointer;
+      transition: all .15s;
+      white-space: nowrap;
+    }
+
+    .btn-record:hover {
+      background: rgba(255, 60, 60, 0.18);
+      box-shadow: 0 0 10px rgba(255, 60, 60, 0.25);
+    }
+
+    .btn-record.recording {
+      background: rgba(255, 60, 60, 0.22);
+      border-color: rgba(255, 60, 60, 0.7);
+      animation: recpulse 1s ease-in-out infinite;
+    }
+
+    @keyframes recpulse {
+
+      0%,
+      100% {
+        box-shadow: 0 0 6px rgba(255, 60, 60, 0.4);
+      }
+
+      50% {
+        box-shadow: 0 0 16px rgba(255, 60, 60, 0.8);
+      }
+    }
+
+    #rec-badge {
+      display: none;
+      position: absolute;
+      top: 10px;
+      right: 14px;
+      z-index: 20;
+      padding: 3px 9px;
+      background: rgba(255, 30, 30, 0.85);
+      border: 1px solid rgba(255, 80, 80, 0.6);
+      border-radius: 3px;
+      font-family: 'JetBrains Mono', monospace;
+      font-size: 9px;
+      color: #fff;
+      letter-spacing: 2px;
+      animation: recpulse 1s ease-in-out infinite;
+      pointer-events: none;
+    }
+
+    #rec-badge.active {
+      display: block;
+    }
+
+    /* ====== BODY TOOLTIP ====== */
+    #body-tooltip {
+      position: absolute;
+      pointer-events: none;
+      z-index: 100;
+      background: rgba(2, 8, 30, 0.96);
+      border: 1px solid rgba(0, 220, 180, 0.35);
+      border-radius: 5px;
+      padding: 8px 12px;
+      min-width: 160px;
+      font-family: 'JetBrains Mono', monospace;
+      font-size: 9.5px;
+      color: var(--text);
+      box-shadow: 0 6px 24px rgba(0, 0, 0, 0.6);
+      display: none;
+      line-height: 1.7;
+    }
+
+    #body-tooltip .tt-name {
+      font-family: 'Orbitron', sans-serif;
+      font-size: 10px;
+      color: var(--teal);
+      letter-spacing: 1.5px;
+      margin-bottom: 4px;
+    }
+
+    #body-tooltip .tt-row {
+      display: flex;
+      justify-content: space-between;
+      gap: 16px;
+    }
+
+    #body-tooltip .tt-key {
+      color: var(--dim);
+    }
+
+    #body-tooltip .tt-val {
+      color: var(--bright);
+      font-weight: 600;
+    }
+
+    /* ====== PRESET DROPDOWN ====== */
+    #preset-wrap {
+      position: relative;
+      flex-shrink: 0;
+    }
+
+    #btn-presets {
+      padding: 4px 11px;
+      background: rgba(255, 215, 0, 0.07);
+      border: 1px solid rgba(255, 215, 0, 0.25);
+      border-radius: 3px;
+      color: var(--gold);
+      font-size: 9px;
+      font-family: 'JetBrains Mono', monospace;
+      letter-spacing: 1px;
+      cursor: pointer;
+      transition: all .15s;
+      white-space: nowrap;
+    }
+
+    #btn-presets:hover {
+      background: rgba(255, 215, 0, 0.15);
+      box-shadow: 0 0 10px rgba(255, 215, 0, 0.2);
+    }
+
+    #preset-menu {
+      position: absolute;
+      top: calc(100% + 6px);
+      right: 0;
+      z-index: 300;
+      background: rgba(2, 6, 24, 0.99);
+      border: 1px solid rgba(255, 215, 0, 0.25);
+      border-radius: 5px;
+      min-width: 240px;
+      display: none;
+      box-shadow: 0 12px 40px rgba(0, 0, 0, 0.7);
+      overflow: hidden;
+    }
+
+    #preset-menu.open {
+      display: block;
+    }
+
+    .preset-group {
+      padding: 5px 12px 3px;
+      font-size: 7px;
+      letter-spacing: 2px;
+      color: rgba(255, 215, 0, 0.45);
+      text-transform: uppercase;
+      border-bottom: 1px solid rgba(255, 215, 0, 0.08);
+      font-family: 'JetBrains Mono', monospace;
+    }
+
+    .preset-item {
+      padding: 8px 14px;
+      display: flex;
+      align-items: center;
+      gap: 9px;
+      font-family: 'JetBrains Mono', monospace;
+      font-size: 10px;
+      color: rgba(200, 220, 255, 0.85);
+      cursor: pointer;
+      border-bottom: 1px solid rgba(255, 215, 0, 0.04);
+      transition: all .1s;
+    }
+
+    .preset-item:hover {
+      background: rgba(255, 215, 0, 0.07);
+      color: var(--gold);
+      padding-left: 18px;
+    }
+
+    /* ====== CUSTOM SCENARIO EDITOR ====== */
+    #editor-panel {
+      position: fixed;
+      top: 58px;
+      right: 380px;
+      width: 320px;
+      height: calc(100vh - 58px);
+      z-index: 200;
+      background: rgba(2, 6, 24, 0.98);
+      border-left: 1px solid var(--border);
+      border-right: 1px solid var(--border);
+      display: none;
+      flex-direction: column;
+      overflow: hidden;
+    }
+
+    #editor-panel.open {
+      display: flex;
+    }
+
+    .ed-hdr {
+      padding: 10px 14px;
+      background: var(--hl-bg);
+      border-bottom: 1px solid rgba(0, 220, 180, 0.15);
+      font-family: 'Orbitron', sans-serif;
+      font-size: 8px;
+      letter-spacing: 3px;
+      color: var(--teal);
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      flex-shrink: 0;
+    }
+
+    .ed-close {
+      background: none;
+      border: none;
+      color: var(--dim);
+      cursor: pointer;
+      font-size: 16px;
+      line-height: 1;
+      padding: 0 4px;
+    }
+
+    .ed-close:hover {
+      color: var(--nova);
+    }
+
+    .ed-body-list {
+      flex: 1;
+      overflow-y: auto;
+      padding: 8px;
+    }
+
+    .ed-body-card {
+      background: rgba(50, 128, 255, 0.05);
+      border: 1px solid var(--border);
+      border-radius: 4px;
+      padding: 10px 12px;
+      margin-bottom: 8px;
+    }
+
+    .ed-body-card:hover {
+      border-color: rgba(0, 220, 180, 0.3);
+    }
+
+    .ed-body-title {
+      font-family: 'Orbitron', sans-serif;
+      font-size: 8px;
+      letter-spacing: 2px;
+      color: var(--teal);
+      margin-bottom: 8px;
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+    }
+
+    .ed-del {
+      background: none;
+      border: none;
+      color: var(--nova);
+      cursor: pointer;
+      font-size: 13px;
+      padding: 0;
+    }
+
+    .ed-row {
+      display: flex;
+      align-items: center;
+      gap: 6px;
+      margin-bottom: 5px;
+    }
+
+    .ed-lbl {
+      font-size: 8px;
+      color: var(--dim);
+      width: 34px;
+      flex-shrink: 0;
+      font-family: 'JetBrains Mono', monospace;
+    }
+
+    .ed-inp {
+      flex: 1;
+      background: rgba(0, 0, 0, 0.4);
+      border: 1px solid var(--border);
+      border-radius: 3px;
+      color: var(--bright);
+      font-family: 'JetBrains Mono', monospace;
+      font-size: 9px;
+      padding: 3px 6px;
+      outline: none;
+    }
+
+    .ed-inp:focus {
+      border-color: var(--teal);
+    }
+
+    .ed-color {
+      width: 28px;
+      height: 22px;
+      border-radius: 3px;
+      border: 1px solid var(--border);
+      cursor: pointer;
+      padding: 0;
+    }
+
+    .ed-footer {
+      padding: 10px 12px;
+      border-top: 1px solid var(--border);
+      display: flex;
+      gap: 8px;
+      flex-shrink: 0;
+    }
+
+    .ed-btn {
+      flex: 1;
+      padding: 7px;
+      border-radius: 3px;
+      border: none;
+      font-family: 'JetBrains Mono', monospace;
+      font-size: 9px;
+      letter-spacing: 1px;
+      cursor: pointer;
+      transition: all .15s;
+    }
+
+    .ed-btn-add {
+      background: rgba(0, 220, 180, 0.12);
+      border: 1px solid rgba(0, 220, 180, 0.3);
+      color: var(--teal);
+    }
+
+    .ed-btn-add:hover {
+      background: rgba(0, 220, 180, 0.22);
+    }
+
+    .ed-btn-run {
+      background: linear-gradient(135deg, var(--teal), #009070);
+      color: #000;
+      font-weight: 700;
+    }
+
+    .ed-btn-run:hover {
+      box-shadow: 0 0 14px rgba(0, 220, 180, 0.4);
+    }
+
+    #btn-editor {
+      padding: 4px 11px;
+      background: rgba(0, 220, 180, 0.07);
+      border: 1px solid rgba(0, 220, 180, 0.25);
+      border-radius: 3px;
+      color: var(--teal);
+      font-size: 9px;
+      font-family: 'JetBrains Mono', monospace;
+      letter-spacing: 1px;
+      cursor: pointer;
+      transition: all .15s;
+      white-space: nowrap;
+    }
+
+    #btn-editor:hover {
+      background: rgba(0, 220, 180, 0.15);
+    }
+
+    #btn-editor.active {
+      background: rgba(0, 220, 180, 0.18);
+      border-color: var(--teal);
+    }
+
+    /* ====== ENERGY GRAPH ====== */
+    #energy-graph-wrap {
+      position: absolute;
+      bottom: 10px;
+      left: 10px;
+      z-index: 10;
+      background: rgba(2, 6, 24, 0.88);
+      border: 1px solid rgba(0, 220, 180, 0.18);
+      border-radius: 4px;
+      padding: 6px 8px;
+      display: none;
+    }
+
+    #energy-graph-wrap.visible {
+      display: block;
+    }
+
+    .eg-title {
+      font-family: 'JetBrains Mono', monospace;
+      font-size: 7px;
+      color: rgba(0, 220, 180, 0.6);
+      letter-spacing: 2px;
+      margin-bottom: 4px;
+    }
+
+    #energy-canvas {
+      display: block;
+    }
+
+    /* ====== KEYBOARD SHORTCUT HINT ====== */
+    #kb-hint {
+      position: absolute;
+      bottom: 10px;
+      right: 10px;
+      z-index: 10;
+      font-family: 'JetBrains Mono', monospace;
+      font-size: 7.5px;
+      color: rgba(120, 160, 200, 0.35);
+      pointer-events: none;
+      text-align: right;
+      line-height: 1.8;
+    }
   </style>
 </head>
 
@@ -1247,6 +1712,11 @@
         </div>
       </div>
 
+      <div id="preset-wrap">
+        <button id="btn-presets">★ Presets</button>
+        <div id="preset-menu"></div>
+      </div>
+      <button id="btn-editor">✏ Editor</button>
       <div class="hstats">
         <div class="hs"><span class="hs-l">Scenario</span><span class="hs-v" id="hs-sc">—</span></div>
         <div class="hs"><span class="hs-l">Bodies</span><span class="hs-v" id="hs-bd">0</span></div>
@@ -1285,6 +1755,11 @@
         <button class="btn on" id="btn-lbl">⌖ Labels</button>
         <button class="btn" id="btn-elems">⊙ Elements</button>
         <div class="opts-sep"></div>
+        <button class="btn-nasa" id="btn-nasa"
+          title="Load today&#39;s real planetary positions from NASA JPL Horizons">🛰 NASA Live</button>
+        <button class="btn-screenshot" id="btn-screenshot" title="Save canvas as PNG">📷 Screenshot</button>
+        <button class="btn-record" id="btn-record" title="Record simulation as WebM video">🔴 Record</button>
+        <div class="opts-sep"></div>
         <div class="sl-inline">
           <span class="sl-lbl-s">Speed</span>
           <input type="range" id="spd-sl" min="1" max="16" value="1">
@@ -1306,6 +1781,8 @@
       <!-- Canvas -->
       <div id="canvas-wrap">
         <canvas id="sim-canvas"></canvas>
+        <div id="collision-flash"></div>
+        <div id="rec-badge">● REC</div>
         <div class="cv-corner tl"></div>
         <div class="cv-corner tr"></div>
         <div class="cv-corner bl"></div>
@@ -1321,6 +1798,12 @@
         <div class="cv-hud" id="hud-bl">
           <div id="hud-desc"></div>
         </div>
+        <div id="body-tooltip"></div>
+        <div id="energy-graph-wrap">
+          <div class="eg-title">ENERGY DRIFT</div>
+          <canvas id="energy-canvas" width="180" height="50"></canvas>
+        </div>
+        <div id="kb-hint">SPACE pause   R reset   S screenshot   T trails   G glow   E elements</div>
         <div id="watermark">REBOUND</div>
         <div id="empty-state">
           <div class="es-title">Live Simulation</div>
@@ -1384,6 +1867,19 @@
 
     </div><!-- #right -->
 
+    <!-- CUSTOM SCENARIO EDITOR PANEL -->
+    <div id="editor-panel">
+      <div class="ed-hdr">
+        <span>✏ SCENARIO EDITOR</span>
+        <button class="ed-close" id="ed-close">×</button>
+      </div>
+      <div class="ed-body-list" id="ed-body-list"></div>
+      <div class="ed-footer">
+        <button class="ed-btn ed-btn-add" id="ed-add">⊕ Add Body</button>
+        <button class="ed-btn ed-btn-run" id="ed-run">▶ Launch</button>
+      </div>
+    </div>
+
   </div><!-- .app -->
 
   <script>
@@ -1395,7 +1891,8 @@
     var ws = null;
     var simState = {
       playing: true, showTrails: true, showGlow: true, showLabels: true,
-      trailAlpha: 0.12, speedMult: 1, currentBodies: [], scale: 180, scenarioName: ''
+      trailAlpha: 0.12, speedMult: 1, currentBodies: [], scale: 180, scenarioName: '',
+      trails: []   // BUG FIX: was referenced in Reset handler but never declared
     };
     var fpsCount = 0, fpsLast = Date.now(), fps = 0, currentView = 'sim';
 
@@ -1502,6 +1999,10 @@
       }
       else if (msg.type === 'frame') {
         renderFrame(msg.data);
+        if (msg.data.collision) {
+          triggerCollisionFlash();
+          addMsg('sys', '💥 Collision! Bodies merged — ' + msg.data.N + ' remaining', null);
+        }
         fpsCount++;
         var now = Date.now();
         if (now - fpsLast >= 1000) { fps = fpsCount; fpsCount = 0; fpsLast = now; document.getElementById('hs-fps').textContent = fps; }
@@ -1528,7 +2029,7 @@
       var bodies = data.bodies || []; simState.currentBodies = bodies;
 
       // Z-ORDER FIX: Render stars first (background), then planets by distance
-      var sortedBodies = bodies.slice().sort(function(a, b) {
+      var sortedBodies = bodies.slice().sort(function (a, b) {
         // Stars always in back
         if (a.type === 'star' && b.type !== 'star') return -1;
         if (b.type === 'star' && a.type !== 'star') return 1;
@@ -1595,16 +2096,11 @@
     });
     document.getElementById('btn-reset').addEventListener('click', function () {
       wsSend({ action: 'reset' });
-      // Clear trails
-      for (var i = 0; i < simState.trails.length; i++) {
-        simState.trails[i].length = 0;
-      }
-      // Reset UI state
+      simState.trails = [];   // BUG FIX: was iterating undefined array
       simState.playing = false;
       var pauseBtn = document.getElementById('btn-pause');
       pauseBtn.textContent = '▶ Play';
       pauseBtn.className = 'btn';
-      // Clear canvas
       ctx.fillStyle = '#000010';
       ctx.fillRect(0, 0, canvas.width, canvas.height);
     });
@@ -1627,9 +2123,26 @@
     // ── ELEMENTS ─────────────────────────────────────────────────
     function showElements(elements) {
       if (!elements || !elements.length) return;
-      var txt = '📐 Orbital Elements:\n';
-      elements.forEach(function (el) { txt += el.name + ': a=' + el.a + ' AU  e=' + el.e + '  P=' + el.P + ' yr\n'; });
-      addMsg('a', { text: txt }, null);
+      var div = document.createElement('div');
+      div.className = 'msg msg-a';
+      div.innerHTML = '<div class="msg-a-tag">Orbital Elements</div>';
+      var tbl = document.createElement('table'); tbl.className = 'dtable';
+      var hdr = document.createElement('tr');
+      hdr.innerHTML = '<td><b>Body</b></td><td><b>a (AU)</b></td><td><b>e</b></td><td><b>P (yr)</b></td><td><b>inc (°)</b></td>';
+      tbl.appendChild(hdr);
+      elements.forEach(function (el) {
+        if (el.error) return;
+        var tr = document.createElement('tr');
+        tr.innerHTML = '<td>' + el.name + '</td>'
+          + '<td>' + (el.a !== undefined ? el.a.toFixed(4) : '—') + '</td>'
+          + '<td>' + (el.e !== undefined ? el.e.toFixed(4) : '—') + '</td>'
+          + '<td>' + (el.P !== undefined ? el.P.toFixed(4) : '—') + '</td>'
+          + '<td>' + (el.inc !== undefined ? el.inc.toFixed(2) : '—') + '</td>';
+        tbl.appendChild(tr);
+      });
+      div.appendChild(tbl);
+      var msgs = document.getElementById('chat-msgs');
+      msgs.appendChild(div); msgs.scrollTop = msgs.scrollHeight;
     }
 
     // ── STATUS ───────────────────────────────────────────────────
@@ -1753,6 +2266,614 @@
       window.addEventListener('resize', function () {
         resizeCanvas(); ctx.fillStyle = '#000010'; ctx.fillRect(0, 0, canvas.width, canvas.height);
       });
+    });
+
+    // == COLLISION FLASH ==
+    function triggerCollisionFlash() {
+      var el = document.getElementById('collision-flash');
+      el.classList.add('flash');
+      setTimeout(function () { el.classList.remove('flash'); }, 400);
+    }
+
+    // == SCREENSHOT ==
+    document.getElementById('btn-screenshot').addEventListener('click', function () {
+      var out = document.createElement('canvas');
+      out.width = canvas.width; out.height = canvas.height;
+      var octx = out.getContext('2d');
+      octx.fillStyle = '#000010';
+      octx.fillRect(0, 0, out.width, out.height);
+      octx.drawImage(canvas, 0, 0);
+      octx.font = '700 11px "JetBrains Mono", monospace';
+      octx.fillStyle = 'rgba(0,220,180,0.45)';
+      octx.fillText('ASTRO THESAURUS  //  REBOUND', 14, out.height - 12);
+      var ts = new Date().toISOString().slice(0, 19).replace(/[:T]/g, '-');
+      var name = (simState.scenarioName || 'astro').toLowerCase().replace(/[^a-z0-9]+/g, '-');
+      var link = document.createElement('a');
+      link.download = 'astro-' + name + '-' + ts + '.png';
+      link.href = out.toDataURL('image/png');
+      link.click();
+    });
+
+    // == NASA HORIZONS ==
+    document.getElementById('btn-nasa').addEventListener('click', function () {
+      var btn = this;
+      btn.disabled = true; btn.textContent = '⏳ Fetching…';
+      setStatus('spin', 'Loading live NASA JPL Horizons data…');
+      fetch(API + '/api/horizons')
+        .then(function (r) { return r.json(); })
+        .then(function (data) {
+          btn.disabled = false; btn.textContent = '🛰 NASA Live';
+          if (!data.ok) { setStatus('err', 'NASA error: ' + (data.error || '')); return; }
+          connectWS(function () {
+            wsSend({ action: 'start', prompt: data.scenario.name, fps: 30, steps_per_frame: 2 });
+          });
+          addMsg('sys', '🛰 Live NASA Horizons loaded — real planetary positions for today', null);
+        })
+        .catch(function () {
+          btn.disabled = false; btn.textContent = '🛰 NASA Live';
+          setStatus('err', 'Could not reach server');
+        });
+    });
+
+    // == VIDEO EXPORT (MediaRecorder API - no libraries needed) ==
+    (function () {
+      var mediaRecorder = null;
+      var recordedChunks = [];
+      var isRecording = false;
+      var recordBtn = null;
+      var recBadge = null;
+
+      window.addEventListener('load', function () {
+        recordBtn = document.getElementById('btn-record');
+        recBadge = document.getElementById('rec-badge');
+
+        // Check browser support
+        if (!window.MediaRecorder) {
+          recordBtn.title = 'Video recording not supported in this browser';
+          recordBtn.style.opacity = '0.35';
+          recordBtn.style.cursor = 'not-allowed';
+          return;
+        }
+
+        recordBtn.addEventListener('click', function () {
+          if (!isRecording) {
+            startRecording();
+          } else {
+            stopRecording();
+          }
+        });
+      });
+
+      function startRecording() {
+        recordedChunks = [];
+
+        // Capture the sim canvas stream at 30fps
+        var stream = canvas.captureStream(30);
+
+        // Pick best supported format
+        var mimeType = '';
+        var ext = 'webm';
+        if (MediaRecorder.isTypeSupported('video/webm;codecs=vp9')) {
+          mimeType = 'video/webm;codecs=vp9';
+        } else if (MediaRecorder.isTypeSupported('video/webm;codecs=vp8')) {
+          mimeType = 'video/webm;codecs=vp8';
+        } else if (MediaRecorder.isTypeSupported('video/webm')) {
+          mimeType = 'video/webm';
+        } else if (MediaRecorder.isTypeSupported('video/mp4')) {
+          mimeType = 'video/mp4'; ext = 'mp4';
+        }
+
+        var options = mimeType ? { mimeType: mimeType, videoBitsPerSecond: 4000000 } : {};
+
+        try {
+          mediaRecorder = new MediaRecorder(stream, options);
+        } catch (e) {
+          addMsg('err', 'Recording failed: ' + e.message, null);
+          return;
+        }
+
+        mediaRecorder.ondataavailable = function (e) {
+          if (e.data && e.data.size > 0) recordedChunks.push(e.data);
+        };
+
+        mediaRecorder.onstop = function () {
+          var blob = new Blob(recordedChunks, { type: mimeType || 'video/webm' });
+          var url = URL.createObjectURL(blob);
+          var ts = new Date().toISOString().slice(0, 19).replace(/[:T]/g, '-');
+          var name = (simState.scenarioName || 'astro').toLowerCase().replace(/[^a-z0-9]+/g, '-');
+          var link = document.createElement('a');
+          link.download = 'astro-' + name + '-' + ts + '.' + ext;
+          link.href = url;
+          link.click();
+          setTimeout(function () { URL.revokeObjectURL(url); }, 5000);
+          var sizeMB = (blob.size / 1048576).toFixed(1);
+          addMsg('sys', '🎬 Recording saved — ' + sizeMB + ' MB  (' + ext.toUpperCase() + ')', null);
+        };
+
+        mediaRecorder.start(100); // collect data every 100ms
+        isRecording = true;
+        recordBtn.textContent = '⏹ Stop';
+        recordBtn.classList.add('recording');
+        recBadge.classList.add('active');
+        addMsg('sys', '🔴 Recording started — click Stop to save', null);
+      }
+
+      function stopRecording() {
+        if (mediaRecorder && mediaRecorder.state !== 'inactive') {
+          mediaRecorder.stop();
+        }
+        isRecording = false;
+        recordBtn.textContent = '🔴 Record';
+        recordBtn.classList.remove('recording');
+        recBadge.classList.remove('active');
+      }
+    })();
+
+    // ================================================================
+    // FEATURE: SPEED-COLORED TRAILS
+    // Store last 80 positions per body with speed for color mapping
+    // ================================================================
+    var trailStore = {};   // { bodyName: [{x,y,speed}, ...] }
+    var TRAIL_LEN = 80;
+    var trailColorMode = false;  // toggle: false = body color, true = speed heatmap
+
+    function speedToColor(speed, maxSpeed) {
+      // Map 0..1 (normalised speed) to blue->cyan->green->yellow->red
+      var t = Math.min(speed / (maxSpeed || 1), 1);
+      var r, g, b;
+      if (t < 0.25) { r = 0; g = Math.round(t * 4 * 255); b = 255; }
+      else if (t < 0.5) { r = 0; g = 255; b = Math.round((1 - (t - 0.25) * 4) * 255); }
+      else if (t < 0.75) { r = Math.round((t - 0.5) * 4 * 255); g = 255; b = 0; }
+      else { r = 255; g = Math.round((1 - (t - 0.75) * 4) * 255); b = 0; }
+      return 'rgb(' + r + ',' + g + ',' + b + ')';
+    }
+
+    function updateTrailStore(bodies) {
+      var maxSpeed = 0;
+      bodies.forEach(function (b) {
+        var spd = Math.sqrt((b.vx || 0) * (b.vx || 0) + (b.vy || 0) * (b.vy || 0));
+        if (spd > maxSpeed) maxSpeed = spd;
+      });
+      bodies.forEach(function (b) {
+        var key = b.name || b.color;
+        if (!trailStore[key]) trailStore[key] = [];
+        var spd = Math.sqrt((b.vx || 0) * (b.vx || 0) + (b.vy || 0) * (b.vy || 0));
+        trailStore[key].push({ x: b.x, y: b.y, speed: spd, maxSpeed: maxSpeed, color: b.color });
+        if (trailStore[key].length > TRAIL_LEN) trailStore[key].shift();
+      });
+    }
+
+    function drawSpeedTrails(W, H) {
+      var cx = W / 2, cy = H / 2, scale = simState.scale;
+      Object.keys(trailStore).forEach(function (key) {
+        var pts = trailStore[key];
+        if (pts.length < 2) return;
+        var maxSpd = pts[pts.length - 1].maxSpeed || 1;
+        for (var i = 1; i < pts.length; i++) {
+          var alpha = (i / pts.length) * 0.75;
+          var col = trailColorMode
+            ? speedToColor(pts[i].speed, maxSpd)
+            : (pts[i].color || '#ffffff');
+          ctx.beginPath();
+          ctx.moveTo(cx + pts[i - 1].x * scale, cy + pts[i - 1].y * scale);
+          ctx.lineTo(cx + pts[i].x * scale, cy + pts[i].y * scale);
+          ctx.strokeStyle = col.startsWith('rgb(')
+            ? col.replace('rgb(', 'rgba(').replace(')', ',' + alpha + ')')
+            : col;
+          ctx.lineWidth = 1.5;
+          ctx.globalAlpha = alpha;
+          ctx.stroke();
+          ctx.globalAlpha = 1;
+        }
+      });
+    }
+
+    // ================================================================
+    // FEATURE: ENERGY / DRIFT GRAPH
+    // ================================================================
+    var energyHistory = [];
+    var MAX_ENERGY_PTS = 180;
+    var egCanvas = null, egCtx = null;
+    var showEnergyGraph = false;
+
+    function initEnergyGraph() {
+      egCanvas = document.getElementById('energy-canvas');
+      egCtx = egCanvas.getContext('2d');
+    }
+
+    function updateEnergyGraph(drift) {
+      energyHistory.push(drift);
+      if (energyHistory.length > MAX_ENERGY_PTS) energyHistory.shift();
+      if (!showEnergyGraph || !egCtx) return;
+      var W = egCanvas.width, H = egCanvas.height;
+      egCtx.fillStyle = 'rgba(2,6,24,0.0)';
+      egCtx.clearRect(0, 0, W, H);
+      // Grid line at 1e-6 and 1e-3
+      egCtx.strokeStyle = 'rgba(0,220,180,0.08)';
+      egCtx.lineWidth = 1;
+      [0.2, 0.5, 0.8].forEach(function (y) {
+        egCtx.beginPath(); egCtx.moveTo(0, y * H); egCtx.lineTo(W, y * H); egCtx.stroke();
+      });
+      if (energyHistory.length < 2) return;
+      var maxVal = Math.max.apply(null, energyHistory) || 1e-10;
+      egCtx.beginPath();
+      energyHistory.forEach(function (v, i) {
+        var x = (i / (MAX_ENERGY_PTS - 1)) * W;
+        var y = H - (Math.log10(v + 1e-15) - Math.log10(1e-15)) / (Math.log10(maxVal + 1e-15) - Math.log10(1e-15)) * H;
+        y = Math.max(0, Math.min(H, y));
+        i === 0 ? egCtx.moveTo(x, y) : egCtx.lineTo(x, y);
+      });
+      var grad = egCtx.createLinearGradient(0, 0, W, 0);
+      grad.addColorStop(0, 'rgba(0,220,180,0.3)');
+      grad.addColorStop(1, energyHistory[energyHistory.length - 1] > 1e-3 ? '#ff4444' : energyHistory[energyHistory.length - 1] > 1e-6 ? '#ffcc44' : '#00ff88');
+      egCtx.strokeStyle = grad;
+      egCtx.lineWidth = 1.5;
+      egCtx.stroke();
+    }
+
+    // Toggle energy graph with E key / button
+    function toggleEnergyGraph() {
+      showEnergyGraph = !showEnergyGraph;
+      document.getElementById('energy-graph-wrap').className = showEnergyGraph ? 'visible' : '';
+    }
+
+    // ================================================================
+    // FEATURE: BODY TOOLTIP ON HOVER
+    // ================================================================
+    var tooltip = null;
+    var hoveredBody = null;
+
+    function initTooltip() {
+      tooltip = document.getElementById('body-tooltip');
+      canvas.addEventListener('mousemove', onCanvasMouseMove);
+      canvas.addEventListener('mouseleave', function () {
+        if (tooltip) tooltip.style.display = 'none';
+        hoveredBody = null;
+      });
+    }
+
+    function onCanvasMouseMove(e) {
+      if (!tooltip || !simState.currentBodies.length) return;
+      var rect = canvas.getBoundingClientRect();
+      var mx = e.clientX - rect.left;
+      var my = e.clientY - rect.top;
+      var cx = canvas.width / 2, cy = canvas.height / 2, scale = simState.scale;
+      var best = null, bestDist = 999;
+      simState.currentBodies.forEach(function (b) {
+        var px = cx + b.x * scale, py = cy + b.y * scale;
+        var d = Math.sqrt((mx - px) * (mx - px) + (my - py) * (my - py));
+        if (d < Math.max((b.radius || 5) + 12, 20) && d < bestDist) {
+          bestDist = d; best = b;
+        }
+      });
+      if (best) {
+        hoveredBody = best;
+        var spd = Math.sqrt((best.vx || 0) * (best.vx || 0) + (best.vy || 0) * (best.vy || 0));
+        var r = Math.sqrt(best.x * best.x + best.y * best.y);
+        tooltip.innerHTML =
+          '<div class="tt-name">' + best.name + '</div>' +
+          '<div class="tt-row"><span class="tt-key">mass</span><span class="tt-val">' + (best.mass || 0).toExponential(2) + ' M☉</span></div>' +
+          '<div class="tt-row"><span class="tt-key">pos r</span><span class="tt-val">' + r.toFixed(3) + ' AU</span></div>' +
+          '<div class="tt-row"><span class="tt-key">speed</span><span class="tt-val">' + spd.toFixed(4) + ' AU/yr</span></div>' +
+          '<div class="tt-row"><span class="tt-key">x</span><span class="tt-val">' + best.x.toFixed(4) + '</span></div>' +
+          '<div class="tt-row"><span class="tt-key">y</span><span class="tt-val">' + best.y.toFixed(4) + '</span></div>';
+        // Position tooltip: keep inside canvas
+        var tw = 180, th = 110;
+        var tx = mx + 16, ty = my - th / 2;
+        var cw = rect.width, ch = rect.height;
+        if (tx + tw > cw) tx = mx - tw - 10;
+        if (ty < 0) ty = 4;
+        if (ty + th > ch) ty = ch - th - 4;
+        tooltip.style.left = tx + 'px';
+        tooltip.style.top = ty + 'px';
+        tooltip.style.display = 'block';
+      } else {
+        tooltip.style.display = 'none';
+        hoveredBody = null;
+      }
+    }
+
+    // ================================================================
+    // FEATURE: KEYBOARD SHORTCUTS
+    // ================================================================
+    document.addEventListener('keydown', function (e) {
+      // Ignore when typing in input/textarea
+      if (e.target.tagName === 'INPUT' || e.target.tagName === 'TEXTAREA') return;
+      switch (e.key) {
+        case ' ':
+          e.preventDefault();
+          document.getElementById('btn-pause').click();
+          break;
+        case 'r': case 'R':
+          document.getElementById('btn-reset').click();
+          break;
+        case 's': case 'S':
+          document.getElementById('btn-screenshot').click();
+          break;
+        case 't': case 'T':
+          document.getElementById('btn-trail').click();
+          break;
+        case 'g': case 'G':
+          document.getElementById('btn-glow').click();
+          break;
+        case 'l': case 'L':
+          document.getElementById('btn-lbl').click();
+          break;
+        case 'e': case 'E':
+          toggleEnergyGraph();
+          break;
+        case 'c': case 'C':
+          trailColorMode = !trailColorMode;
+          trailStore = {};
+          break;
+        case 'u': case 'U':
+          copyShareURL();
+          break;
+        case 'Escape':
+          closeEditor();
+          document.getElementById('preset-menu').classList.remove('open');
+          break;
+      }
+    });
+
+    // ================================================================
+    // FEATURE: SHAREABLE SCENARIO URLS
+    // ================================================================
+    function copyShareURL() {
+      var scenario = {
+        name: simState.scenarioName,
+        bodies: simState.currentBodies
+      };
+      try {
+        var encoded = btoa(JSON.stringify(scenario));
+        var url = window.location.origin + window.location.pathname + '?scenario=' + encoded;
+        navigator.clipboard.writeText(url).then(function () {
+          addMsg('sys', '🔗 Share URL copied to clipboard!', null);
+        }).catch(function () {
+          // Fallback: show in chat
+          addMsg('sys', '🔗 Share URL (copy manually):
+' + url, null);
+        });
+      } catch (e) {
+        addMsg('err', 'Could not generate share URL', null);
+      }
+    }
+
+    function loadScenarioFromURL() {
+      var params = new URLSearchParams(window.location.search);
+      var encoded = params.get('scenario');
+      if (!encoded) return;
+      try {
+        var scenario = JSON.parse(atob(encoded));
+        if (scenario && scenario.name) {
+          // Pre-fill the prompt input and auto-launch
+          var inp = document.getElementById('sim-in');
+          if (inp) { inp.value = scenario.name; }
+          addMsg('sys', '🔗 Loaded shared scenario: ' + scenario.name, null);
+          setTimeout(function () { startSim(scenario.name); }, 800);
+        }
+      } catch (e) { /* invalid URL param, ignore */ }
+    }
+
+    // ================================================================
+    // FEATURE: SCENARIO PRESETS DROPDOWN
+    // ================================================================
+    var PRESETS = [
+      { group: 'Classic Orbits' },
+      { name: 'Solar System', icon: '☉', prompt: 'The full solar system with all 8 planets orbiting the sun' },
+      { name: 'Earth-Moon System', icon: '🌕', prompt: 'Earth and Moon orbiting their common center of mass' },
+      { name: 'Binary Stars', icon: '★', prompt: 'Two equal mass stars in a circular binary orbit' },
+      { name: 'Triple Star System', icon: '✨', prompt: 'Hierarchical triple star system with stable outer orbit' },
+      { group: 'Chaos & Resonance' },
+      { name: 'Figure-8 Three Body', icon: '∞', prompt: 'Three equal mass bodies in the figure-8 choreography orbit' },
+      { name: '2:1 Orbital Resonance', icon: '🔄', prompt: 'Two planets locked in 2:1 mean motion resonance around a star' },
+      { name: 'Lagrange Points', icon: '△', prompt: 'Jupiter and a trojan asteroid at L4 Lagrange point' },
+      { name: 'Chaotic Three Body', icon: '💫', prompt: 'Three unequal mass bodies in chaotic gravitational interaction' },
+      { group: 'Collisions & Mergers' },
+      { name: 'Planetary Collision', icon: '💥', prompt: 'Two planets on collision course around a central star with collisions enabled' },
+      { name: 'Galaxy Merger', icon: '🌀', prompt: 'Two clusters of stars passing through each other in a galactic merger' },
+      { name: 'Rogue Planet', icon: '🌑', prompt: 'A rogue planet flying through a planetary system and disrupting orbits' },
+      { group: 'Exotic Systems' },
+      { name: 'Circumbinary Planet', icon: '🊙', prompt: 'A Tatooine-like planet orbiting around a binary star system' },
+      { name: 'Kozai Mechanism', icon: '🔃', prompt: 'Kozai-Lidov mechanism with inclined outer perturber causing eccentricity oscillation' },
+      { name: 'Hot Jupiter Migration', icon: '🔥', prompt: 'A hot Jupiter migrating inward through a planetary system via gravitational scattering' },
+    ];
+
+    function buildPresetMenu() {
+      var menu = document.getElementById('preset-menu');
+      menu.innerHTML = '';
+      PRESETS.forEach(function (p) {
+        if (p.group) {
+          var div = document.createElement('div');
+          div.className = 'preset-group';
+          div.textContent = p.group;
+          menu.appendChild(div);
+        } else {
+          var item = document.createElement('div');
+          item.className = 'preset-item';
+          item.innerHTML = '<span>' + p.icon + '</span><span>' + p.name + '</span>';
+          item.addEventListener('click', function () {
+            document.getElementById('preset-menu').classList.remove('open');
+            var inp = document.getElementById('sim-in');
+            if (inp) inp.value = p.name;
+            startSim(p.prompt);
+          });
+          menu.appendChild(item);
+        }
+      });
+    }
+
+    document.getElementById('btn-presets').addEventListener('click', function (e) {
+      e.stopPropagation();
+      document.getElementById('preset-menu').classList.toggle('open');
+    });
+    document.addEventListener('click', function () {
+      document.getElementById('preset-menu').classList.remove('open');
+    });
+
+    // ================================================================
+    // FEATURE: CUSTOM SCENARIO EDITOR
+    // ================================================================
+    var editorBodies = [];
+    var edBodyId = 0;
+
+    function defaultBody() {
+      return {
+        id: ++edBodyId,
+        name: 'Body ' + edBodyId,
+        mass: 1e-3,
+        x: (Math.random() - 0.5) * 4,
+        y: (Math.random() - 0.5) * 4,
+        vx: (Math.random() - 0.5) * 2,
+        vy: (Math.random() - 0.5) * 2,
+        radius: 6,
+        color: '#' + Math.floor(Math.random() * 0xffffff).toString(16).padStart(6, '0'),
+        type: 'planet'
+      };
+    }
+
+    function renderEditorBodies() {
+      var list = document.getElementById('ed-body-list');
+      list.innerHTML = '';
+      if (editorBodies.length === 0) {
+        list.innerHTML = '<div style="color:rgba(120,160,200,0.4);font-size:10px;text-align:center;padding:24px">No bodies yet.
+        Click ⊕ Add Body to start.</div > ';
+        return;
+      }
+      editorBodies.forEach(function (b) {
+        var card = document.createElement('div');
+        card.className = 'ed-body-card';
+        card.innerHTML =
+          '<div class="ed-body-title">' +
+          '<span>' + b.name + '</span>' +
+          '<button class="ed-del" data-id="' + b.id + '">×</button>' +
+          '</div>' +
+          '<div class="ed-row"><span class="ed-lbl">Name</span><input class="ed-inp" data-id="' + b.id + '" data-field="name" value="' + b.name + '"></div>' +
+          '<div class="ed-row"><span class="ed-lbl">Mass</span><input class="ed-inp" data-id="' + b.id + '" data-field="mass" type="number" step="0.0001" value="' + b.mass + '"></div>' +
+          '<div class="ed-row"><span class="ed-lbl">x</span><input class="ed-inp" data-id="' + b.id + '" data-field="x" type="number" step="0.1" value="' + b.x.toFixed(3) + '"></div>' +
+          '<div class="ed-row"><span class="ed-lbl">y</span><input class="ed-inp" data-id="' + b.id + '" data-field="y" type="number" step="0.1" value="' + b.y.toFixed(3) + '"></div>' +
+          '<div class="ed-row"><span class="ed-lbl">vx</span><input class="ed-inp" data-id="' + b.id + '" data-field="vx" type="number" step="0.01" value="' + b.vx.toFixed(4) + '"></div>' +
+          '<div class="ed-row"><span class="ed-lbl">vy</span><input class="ed-inp" data-id="' + b.id + '" data-field="vy" type="number" step="0.01" value="' + b.vy.toFixed(4) + '"></div>' +
+          '<div class="ed-row"><span class="ed-lbl">r</span><input class="ed-inp" data-id="' + b.id + '" data-field="radius" type="number" step="1" min="2" max="30" value="' + b.radius + '"></div>' +
+          '<div class="ed-row"><span class="ed-lbl">Color</span><input class="ed-color" data-id="' + b.id + '" data-field="color" type="color" value="' + b.color + '"></div>';
+        list.appendChild(card);
+      });
+
+      // Wire up inputs
+      list.querySelectorAll('.ed-inp, .ed-color').forEach(function (inp) {
+        inp.addEventListener('change', function () {
+          var id = parseInt(this.dataset.id);
+          var field = this.dataset.field;
+          var body = editorBodies.find(function (b) { return b.id === id; });
+          if (!body) return;
+          var numFields = ['mass', 'x', 'y', 'vx', 'vy', 'radius'];
+          body[field] = numFields.indexOf(field) !== -1 ? parseFloat(this.value) : this.value;
+          if (field === 'name') renderEditorBodies();
+        });
+      });
+      list.querySelectorAll('.ed-del').forEach(function (btn) {
+        btn.addEventListener('click', function () {
+          var id = parseInt(this.dataset.id);
+          editorBodies = editorBodies.filter(function (b) { return b.id !== id; });
+          renderEditorBodies();
+        });
+      });
+    }
+
+    function openEditor() {
+      // Snapshot current bodies into editor if live
+      if (simState.currentBodies.length > 0 && editorBodies.length === 0) {
+        editorBodies = simState.currentBodies.map(function (b, i) {
+          return {
+            id: ++edBodyId, name: b.name || ('Body ' + i), mass: b.mass || 1e-3,
+            x: b.x, y: b.y, vx: b.vx || 0, vy: b.vy || 0,
+            radius: b.radius || 6, color: b.color || '#aaaaaa', type: b.type || 'planet'
+          };
+        });
+      }
+      renderEditorBodies();
+      document.getElementById('editor-panel').classList.add('open');
+      document.getElementById('btn-editor').classList.add('active');
+    }
+
+    function closeEditor() {
+      document.getElementById('editor-panel').classList.remove('open');
+      document.getElementById('btn-editor').classList.remove('active');
+    }
+
+    document.getElementById('btn-editor').addEventListener('click', function () {
+      document.getElementById('editor-panel').classList.contains('open') ? closeEditor() : openEditor();
+    });
+    document.getElementById('ed-close').addEventListener('click', closeEditor);
+
+    document.getElementById('ed-add').addEventListener('click', function () {
+      // Add central star if first body
+      if (editorBodies.length === 0) {
+        editorBodies.push({
+          id: ++edBodyId, name: 'Star', mass: 1.0,
+          x: 0, y: 0, vx: 0, vy: 0, radius: 18, color: '#fff200', type: 'star'
+        });
+      } else {
+        editorBodies.push(defaultBody());
+      }
+      renderEditorBodies();
+    });
+
+    document.getElementById('ed-run').addEventListener('click', function () {
+      if (editorBodies.length === 0) {
+        addMsg('err', 'Add at least one body first', null); return;
+      }
+      closeEditor();
+      // Build prompt from body names and launch
+      var names = editorBodies.map(function (b) { return b.name; }).join(', ');
+      var prompt = 'Custom scenario: ' + names;
+      simState.scenarioName = prompt;
+      // Send via WebSocket as custom scenario
+      connectWS(function () {
+        wsSend({
+          action: 'start',
+          prompt: prompt,
+          fps: 30,
+          steps_per_frame: simState.speedMult,
+          custom_bodies: editorBodies
+        });
+      });
+      addMsg('sys', '✏ Launched custom scenario with ' + editorBodies.length + ' bodies', null);
+    });
+
+    // ================================================================
+    // INIT all features on page load
+    // ================================================================
+    window.addEventListener('load', function () {
+      initTooltip();
+      initEnergyGraph();
+      buildPresetMenu();
+      loadScenarioFromURL();
+
+      // Add share URL button to toolbar (dynamic - avoids HTML clutter)
+      var shareBtn = document.createElement('button');
+      shareBtn.className = 'btn-screenshot';
+      shareBtn.id = 'btn-share';
+      shareBtn.title = 'Copy shareable URL (U)';
+      shareBtn.textContent = '🔗 Share';
+      shareBtn.addEventListener('click', copyShareURL);
+      var recBtn = document.getElementById('btn-record');
+      if (recBtn) recBtn.parentNode.insertBefore(shareBtn, recBtn.nextSibling);
+
+      // Patch renderFrame to also call trail store + energy graph
+      var _origRenderFrame = renderFrame;
+      renderFrame = function (data) {
+        _origRenderFrame(data);
+        if (simState.showTrails && data.bodies) updateTrailStore(data.bodies);
+        if (trailColorMode && data.bodies) drawSpeedTrails(canvas.width, canvas.height);
+        updateEnergyGraph(data.energy_drift || 0);
+      };
+    });
+
+    // Add C key hint to kb-hint
+    document.addEventListener('DOMContentLoaded', function () {
+      var hint = document.getElementById('kb-hint');
+      if (hint) hint.innerHTML += '<br>C speed-color trails &nbsp; U share URL';
     });
   </script>
 </body>
