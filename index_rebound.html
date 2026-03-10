@@ -1906,6 +1906,28 @@
       return parseInt(h.slice(0, 2), 16) + ',' + parseInt(h.slice(2, 4), 16) + ',' + parseInt(h.slice(4, 6), 16);
     }
 
+
+    // ── AU-TO-PIXEL: sqrt-radial stretch for wide systems ─────────
+    // For systems spanning > 4 AU (solar system scale), linear scale
+    // crushes inner planets. Sqrt radial stretch keeps all bodies
+    // visible while preserving orbital directions.
+    // Tight systems (binaries, TRAPPIST) use normal linear mapping.
+    function auToPixel(ax, ay, cx, cy, scale, span) {
+      if (!simState.stretchScale || span <= 4) {
+        return { px: cx + ax * scale, py: cy + ay * scale };
+      }
+      // Logarithmic stretch: gives inner planets (0.4-1.5 AU) and
+      // outer planets (5-30 AU) both visible separation
+      var r = Math.sqrt(ax * ax + ay * ay);
+      if (r < 1e-9) return { px: cx, py: cy };
+      var angle = Math.atan2(ay, ax);
+      var logR = Math.log(1 + r * 12 / span) / Math.log(1 + 12);
+      var rDisplay = logR * simState.stretchRadius;
+      return {
+        px: cx + Math.cos(angle) * rDisplay,
+        py: cy + Math.sin(angle) * rDisplay
+      };
+    }
     function renderFrame(data) {
       var W = canvas.width, H = canvas.height, scale = simState.scale;
       var cx = W / 2 + (simState.camOffX || 0), cy = H / 2 + (simState.camOffY || 0);
@@ -1927,10 +1949,16 @@
         });
         var spanX = maxX - minX, spanY = maxY - minY;
         var span = Math.max(spanX, spanY, 1e-6); // AU
-        var targetScale = Math.min(W, H) * 0.38 / span;
-        // Smooth zoom: lerp toward target (avoid jarring jumps)
-        simState.scale = simState.scale * 0.96 + targetScale * 0.04;
-        scale = simState.scale;
+        simState.currentSpan = span;
+        simState.stretchScale = span > 4; // use sqrt stretch for solar-system scale
+        if (simState.stretchScale) {
+          simState.stretchRadius = Math.min(W, H) * 0.46;
+          scale = simState.scale;
+        } else {
+          var targetScale = Math.min(W, H) * 0.38 / span;
+          simState.scale = simState.scale * 0.96 + targetScale * 0.04;
+          scale = simState.scale;
+        }
         // Re-center on centroid
         var comX = 0, comY = 0, totalM = 0;
         bodies.forEach(function (b) { var m = b.mass || 1; comX += b.x * m; comY += b.y * m; totalM += m; });
@@ -1951,7 +1979,7 @@
       });
 
       sortedBodies.forEach(function (b) {
-        var px = cx + b.x * scale, py = cy + b.y * scale, r = b.radius || 5;
+        var _p = auToPixel(b.x, b.y, cx, cy, scale, simState.currentSpan || 1); var px = _p.px, py = _p.py; var r = b.radius || 5;
         var rgb = hexRgb(b.color || '#ffffff'), gm = TYPE_GLOW[b.type] || 3;
         if (simState.showGlow) {
           var g1 = ctx.createRadialGradient(px, py, 0, px, py, r * gm * 3);
@@ -2366,8 +2394,8 @@
             ? speedToColor(pts[i].speed, maxSpd)
             : (pts[i].color || '#ffffff');
           ctx.beginPath();
-          ctx.moveTo(cx + pts[i - 1].x * scale, cy + pts[i - 1].y * scale);
-          ctx.lineTo(cx + pts[i].x * scale, cy + pts[i].y * scale);
+          ctx.moveTo(auToPixel(pts[i - 1].x, pts[i - 1].y, cx, cy, scale, simState.currentSpan || 1).px, auToPixel(pts[i - 1].x, pts[i - 1].y, cx, cy, scale, simState.currentSpan || 1).py);
+          var _tpt = auToPixel(pts[i].x, pts[i].y, cx, cy, scale, simState.currentSpan || 1); ctx.lineTo(_tpt.px, _tpt.py);
           ctx.strokeStyle = col.startsWith('rgb(')
             ? col.replace('rgb(', 'rgba(').replace(')', ',' + alpha + ')')
             : col;
@@ -2451,7 +2479,7 @@
       var cx = canvas.width / 2 + (simState.camOffX || 0), cy = canvas.height / 2 + (simState.camOffY || 0), scale = simState.scale;
       var best = null, bestDist = 999;
       simState.currentBodies.forEach(function (b) {
-        var px = cx + b.x * scale, py = cy + b.y * scale;
+        var _tp = auToPixel(b.x, b.y, cx, cy, scale, simState.currentSpan || 1); var px = _tp.px, py = _tp.py;
         var d = Math.sqrt((mx - px) * (mx - px) + (my - py) * (my - py));
         if (d < Math.max((b.radius || 5) + 12, 20) && d < bestDist) {
           bestDist = d; best = b;
