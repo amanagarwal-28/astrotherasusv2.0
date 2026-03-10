@@ -1370,71 +1370,21 @@
       font-weight: 600;
     }
 
-    /* ====== PRESET DROPDOWN ====== */
-    #preset-wrap {
-      position: relative;
-      flex-shrink: 0;
-    }
 
-    #btn-presets {
-      padding: 4px 11px;
-      background: rgba(255, 215, 0, 0.07);
-      border: 1px solid rgba(255, 215, 0, 0.25);
-      border-radius: 3px;
-      color: var(--gold);
-      font-size: 9px;
-      font-family: 'JetBrains Mono', monospace;
-      letter-spacing: 1px;
-      cursor: pointer;
-      transition: all .15s;
-      white-space: nowrap;
-    }
 
-    #btn-presets:hover {
-      background: rgba(255, 215, 0, 0.15);
-      box-shadow: 0 0 10px rgba(255, 215, 0, 0.2);
-    }
 
-    #preset-menu {
-      position: absolute;
-      top: calc(100% + 6px);
-      right: 0;
-      z-index: 300;
-      background: rgba(2, 6, 24, 0.99);
-      border: 1px solid rgba(255, 215, 0, 0.25);
-      border-radius: 5px;
-      min-width: 240px;
-      display: none;
-      box-shadow: 0 12px 40px rgba(0, 0, 0, 0.7);
-      overflow: hidden;
-    }
+
+
+
+
 
     #preset-menu.open {
       display: block;
     }
 
-    .preset-group {
-      padding: 5px 12px 3px;
-      font-size: 7px;
-      letter-spacing: 2px;
-      color: rgba(255, 215, 0, 0.45);
-      text-transform: uppercase;
-      border-bottom: 1px solid rgba(255, 215, 0, 0.08);
-      font-family: 'JetBrains Mono', monospace;
-    }
 
-    .preset-item {
-      padding: 8px 14px;
-      display: flex;
-      align-items: center;
-      gap: 9px;
-      font-family: 'JetBrains Mono', monospace;
-      font-size: 10px;
-      color: rgba(200, 220, 255, 0.85);
-      cursor: pointer;
-      border-bottom: 1px solid rgba(255, 215, 0, 0.04);
-      transition: all .1s;
-    }
+
+
 
     .preset-item:hover {
       background: rgba(255, 215, 0, 0.07);
@@ -1442,82 +1392,27 @@
       padding-left: 18px;
     }
 
-    /* ====== CUSTOM SCENARIO EDITOR ====== */
-    #editor-panel {
-      position: fixed;
-      top: 58px;
-      right: 380px;
-      width: 320px;
-      height: calc(100vh - 58px);
-      z-index: 200;
-      background: rgba(2, 6, 24, 0.98);
-      border-left: 1px solid var(--border);
-      border-right: 1px solid var(--border);
-      display: none;
-      flex-direction: column;
-      overflow: hidden;
-    }
 
-    #editor-panel.open {
-      display: flex;
-    }
 
-    .ed-hdr {
-      padding: 10px 14px;
-      background: var(--hl-bg);
-      border-bottom: 1px solid rgba(0, 220, 180, 0.15);
-      font-family: 'Orbitron', sans-serif;
-      font-size: 8px;
-      letter-spacing: 3px;
-      color: var(--teal);
-      display: flex;
-      align-items: center;
-      justify-content: space-between;
-      flex-shrink: 0;
-    }
 
-    .ed-close {
-      background: none;
-      border: none;
-      color: var(--dim);
-      cursor: pointer;
-      font-size: 16px;
-      line-height: 1;
-      padding: 0 4px;
-    }
+
+
+
+
 
     .ed-close:hover {
       color: var(--nova);
     }
 
-    .ed-body-list {
-      flex: 1;
-      overflow-y: auto;
-      padding: 8px;
-    }
 
-    .ed-body-card {
-      background: rgba(50, 128, 255, 0.05);
-      border: 1px solid var(--border);
-      border-radius: 4px;
-      padding: 10px 12px;
-      margin-bottom: 8px;
-    }
+
+
 
     .ed-body-card:hover {
       border-color: rgba(0, 220, 180, 0.3);
     }
 
-    .ed-body-title {
-      font-family: 'Orbitron', sans-serif;
-      font-size: 8px;
-      letter-spacing: 2px;
-      color: var(--teal);
-      margin-bottom: 8px;
-      display: flex;
-      align-items: center;
-      justify-content: space-between;
-    }
+
 
     .ed-del {
       background: none;
@@ -1576,17 +1471,7 @@
       flex-shrink: 0;
     }
 
-    .ed-btn {
-      flex: 1;
-      padding: 7px;
-      border-radius: 3px;
-      border: none;
-      font-family: 'JetBrains Mono', monospace;
-      font-size: 9px;
-      letter-spacing: 1px;
-      cursor: pointer;
-      transition: all .15s;
-    }
+
 
     .ed-btn-add {
       background: rgba(0, 220, 180, 0.12);
@@ -1598,38 +1483,16 @@
       background: rgba(0, 220, 180, 0.22);
     }
 
-    .ed-btn-run {
-      background: linear-gradient(135deg, var(--teal), #009070);
-      color: #000;
-      font-weight: 700;
-    }
+
 
     .ed-btn-run:hover {
       box-shadow: 0 0 14px rgba(0, 220, 180, 0.4);
     }
 
-    #btn-editor {
-      padding: 4px 11px;
-      background: rgba(0, 220, 180, 0.07);
-      border: 1px solid rgba(0, 220, 180, 0.25);
-      border-radius: 3px;
-      color: var(--teal);
-      font-size: 9px;
-      font-family: 'JetBrains Mono', monospace;
-      letter-spacing: 1px;
-      cursor: pointer;
-      transition: all .15s;
-      white-space: nowrap;
-    }
 
-    #btn-editor:hover {
-      background: rgba(0, 220, 180, 0.15);
-    }
 
-    #btn-editor.active {
-      background: rgba(0, 220, 180, 0.18);
-      border-color: var(--teal);
-    }
+
+
 
     /* ====== ENERGY GRAPH ====== */
     #energy-graph-wrap {
@@ -1673,7 +1536,32 @@
       text-align: right;
       line-height: 1.8;
     }
+
+    /* ====== 3D MODE ====== */
+    #btn-3d {
+      padding: 4px 10px;
+      background: rgba(120, 60, 255, 0.07);
+      border: 1px solid rgba(120, 60, 255, 0.25);
+      border-radius: 3px;
+      color: #c084fc;
+      font-size: 9px;
+      font-family: 'JetBrains Mono', monospace;
+      letter-spacing: 1px;
+      cursor: pointer;
+      transition: all .15s;
+    }
+
+    #btn-3d:hover {
+      background: rgba(120, 60, 255, 0.18);
+    }
+
+    #btn-3d.active {
+      background: rgba(120, 60, 255, 0.22);
+      border-color: rgba(120, 60, 255, 0.7);
+      box-shadow: 0 0 12px rgba(120, 60, 255, 0.35);
+    }
   </style>
+  <script src="https://cdnjs.cloudflare.com/ajax/libs/three.js/r128/three.min.js"></script>
 </head>
 
 <body>
@@ -1712,11 +1600,6 @@
         </div>
       </div>
 
-      <div id="preset-wrap">
-        <button id="btn-presets">★ Presets</button>
-        <div id="preset-menu"></div>
-      </div>
-      <button id="btn-editor">✏ Editor</button>
       <div class="hstats">
         <div class="hs"><span class="hs-l">Scenario</span><span class="hs-v" id="hs-sc">—</span></div>
         <div class="hs"><span class="hs-l">Bodies</span><span class="hs-v" id="hs-bd">0</span></div>
@@ -1754,6 +1637,7 @@
         <button class="btn on" id="btn-glow">✦ Glow</button>
         <button class="btn on" id="btn-lbl">⌖ Labels</button>
         <button class="btn" id="btn-elems">⊙ Elements</button>
+        <button class="btn" id="btn-3d" title="Toggle 3D view">&#9670; 3D</button>
         <div class="opts-sep"></div>
         <button class="btn-nasa" id="btn-nasa"
           title="Load today&#39;s real planetary positions from NASA JPL Horizons">🛰 NASA Live</button>
@@ -1781,6 +1665,7 @@
       <!-- Canvas -->
       <div id="canvas-wrap">
         <canvas id="sim-canvas"></canvas>
+        <div id="sim-canvas-3d" style="display:none;position:absolute;inset:0;"></div>
         <div id="collision-flash"></div>
         <div id="rec-badge">● REC</div>
         <div class="cv-corner tl"></div>
@@ -1842,12 +1727,25 @@
           <div class="wc-title">REBOUND + RAG Active</div>
           <div class="wc-body">Ask anything in plain English. Simulation prompts auto-launch in the viewer.</div>
           <div class="wc-exs">
-            <div class="wce" onclick="fillChat('What is a Hohmann transfer?')">→ What is a Hohmann transfer?</div>
-            <div class="wce" onclick="fillChat('Explain Lagrange points')">→ Explain Lagrange points</div>
-            <div class="wce" onclick="fillChat('Show Mars orbit for 2 years')">→ Show Mars orbit plot</div>
-            <div class="wce" onclick="fillSim('TRAPPIST-1 all 7 planets')">⚡ Simulate TRAPPIST-1</div>
-            <div class="wce" onclick="fillSim('Earth Moon system')">⚡ Simulate Earth-Moon</div>
-            <div class="wce" onclick="fillSim('Hot Jupiter with two planets')">⚡ Simulate Hot Jupiter</div>
+            <div class="wce" onclick="fillChat('What is a Hohmann transfer orbit?')">&#8594; Hohmann transfer</div>
+            <div class="wce" onclick="fillChat('Explain Lagrange points and L4 L5 stability')">&#8594; Lagrange points
+            </div>
+            <div class="wce" onclick="fillChat('How does orbital resonance work?')">&#8594; Orbital resonance</div>
+            <div class="wce" onclick="fillChat('What are Kepler third law implications?')">&#8594; Kepler&apos;s laws
+            </div>
+            <div class="wce" onclick="fillChat('Explain tidal locking and the Roche limit')">&#8594; Tidal forces</div>
+            <div class="wce" onclick="fillChat('What is the difference between elliptical and hyperbolic orbits?')">
+              &#8594; Orbit types</div>
+            <div class="wce" onclick="fillSim('Earth Moon system')">&#9889; Earth-Moon orbit</div>
+            <div class="wce" onclick="fillSim('binary star system equal mass circular orbit')">&#9889; Binary stars
+            </div>
+            <div class="wce" onclick="fillSim('TRAPPIST-1 all 7 planets')">&#9889; TRAPPIST-1</div>
+            <div class="wce" onclick="fillSim('three body problem chaotic')">&#9889; Three-body chaos</div>
+            <div class="wce" onclick="fillSim('figure-8 three body choreography')">&#9889; Figure-8</div>
+            <div class="wce" onclick="fillSim('Hot Jupiter with two outer rocky planets')">&#9889; Hot Jupiter</div>
+            <div class="wce" onclick="fillSim('Halley comet highly eccentric orbit')">&#9889; Comet orbit</div>
+            <div class="wce" onclick="fillSim('Jupiter trojan asteroids at Lagrange L4 L5')">&#9889; Trojan asteroids
+            </div>
           </div>
         </div>
       </div>
@@ -1868,17 +1766,7 @@
     </div><!-- #right -->
 
     <!-- CUSTOM SCENARIO EDITOR PANEL -->
-    <div id="editor-panel">
-      <div class="ed-hdr">
-        <span>✏ SCENARIO EDITOR</span>
-        <button class="ed-close" id="ed-close">×</button>
-      </div>
-      <div class="ed-body-list" id="ed-body-list"></div>
-      <div class="ed-footer">
-        <button class="ed-btn ed-btn-add" id="ed-add">⊕ Add Body</button>
-        <button class="ed-btn ed-btn-run" id="ed-run">▶ Launch</button>
-      </div>
-    </div>
+
 
   </div><!-- .app -->
 
@@ -1985,6 +1873,7 @@
       else if (msg.type === 'scenario') {
         var d = msg.data;
         simState.scale = d.scale || 180; simState.scenarioName = d.name || '?';
+        simState.camOffX = 0; simState.camOffY = 0; simState.manualZoom = false;
         document.getElementById('hs-sc').textContent = (d.name || '?').slice(0, 12).toUpperCase();
         document.getElementById('hs-bd').textContent = d.N || '?';
         document.getElementById('hud-sc').textContent = (d.name || '').toUpperCase();
@@ -2018,7 +1907,8 @@
     }
 
     function renderFrame(data) {
-      var W = canvas.width, H = canvas.height, cx = W / 2, cy = H / 2, scale = simState.scale;
+      var W = canvas.width, H = canvas.height, scale = simState.scale;
+      var cx = W / 2 + (simState.camOffX || 0), cy = H / 2 + (simState.camOffY || 0);
       ctx.fillStyle = simState.showTrails ? 'rgba(0,0,10,' + simState.trailAlpha + ')' : '#000010';
       ctx.fillRect(0, 0, W, H);
       document.getElementById('hs-t').textContent = (data.t || 0).toFixed(3);
@@ -2027,6 +1917,27 @@
       eb.textContent = 'ΔE/E: ' + dE.toExponential(1);
       eb.style.color = dE < 1e-6 ? '#00ff88' : dE < 1e-3 ? '#ffcc44' : '#ff4444';
       var bodies = data.bodies || []; simState.currentBodies = bodies;
+
+      // AUTO-SCALE: dynamically fit all bodies into ~70% of canvas each frame
+      if (bodies.length > 1 && !simState.manualZoom) {
+        var minX = Infinity, maxX = -Infinity, minY = Infinity, maxY = -Infinity;
+        bodies.forEach(function (b) {
+          if (b.x < minX) minX = b.x; if (b.x > maxX) maxX = b.x;
+          if (b.y < minY) minY = b.y; if (b.y > maxY) maxY = b.y;
+        });
+        var spanX = maxX - minX, spanY = maxY - minY;
+        var span = Math.max(spanX, spanY, 1e-6); // AU
+        var targetScale = Math.min(W, H) * 0.38 / span;
+        // Smooth zoom: lerp toward target (avoid jarring jumps)
+        simState.scale = simState.scale * 0.96 + targetScale * 0.04;
+        scale = simState.scale;
+        // Re-center on centroid
+        var comX = 0, comY = 0, totalM = 0;
+        bodies.forEach(function (b) { var m = b.mass || 1; comX += b.x * m; comY += b.y * m; totalM += m; });
+        simState.camOffX = (simState.camOffX || 0) * 0.96 - (comX / totalM) * scale * 0.04;
+        simState.camOffY = (simState.camOffY || 0) * 0.96 - (comY / totalM) * scale * 0.04;
+      }
+      var cx = W / 2 + (simState.camOffX || 0), cy = H / 2 + (simState.camOffY || 0);
 
       // Z-ORDER FIX: Render stars first (background), then planets by distance
       var sortedBodies = bodies.slice().sort(function (a, b) {
@@ -2537,7 +2448,7 @@
       var rect = canvas.getBoundingClientRect();
       var mx = e.clientX - rect.left;
       var my = e.clientY - rect.top;
-      var cx = canvas.width / 2, cy = canvas.height / 2, scale = simState.scale;
+      var cx = canvas.width / 2 + (simState.camOffX || 0), cy = canvas.height / 2 + (simState.camOffY || 0), scale = simState.scale;
       var best = null, bestDist = 999;
       simState.currentBodies.forEach(function (b) {
         var px = cx + b.x * scale, py = cy + b.y * scale;
@@ -2606,11 +2517,7 @@
           trailColorMode = !trailColorMode;
           trailStore = {};
           break;
-        case 'u': case 'U':
-          copyShareURL();
-          break;
         case 'Escape':
-          closeEditor();
           document.getElementById('preset-menu').classList.remove('open');
           break;
       }
@@ -2619,42 +2526,6 @@
     // ================================================================
     // FEATURE: SHAREABLE SCENARIO URLS
     // ================================================================
-    function copyShareURL() {
-      var scenario = {
-        name: simState.scenarioName,
-        bodies: simState.currentBodies
-      };
-      try {
-        var encoded = btoa(JSON.stringify(scenario));
-        var url = window.location.origin + window.location.pathname + '?scenario=' + encoded;
-        navigator.clipboard.writeText(url).then(function () {
-          addMsg('sys', '🔗 Share URL copied to clipboard!', null);
-        }).catch(function () {
-          // Fallback: show in chat
-          addMsg('sys', '🔗 Share URL (copy manually):
-' + url, null);
-        });
-      } catch (e) {
-        addMsg('err', 'Could not generate share URL', null);
-      }
-    }
-
-    function loadScenarioFromURL() {
-      var params = new URLSearchParams(window.location.search);
-      var encoded = params.get('scenario');
-      if (!encoded) return;
-      try {
-        var scenario = JSON.parse(atob(encoded));
-        if (scenario && scenario.name) {
-          // Pre-fill the prompt input and auto-launch
-          var inp = document.getElementById('sim-in');
-          if (inp) { inp.value = scenario.name; }
-          addMsg('sys', '🔗 Loaded shared scenario: ' + scenario.name, null);
-          setTimeout(function () { startSim(scenario.name); }, 800);
-        }
-      } catch (e) { /* invalid URL param, ignore */ }
-    }
-
     // ================================================================
     // FEATURE: SCENARIO PRESETS DROPDOWN
     // ================================================================
@@ -2678,35 +2549,6 @@
       { name: 'Kozai Mechanism', icon: '🔃', prompt: 'Kozai-Lidov mechanism with inclined outer perturber causing eccentricity oscillation' },
       { name: 'Hot Jupiter Migration', icon: '🔥', prompt: 'A hot Jupiter migrating inward through a planetary system via gravitational scattering' },
     ];
-
-    function buildPresetMenu() {
-      var menu = document.getElementById('preset-menu');
-      menu.innerHTML = '';
-      PRESETS.forEach(function (p) {
-        if (p.group) {
-          var div = document.createElement('div');
-          div.className = 'preset-group';
-          div.textContent = p.group;
-          menu.appendChild(div);
-        } else {
-          var item = document.createElement('div');
-          item.className = 'preset-item';
-          item.innerHTML = '<span>' + p.icon + '</span><span>' + p.name + '</span>';
-          item.addEventListener('click', function () {
-            document.getElementById('preset-menu').classList.remove('open');
-            var inp = document.getElementById('sim-in');
-            if (inp) inp.value = p.name;
-            startSim(p.prompt);
-          });
-          menu.appendChild(item);
-        }
-      });
-    }
-
-    document.getElementById('btn-presets').addEventListener('click', function (e) {
-      e.stopPropagation();
-      document.getElementById('preset-menu').classList.toggle('open');
-    });
     document.addEventListener('click', function () {
       document.getElementById('preset-menu').classList.remove('open');
     });
@@ -2716,149 +2558,12 @@
     // ================================================================
     var editorBodies = [];
     var edBodyId = 0;
-
-    function defaultBody() {
-      return {
-        id: ++edBodyId,
-        name: 'Body ' + edBodyId,
-        mass: 1e-3,
-        x: (Math.random() - 0.5) * 4,
-        y: (Math.random() - 0.5) * 4,
-        vx: (Math.random() - 0.5) * 2,
-        vy: (Math.random() - 0.5) * 2,
-        radius: 6,
-        color: '#' + Math.floor(Math.random() * 0xffffff).toString(16).padStart(6, '0'),
-        type: 'planet'
-      };
-    }
-
-    function renderEditorBodies() {
-      var list = document.getElementById('ed-body-list');
-      list.innerHTML = '';
-      if (editorBodies.length === 0) {
-        list.innerHTML = '<div style="color:rgba(120,160,200,0.4);font-size:10px;text-align:center;padding:24px">No bodies yet.
-        Click ⊕ Add Body to start.</div > ';
-        return;
-      }
-      editorBodies.forEach(function (b) {
-        var card = document.createElement('div');
-        card.className = 'ed-body-card';
-        card.innerHTML =
-          '<div class="ed-body-title">' +
-          '<span>' + b.name + '</span>' +
-          '<button class="ed-del" data-id="' + b.id + '">×</button>' +
-          '</div>' +
-          '<div class="ed-row"><span class="ed-lbl">Name</span><input class="ed-inp" data-id="' + b.id + '" data-field="name" value="' + b.name + '"></div>' +
-          '<div class="ed-row"><span class="ed-lbl">Mass</span><input class="ed-inp" data-id="' + b.id + '" data-field="mass" type="number" step="0.0001" value="' + b.mass + '"></div>' +
-          '<div class="ed-row"><span class="ed-lbl">x</span><input class="ed-inp" data-id="' + b.id + '" data-field="x" type="number" step="0.1" value="' + b.x.toFixed(3) + '"></div>' +
-          '<div class="ed-row"><span class="ed-lbl">y</span><input class="ed-inp" data-id="' + b.id + '" data-field="y" type="number" step="0.1" value="' + b.y.toFixed(3) + '"></div>' +
-          '<div class="ed-row"><span class="ed-lbl">vx</span><input class="ed-inp" data-id="' + b.id + '" data-field="vx" type="number" step="0.01" value="' + b.vx.toFixed(4) + '"></div>' +
-          '<div class="ed-row"><span class="ed-lbl">vy</span><input class="ed-inp" data-id="' + b.id + '" data-field="vy" type="number" step="0.01" value="' + b.vy.toFixed(4) + '"></div>' +
-          '<div class="ed-row"><span class="ed-lbl">r</span><input class="ed-inp" data-id="' + b.id + '" data-field="radius" type="number" step="1" min="2" max="30" value="' + b.radius + '"></div>' +
-          '<div class="ed-row"><span class="ed-lbl">Color</span><input class="ed-color" data-id="' + b.id + '" data-field="color" type="color" value="' + b.color + '"></div>';
-        list.appendChild(card);
-      });
-
-      // Wire up inputs
-      list.querySelectorAll('.ed-inp, .ed-color').forEach(function (inp) {
-        inp.addEventListener('change', function () {
-          var id = parseInt(this.dataset.id);
-          var field = this.dataset.field;
-          var body = editorBodies.find(function (b) { return b.id === id; });
-          if (!body) return;
-          var numFields = ['mass', 'x', 'y', 'vx', 'vy', 'radius'];
-          body[field] = numFields.indexOf(field) !== -1 ? parseFloat(this.value) : this.value;
-          if (field === 'name') renderEditorBodies();
-        });
-      });
-      list.querySelectorAll('.ed-del').forEach(function (btn) {
-        btn.addEventListener('click', function () {
-          var id = parseInt(this.dataset.id);
-          editorBodies = editorBodies.filter(function (b) { return b.id !== id; });
-          renderEditorBodies();
-        });
-      });
-    }
-
-    function openEditor() {
-      // Snapshot current bodies into editor if live
-      if (simState.currentBodies.length > 0 && editorBodies.length === 0) {
-        editorBodies = simState.currentBodies.map(function (b, i) {
-          return {
-            id: ++edBodyId, name: b.name || ('Body ' + i), mass: b.mass || 1e-3,
-            x: b.x, y: b.y, vx: b.vx || 0, vy: b.vy || 0,
-            radius: b.radius || 6, color: b.color || '#aaaaaa', type: b.type || 'planet'
-          };
-        });
-      }
-      renderEditorBodies();
-      document.getElementById('editor-panel').classList.add('open');
-      document.getElementById('btn-editor').classList.add('active');
-    }
-
-    function closeEditor() {
-      document.getElementById('editor-panel').classList.remove('open');
-      document.getElementById('btn-editor').classList.remove('active');
-    }
-
-    document.getElementById('btn-editor').addEventListener('click', function () {
-      document.getElementById('editor-panel').classList.contains('open') ? closeEditor() : openEditor();
-    });
-    document.getElementById('ed-close').addEventListener('click', closeEditor);
-
-    document.getElementById('ed-add').addEventListener('click', function () {
-      // Add central star if first body
-      if (editorBodies.length === 0) {
-        editorBodies.push({
-          id: ++edBodyId, name: 'Star', mass: 1.0,
-          x: 0, y: 0, vx: 0, vy: 0, radius: 18, color: '#fff200', type: 'star'
-        });
-      } else {
-        editorBodies.push(defaultBody());
-      }
-      renderEditorBodies();
-    });
-
-    document.getElementById('ed-run').addEventListener('click', function () {
-      if (editorBodies.length === 0) {
-        addMsg('err', 'Add at least one body first', null); return;
-      }
-      closeEditor();
-      // Build prompt from body names and launch
-      var names = editorBodies.map(function (b) { return b.name; }).join(', ');
-      var prompt = 'Custom scenario: ' + names;
-      simState.scenarioName = prompt;
-      // Send via WebSocket as custom scenario
-      connectWS(function () {
-        wsSend({
-          action: 'start',
-          prompt: prompt,
-          fps: 30,
-          steps_per_frame: simState.speedMult,
-          custom_bodies: editorBodies
-        });
-      });
-      addMsg('sys', '✏ Launched custom scenario with ' + editorBodies.length + ' bodies', null);
-    });
-
     // ================================================================
     // INIT all features on page load
     // ================================================================
     window.addEventListener('load', function () {
       initTooltip();
       initEnergyGraph();
-      buildPresetMenu();
-      loadScenarioFromURL();
-
-      // Add share URL button to toolbar (dynamic - avoids HTML clutter)
-      var shareBtn = document.createElement('button');
-      shareBtn.className = 'btn-screenshot';
-      shareBtn.id = 'btn-share';
-      shareBtn.title = 'Copy shareable URL (U)';
-      shareBtn.textContent = '🔗 Share';
-      shareBtn.addEventListener('click', copyShareURL);
-      var recBtn = document.getElementById('btn-record');
-      if (recBtn) recBtn.parentNode.insertBefore(shareBtn, recBtn.nextSibling);
 
       // Patch renderFrame to also call trail store + energy graph
       var _origRenderFrame = renderFrame;
@@ -2868,13 +2573,234 @@
         if (trailColorMode && data.bodies) drawSpeedTrails(canvas.width, canvas.height);
         updateEnergyGraph(data.energy_drift || 0);
       };
+
+      // Wire 3D toggle button
+      document.getElementById('btn-3d').addEventListener('click', function () {
+        mode3D ? disable3D() : enable3D();
+      });
     });
 
     // Add C key hint to kb-hint
     document.addEventListener('DOMContentLoaded', function () {
       var hint = document.getElementById('kb-hint');
-      if (hint) hint.innerHTML += '<br>C speed-color trails &nbsp; U share URL';
+      if (hint) hint.innerHTML += '<br>C speed-color trails';
     });
+    // ============================================================
+    // 3D SIMULATION MODE  (Three.js r128)
+    // Toggle with the 3D button. REBOUND physics stays 2D;
+    // sinusoidal Z adds visual depth. Mouse-drag orbits camera.
+    // ============================================================
+    var mode3D = false;
+    var threeRenderer = null, threeScene = null, threeCamera = null;
+    var threeAnimId = null;
+    var threeMeshes = {}, threeTrails = {}, threeTrailPts = {};
+    var threeSpherical = { theta: 0.4, phi: 1.1, radius: 220 };
+
+    function hexToThreeColor(hex) {
+      return parseInt((hex || '#ffffff').replace('#', ''), 16);
+    }
+
+    function init3D() {
+      if (!window.THREE) {
+        addMsg('err', 'Three.js CDN not loaded — check internet connection', null);
+        return false;
+      }
+      var container = document.getElementById('sim-canvas-3d');
+      var W = container.offsetWidth || canvas.width;
+      var H = container.offsetHeight || canvas.height;
+
+      threeRenderer = new THREE.WebGLRenderer({ antialias: true, alpha: false });
+      threeRenderer.setSize(W, H);
+      threeRenderer.setPixelRatio(Math.min(window.devicePixelRatio, 2));
+      threeRenderer.setClearColor(0x000510, 1);
+      container.innerHTML = '';
+      container.appendChild(threeRenderer.domElement);
+
+      threeScene = new THREE.Scene();
+      threeCamera = new THREE.PerspectiveCamera(55, W / H, 0.01, 10000);
+      var sp = threeSpherical;
+      threeCamera.position.set(
+        sp.radius * Math.sin(sp.phi) * Math.sin(sp.theta),
+        sp.radius * Math.cos(sp.phi),
+        sp.radius * Math.sin(sp.phi) * Math.cos(sp.theta)
+      );
+      threeCamera.lookAt(0, 0, 0);
+
+      // Starfield
+      var sgeo = new THREE.BufferGeometry();
+      var sv = [];
+      for (var i = 0; i < 3000; i++) {
+        sv.push((Math.random() - 0.5) * 3000, (Math.random() - 0.5) * 3000, (Math.random() - 0.5) * 3000);
+      }
+      sgeo.setAttribute('position', new THREE.Float32BufferAttribute(sv, 3));
+      threeScene.add(new THREE.Points(sgeo,
+        new THREE.PointsMaterial({ color: 0xffffff, size: 0.7, transparent: true, opacity: 0.5 })));
+
+      // Lights
+      threeScene.add(new THREE.AmbientLight(0x334466, 1.5));
+      var sunLight = new THREE.PointLight(0xffffff, 2.5, 3000);
+      sunLight.name = '__sun_light';
+      threeScene.add(sunLight);
+
+      // Manual orbit camera controls
+      var dragging = false, lastMX = 0, lastMY = 0;
+      container.addEventListener('mousedown', function (e) {
+        dragging = true; lastMX = e.clientX; lastMY = e.clientY;
+      });
+      window.addEventListener('mouseup', function () { dragging = false; });
+      window.addEventListener('mousemove', function (e) {
+        if (!dragging || !mode3D) return;
+        threeSpherical.theta -= (e.clientX - lastMX) * 0.005;
+        threeSpherical.phi = Math.max(0.1, Math.min(Math.PI - 0.1,
+          threeSpherical.phi + (e.clientY - lastMY) * 0.005));
+        lastMX = e.clientX; lastMY = e.clientY;
+        var sp2 = threeSpherical;
+        threeCamera.position.set(
+          sp2.radius * Math.sin(sp2.phi) * Math.sin(sp2.theta),
+          sp2.radius * Math.cos(sp2.phi),
+          sp2.radius * Math.sin(sp2.phi) * Math.cos(sp2.theta)
+        );
+        threeCamera.lookAt(0, 0, 0);
+      });
+      container.addEventListener('wheel', function (e) {
+        threeSpherical.radius = Math.max(20, Math.min(800, threeSpherical.radius + e.deltaY * 0.25));
+        var sp2 = threeSpherical;
+        threeCamera.position.set(
+          sp2.radius * Math.sin(sp2.phi) * Math.sin(sp2.theta),
+          sp2.radius * Math.cos(sp2.phi),
+          sp2.radius * Math.sin(sp2.phi) * Math.cos(sp2.theta)
+        );
+        threeCamera.lookAt(0, 0, 0);
+        e.preventDefault();
+      }, { passive: false });
+
+      window.addEventListener('resize', function () {
+        if (!mode3D || !threeRenderer) return;
+        var W2 = container.offsetWidth, H2 = container.offsetHeight;
+        threeCamera.aspect = W2 / H2;
+        threeCamera.updateProjectionMatrix();
+        threeRenderer.setSize(W2, H2);
+      });
+      return true;
+    }
+
+    function sync3DBodies(bodies) {
+      if (!threeScene || !bodies) return;
+      var SCALE = (simState.scale || 180) * 0.45;
+      var t = performance.now() * 0.001;
+      var seen = {};
+
+      bodies.forEach(function (b, idx) {
+        var key = b.name || ('body_' + idx);
+        seen[key] = true;
+        var x3 = b.x * SCALE;
+        var y3 = b.y * SCALE;
+        var z3 = (b.type === 'star' || b.type === 'blackhole') ? 0
+          : Math.sin(t * 0.25 + idx * 1.3) * (12 + idx * 2.5);
+
+        if (!threeMeshes[key]) {
+          var r = Math.max(0.8, (b.radius || 6) * 0.55);
+          var col = hexToThreeColor(b.color);
+          var mat;
+          if (b.type === 'star') {
+            mat = new THREE.MeshBasicMaterial({ color: col });
+            var sl = new THREE.PointLight(col, 1.8, SCALE * 18);
+            sl.name = key + '_light';
+            threeScene.add(sl);
+          } else if (b.type === 'blackhole') {
+            mat = new THREE.MeshBasicMaterial({ color: 0x110011 });
+          } else {
+            mat = new THREE.MeshPhongMaterial({ color: col, shininess: 55, specular: 0x222222 });
+          }
+          var mesh = new THREE.Mesh(new THREE.SphereGeometry(r, 20, 20), mat);
+          mesh.name = key;
+          threeScene.add(mesh);
+          threeMeshes[key] = mesh;
+
+          // Trail line
+          var tmax = 120;
+          var tgeo = new THREE.BufferGeometry();
+          var tpos = new Float32Array(tmax * 3);
+          tgeo.setAttribute('position', new THREE.BufferAttribute(tpos, 3));
+          tgeo.setDrawRange(0, 0);
+          var trail = new THREE.Line(tgeo,
+            new THREE.LineBasicMaterial({ color: col, transparent: true, opacity: 0.4 }));
+          threeScene.add(trail);
+          threeTrails[key] = trail;
+          threeTrailPts[key] = { pts: [], max: tmax };
+        }
+
+        threeMeshes[key].position.set(x3, z3, y3);
+        var sl2 = threeScene.getObjectByName(key + '_light');
+        if (sl2) sl2.position.set(x3, z3, y3);
+        if (b.type === 'star' && idx === 0) {
+          var sunL = threeScene.getObjectByName('__sun_light');
+          if (sunL) sunL.position.set(x3, z3, y3);
+        }
+
+        if (simState.showTrails) {
+          var tp = threeTrailPts[key];
+          tp.pts.push(x3, z3, y3);
+          if (tp.pts.length > tp.max * 3) tp.pts.splice(0, 3);
+          var arr = threeTrails[key].geometry.attributes.position.array;
+          var n = Math.floor(tp.pts.length / 3);
+          for (var pi = 0; pi < n; pi++) {
+            arr[pi * 3] = tp.pts[pi * 3]; arr[pi * 3 + 1] = tp.pts[pi * 3 + 1]; arr[pi * 3 + 2] = tp.pts[pi * 3 + 2];
+          }
+          threeTrails[key].geometry.setDrawRange(0, n);
+          threeTrails[key].geometry.attributes.position.needsUpdate = true;
+        }
+      });
+
+      Object.keys(threeMeshes).forEach(function (key) {
+        if (!seen[key]) {
+          threeScene.remove(threeMeshes[key]);
+          threeScene.remove(threeTrails[key]);
+          var sl3 = threeScene.getObjectByName(key + '_light');
+          if (sl3) threeScene.remove(sl3);
+          delete threeMeshes[key]; delete threeTrails[key]; delete threeTrailPts[key];
+        }
+      });
+    }
+
+    function animateLoop3D() {
+      threeAnimId = requestAnimationFrame(animateLoop3D);
+      if (threeRenderer && threeScene && threeCamera)
+        threeRenderer.render(threeScene, threeCamera);
+    }
+
+    function enable3D() {
+      if (!init3D()) return;
+      mode3D = true;
+      canvas.style.display = 'none';
+      document.getElementById('sim-canvas-3d').style.display = 'block';
+      document.getElementById('btn-3d').classList.add('active');
+      document.getElementById('btn-3d').innerHTML = '&#9670; 2D';
+      var _origRF = renderFrame;
+      renderFrame = function (data) {
+        _origRF(data);
+        if (data.bodies) sync3DBodies(data.bodies);
+      };
+      animateLoop3D();
+      addMsg('sys', '3D mode active — drag to orbit camera, scroll to zoom', null);
+    }
+
+    function disable3D() {
+      mode3D = false;
+      canvas.style.display = '';
+      document.getElementById('sim-canvas-3d').style.display = 'none';
+      document.getElementById('btn-3d').classList.remove('active');
+      document.getElementById('btn-3d').innerHTML = '&#9670; 3D';
+      if (threeAnimId) { cancelAnimationFrame(threeAnimId); threeAnimId = null; }
+      if (threeRenderer) {
+        threeRenderer.dispose();
+        var c3 = document.getElementById('sim-canvas-3d');
+        if (c3.firstChild) c3.removeChild(c3.firstChild);
+        threeRenderer = null; threeScene = null; threeCamera = null;
+      }
+      threeMeshes = {}; threeTrails = {}; threeTrailPts = {};
+    }
+
   </script>
 </body>
 

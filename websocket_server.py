@@ -96,19 +96,44 @@ async def websocket_sim(websocket: WebSocket):
                 action = msg.get("action", "")
 
                 if action == "start":
-                    prompt = msg.get("prompt", "solar system")
-                    fps    = msg.get("fps", 30)
+                    prompt        = msg.get("prompt", "solar system")
+                    fps           = msg.get("fps", 30)
                     steps_per_frame = msg.get("steps_per_frame", 2)
-                    
+                    custom_bodies = msg.get("custom_bodies", None)
+
                     await send({"type": "status", "message": f"Generating scenario: {prompt}"})
 
-                    # Generate scenario
-                    try:
-                        from ai_scenario_generator import get_scenario
-                        result = get_scenario(prompt)
-                    except ImportError:
-                        from ai_scenario_generator import get_scenario
-                        result = get_scenario(prompt)
+                    # Custom bodies from editor — bypass AI entirely
+                    if custom_bodies:
+                        scenario = {
+                            "name": prompt,
+                            "description": f"Custom: {len(custom_bodies)} bodies",
+                            "units": "solar", "integrator": "ias15",
+                            "t_per_frame": 0.005, "scale": 180.0, "collisions": True,
+                            "bodies": [
+                                {
+                                    "name":   b.get("name", f"Body {i}"),
+                                    "mass":   float(b.get("mass", 1e-3)),
+                                    "x":      float(b.get("x", 0)),
+                                    "y":      float(b.get("y", 0)),
+                                    "vx":     float(b.get("vx", 0)),
+                                    "vy":     float(b.get("vy", 0)),
+                                    "color":  b.get("color", "#aaaaaa"),
+                                    "radius": int(b.get("radius", 6)),
+                                    "type":   b.get("type", "planet"),
+                                }
+                                for i, b in enumerate(custom_bodies)
+                            ]
+                        }
+                        result = {"ok": True, "scenario": scenario, "source": "editor"}
+                    else:
+                        # Generate scenario via AI
+                        try:
+                            from ai_scenario_generator import get_scenario
+                            result = get_scenario(prompt)
+                        except ImportError:
+                            from ai_scenario_generator import get_scenario
+                            result = get_scenario(prompt)
 
                     if not result["ok"]:
                         await send({"type": "error", "message": result.get("error", "Failed to generate scenario")})
