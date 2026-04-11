@@ -1637,6 +1637,7 @@
         <button class="btn on" id="btn-glow">✦ Glow</button>
         <button class="btn on" id="btn-lbl">⌖ Labels</button>
         <button class="btn" id="btn-elems">⊙ Elements</button>
+        <button class="btn" id="btn-accuracy" title="Check orbital accuracy vs NASA reference">🎯 Accuracy</button>
         <button class="btn" id="btn-3d" title="Toggle 3D view">&#9670; 3D</button>
         <div class="opts-sep"></div>
         <button class="btn-nasa" id="btn-nasa"
@@ -1897,6 +1898,7 @@
         if (now - fpsLast >= 1000) { fps = fpsCount; fpsCount = 0; fpsLast = now; document.getElementById('hs-fps').textContent = fps; }
       }
       else if (msg.type === 'elements') { showElements(msg.data); }
+      else if (msg.type === 'accuracy') { showAccuracy(msg.data); }
     }
 
     // ── RENDER ───────────────────────────────────────────────────
@@ -1921,7 +1923,7 @@
       var r = Math.sqrt(ax * ax + ay * ay);
       if (r < 1e-9) return { px: cx, py: cy };
       var angle = Math.atan2(ay, ax);
-      var logR = Math.log(1 + r * 12 / span) / Math.log(1 + 12);
+      var logR = Math.log(1 + r * 80 / span) / Math.log(1 + 80);
       var rDisplay = logR * simState.stretchRadius;
       return {
         px: cx + Math.cos(angle) * rDisplay,
@@ -1950,9 +1952,9 @@
         var spanX = maxX - minX, spanY = maxY - minY;
         var span = Math.max(spanX, spanY, 1e-6); // AU
         simState.currentSpan = span;
-        simState.stretchScale = span > 4; // use sqrt stretch for solar-system scale
+        simState.stretchScale = span > 2; // log stretch for any multi-AU system
         if (simState.stretchScale) {
-          simState.stretchRadius = Math.min(W, H) * 0.46;
+          simState.stretchRadius = Math.min(W, H) * 0.44;
           scale = simState.scale;
         } else {
           var targetScale = Math.min(W, H) * 0.38 / span;
@@ -2047,6 +2049,7 @@
     document.getElementById('btn-glow').addEventListener('click', function () { simState.showGlow = !simState.showGlow; this.className = simState.showGlow ? 'btn on' : 'btn'; });
     document.getElementById('btn-lbl').addEventListener('click', function () { simState.showLabels = !simState.showLabels; this.className = simState.showLabels ? 'btn on' : 'btn'; });
     document.getElementById('btn-elems').addEventListener('click', function () { wsSend({ action: 'get_elements' }); });
+    document.getElementById('btn-accuracy').addEventListener('click', function () { wsSend({ action: 'get_accuracy' }); });
     document.getElementById('spd-sl').addEventListener('input', function () {
       simState.speedMult = parseInt(this.value);
       document.getElementById('spd-v').textContent = simState.speedMult + '×';
@@ -2058,6 +2061,92 @@
       simState.trailAlpha = v * 0.025 + 0.015;
       document.getElementById('trl-v').textContent = labels[v];
     });
+
+    // ── ACCURACY ──────────────────────────────────────────────────
+    function showAccuracy(report) {
+      if (!report) return;
+      var div = document.createElement('div');
+      div.className = 'msg msg-a';
+
+      var modeLabel = report.mode === 'ephemeris' ? 'vs NASA J2000 reference' : 'orbital drift + energy conservation';
+      var gradeColor = { A: '#00ff88', B: '#88ff44', C: '#ffcc44', D: '#ff8844', F: '#ff4444', 'N/A': '#888' };
+      var gc = gradeColor[report.grade] || '#ffffff';
+
+      var html = '<div class="msg-a-tag">Orbital Accuracy</div>';
+      html += '<div style="margin:4px 0 6px;font-size:11px;color:#aac">Mode: ' + modeLabel + ' &nbsp;·&nbsp; t = ' + (report.t_years || 0).toFixed(3) + ' yr</div>';
+
+      // Overall score badge
+      html += '<div style="display:flex;align-items:center;gap:10px;margin-bottom:8px">';
+      if (report.overall !== null && report.overall !== undefined) {
+        html += '<span style="font-size:28px;font-weight:700;color:' + gc + '">' + report.overall.toFixed(1) + '%</span>';
+        html += '<span style="font-size:22px;font-weight:700;color:' + gc + '">Grade ' + report.grade + '</span>';
+      } else {
+        html += '<span style="color:#888">N/A</span>';
+      }
+      html += '</div>';
+
+      // Extra metrics for physics mode
+      if (report.mode === 'physics' && report.stability_score !== undefined) {
+        html += '<div style="font-size:10px;color:#99b;margin-bottom:6px">';
+        html += 'Stability: <b style="color:#cde">' + report.stability_score + '%</b> &nbsp;·&nbsp; ';
+        html += 'Energy: <b style="color:#cde">' + report.energy_score + '%</b> &nbsp;·&nbsp; ';
+        html += 'ΔE/E: <b style="color:#cde">' + (report.energy_drift || 0).toExponential(2) + '</b>';
+        html += '</div>';
+      }
+
+      // Per-body table
+      if (report.bodies && report.bodies.length) {
+        var tbl = '<table class="dtable"><tr>';
+        if (report.mode === 'ephemeris') {
+          tbl += '<td><b>Body</b></td><td><b>Score</b></td><td><b>a err%</b></td><td><b>e err%</b></td><td><b>P err%</b></td>';
+          tbl += '</tr>';
+          report.bodies.forEach(function (b) {
+            var sc = b.score || 0;
+            var col = sc >= 95 ? '#00ff88' : sc >= 80 ? '#ffcc44' : '#ff4444';
+            tbl += '<tr>';
+            tbl += '<td>' + b.planet + '</td>';
+            tbl += '<td style="color:' + col + ';font-weight:600">' + sc.toFixed(1) + '%</td>';
+            tbl += '<td>' + (b['a_error%'] !== undefined ? b['a_error%'].toFixed(4) : '—') + '</td>';
+            tbl += '<td>' + (b['e_error%'] !== undefined ? b['e_error%'].toFixed(4) : '—') + '</td>';
+            tbl += '<td>' + (b['P_error%'] !== undefined ? b['P_error%'].toFixed(4) : '—') + '</td>';
+            tbl += '</tr>';
+          });
+        } else {
+          tbl += '<td><b>Body</b></td><td><b>Score</b></td><td><b>a drift%</b></td><td><b>e drift%</b></td><td><b>Orbit type</b></td>';
+          tbl += '</tr>';
+          report.bodies.forEach(function (b) {
+            var sc = b.score || 0;
+            var col = sc >= 95 ? '#00ff88' : sc >= 80 ? '#ffcc44' : '#ff4444';
+            var otCol = b.orbit_type === 'circular' ? '#00ff88'
+              : b.orbit_type === 'elliptical' ? '#88ff44'
+                : b.orbit_type === 'highly_elliptical' ? '#ffcc44'
+                  : b.orbit_type === 'hyperbolic (unbound)' ? '#ff4444' : '#aaa';
+            tbl += '<tr>';
+            tbl += '<td>' + b.planet + '</td>';
+            tbl += '<td style="color:' + col + ';font-weight:600">' + sc.toFixed(1) + '%</td>';
+            tbl += '<td>' + (b['a_drift%'] !== undefined ? b['a_drift%'].toFixed(4) : '—') + '</td>';
+            tbl += '<td>' + (b['e_drift%'] !== undefined ? b['e_drift%'].toFixed(4) : '—') + '</td>';
+            tbl += '<td style="color:' + otCol + '">' + (b.orbit_type || '—') + '</td>';
+            tbl += '</tr>';
+          });
+        }
+        tbl += '</table>';
+        html += tbl;
+      }
+
+      // Unmatched bodies
+      if (report.unmatched && report.unmatched.length) {
+        html += '<div style="font-size:10px;color:#778;margin-top:5px">No reference for: ' + report.unmatched.join(', ') + '</div>';
+      }
+
+      if (report.note) {
+        html += '<div style="font-size:10px;color:#99b;margin-top:5px">' + report.note + '</div>';
+      }
+
+      div.innerHTML = html;
+      var msgs = document.getElementById('chat-msgs');
+      msgs.appendChild(div); msgs.scrollTop = msgs.scrollHeight;
+    }
 
     // ── ELEMENTS ─────────────────────────────────────────────────
     function showElements(elements) {

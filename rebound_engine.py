@@ -59,6 +59,7 @@ class ReboundEngine:
         self.t_per_frame = 0.01   # simulation time per frame
         self.scale = 1.0      # AU → canvas pixels
         self._E0 = 0.0        # Initial energy
+        self._initial_elements = []  # Orbital elements at t=0 for drift tracking
     
     def reset(self):
         """Reset simulation to initial state."""
@@ -155,8 +156,8 @@ class ReboundEngine:
         # Record initial energy for conservation monitoring
         self._E0 = self.sim.energy()
         self._prev_N = self.sim.N  # track body count for collision detection
-        
-        # Store scenario for reset functionality
+        self._initial_elements = self.get_orbital_elements()  # snapshot at t=0
+
         self.initial_scenario = scenario
 
         return self.get_frame()
@@ -197,6 +198,7 @@ class ReboundEngine:
         self.sim.move_to_com()
         self._E0 = self.sim.energy()
         self._prev_N = self.sim.N  # track body count for collision detection
+        self._initial_elements = self.get_orbital_elements()  # snapshot at t=0
         self.t_per_frame = 0.005
         self.scale = 200.0
         self.meta = {

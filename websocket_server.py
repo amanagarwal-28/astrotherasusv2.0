@@ -216,6 +216,12 @@ async def websocket_sim(websocket: WebSocket):
                         elements = engine.get_orbital_elements()
                         await send({"type": "elements", "data": elements})
 
+                elif action == "get_accuracy":
+                    if engine:
+                        from orbital_accuracy import compute_accuracy
+                        report = compute_accuracy(engine)
+                        await send({"type": "accuracy", "data": report})
+
             # Simulation loop: send frame if playing
             if playing and engine:
                 try:
@@ -360,6 +366,36 @@ async def health():
         "model": "llama3.1",
         "rag_docs": get_rag_doc_count(),   # live count, not hardcoded
     }
+
+
+@app.get("/api/accuracy")
+async def accuracy_check(years: float = 0.0):
+    """
+    Load the solar system from NASA JPL Horizons, optionally integrate
+    forward `years` years, then compare orbital elements against known
+    reference values.
+
+    ?years=N  — integration time before measuring (default 0)
+    """
+    try:
+        from rebound_engine import ReboundEngine
+        from orbital_accuracy import compute_accuracy
+
+        engine = ReboundEngine()
+        engine.load_from_horizons(
+            ["Sun", "Mercury", "Venus", "Earth", "Mars",
+             "Jupiter", "Saturn", "Uranus", "Neptune"],
+            integrator="whfast"
+        )
+
+        if years > 0:
+            engine.sim.integrate(float(years))
+
+        report = compute_accuracy(engine)
+        report["integration_years"] = years
+        return report
+    except Exception as e:
+        return JSONResponse({"error": str(e)}, status_code=500)
 
 @app.get("/api/horizons")
 async def horizons_scenario():

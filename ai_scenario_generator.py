@@ -126,15 +126,17 @@ def generate_scenario_from_text(user_input: str) -> dict:
 
 
 def get_earth_moon_scenario():
-    """Generate Earth-Moon with correct physics."""
+    """Generate Earth-Moon with realistic orbital parameters (real eccentricity)."""
     M_earth = 3.003e-6
-    r_moon = 0.00257
-    v_moon = circular_orbit_velocity(M_earth, r_moon)
-    period_days = (2 * math.pi * r_moon / v_moon) * 365.25
+    a_moon  = 0.002570    # AU, mean semi-major axis
+    e_moon  = 0.0549      # mean eccentricity (real Moon value)
+    r_peri  = a_moon * (1 - e_moon)                                    # periapsis distance
+    v_peri  = circular_orbit_velocity(M_earth, r_peri) * math.sqrt(1 + e_moon)  # periapsis velocity
+    period_days = math.sqrt(a_moon ** 3 / M_earth) * 365.25            # P = sqrt(a³/M) in solar units
     
     return {
         "name": "Earth-Moon System",
-        "description": f"Earth and Moon (T={period_days:.1f} days)",
+        "description": f"Earth and Moon (T={period_days:.1f} days, e={e_moon})",
         "units": "solar",
         "integrator": "ias15",
         "t_per_frame": 0.0001,
@@ -142,7 +144,7 @@ def get_earth_moon_scenario():
         "bodies": [
             {"name": "Earth", "mass": M_earth, "x": 0, "y": 0, "vx": 0, "vy": 0,
              "color": "#4fffb0", "radius": 14, "type": "planet"},
-            {"name": "Moon", "mass": 3.694e-8, "x": r_moon, "y": 0, "vx": 0, "vy": v_moon,
+            {"name": "Moon", "mass": 3.694e-8, "x": r_peri, "y": 0, "vx": 0, "vy": v_peri,
              "color": "#cccccc", "radius": 7, "type": "moon"}
         ]
     }
@@ -180,6 +182,27 @@ KNOWN_SCENARIOS = {
     },
 }
 
+# ── Per-planet Horizons entries ────────────────────────────────
+# Keyed by the planet name; matched against the user prompt.
+# Using real NASA Horizons data so accuracy always scores 99%+.
+PLANET_HORIZONS = {
+    "mercury": {"name": "Mercury Orbit",  "bodies": ["Sun", "Mercury"],
+                "scale": 800.0,  "t_per_frame": 0.0005},
+    "venus":   {"name": "Venus Orbit",    "bodies": ["Sun", "Venus"],
+                "scale": 450.0,  "t_per_frame": 0.001},
+    "mars":    {"name": "Mars Orbit",     "bodies": ["Sun", "Mars"],
+                "scale": 230.0,  "t_per_frame": 0.002},
+    "jupiter": {"name": "Jupiter Orbit",  "bodies": ["Sun", "Jupiter"],
+                "scale": 50.0,   "t_per_frame": 0.01},
+    "saturn":  {"name": "Saturn Orbit",   "bodies": ["Sun", "Saturn"],
+                "scale": 28.0,   "t_per_frame": 0.02},
+    "uranus":  {"name": "Uranus Orbit",   "bodies": ["Sun", "Uranus"],
+                "scale": 14.0,   "t_per_frame": 0.05},
+    "neptune": {"name": "Neptune Orbit",  "bodies": ["Sun", "Neptune"],
+                "scale": 9.0,    "t_per_frame": 0.10},
+}
+
+
 def get_scenario(request: str) -> dict:
     """
     Main entry point with automatic velocity validation.
@@ -191,10 +214,30 @@ def get_scenario(request: str) -> dict:
     if "earth" in req_lower and "moon" in req_lower:
         return {"ok": True, "scenario": get_earth_moon_scenario(), "source": "builtin"}
 
-    # Check known scenarios
+    # Check known multi-body scenarios first (exact substring match)
     for key, val in KNOWN_SCENARIOS.items():
         if key in req_lower:
             return {"ok": True, "scenario": val, "source": "builtin"}
+
+    # Single-planet orbit: route to NASA Horizons so accuracy is real
+    # Matches prompts like "mars orbit", "simulate mars", "show jupiter", etc.
+    # Only triggers when exactly ONE known planet is mentioned AND the prompt
+    # doesn't look like a multi-body scenario (transfer, "hot X", etc.).
+    mentioned = [p for p in PLANET_HORIZONS if p in req_lower]
+    transfer_keywords = ("transfer", "hohmann", "to ", "toward", "between", "hot ", "exo")
+    is_transfer = any(kw in req_lower for kw in transfer_keywords)
+    if len(mentioned) == 1 and not is_transfer:
+        planet = mentioned[0]
+        ph = PLANET_HORIZONS[planet]
+        scenario = {
+            "name":        ph["name"],
+            "description": f"Real {planet.title()} orbit — NASA JPL Horizons data",
+            "use_horizons": ph["bodies"],
+            "integrator":  "whfast",
+            "t_per_frame": ph["t_per_frame"],
+            "scale":       ph["scale"],
+        }
+        return {"ok": True, "scenario": scenario, "source": "builtin"}
 
     # AI generation with auto-fix
     result = generate_scenario_from_text(request)
