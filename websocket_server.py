@@ -9,7 +9,7 @@ FastAPI server that:
 
 from fastapi import FastAPI, WebSocket, WebSocketDisconnect
 from fastapi.middleware.cors import CORSMiddleware
-from fastapi.responses import JSONResponse
+from fastapi.responses import JSONResponse, FileResponse
 from pydantic import BaseModel
 import asyncio
 import json
@@ -19,6 +19,12 @@ sys.path.append(os.path.dirname(__file__))
 
 app = FastAPI(title="Astro Thesaurus — REBOUND Server")
 app.add_middleware(CORSMiddleware, allow_origins=["*"], allow_methods=["*"], allow_headers=["*"])
+
+_BASE = os.path.dirname(os.path.abspath(__file__))
+
+@app.get("/")
+async def serve_ui():
+    return FileResponse(os.path.join(_BASE, "index_rebound.html"))
 
 # ── HELPER: live RAG doc count ────────────────────────────────
 def get_rag_doc_count() -> int:
@@ -155,7 +161,7 @@ async def websocket_sim(websocket: WebSocket):
                     if "use_horizons" in scenario:
                         initial_frame = engine.load_from_horizons(
                             scenario["use_horizons"],
-                            integrator=scenario.get("integrator", "whfast")
+                            integrator=scenario.get("integrator", "ias15")
                         )
                         engine.t_per_frame = scenario.get("t_per_frame", 0.005)
                         engine.scale       = scenario.get("scale", 180.0)
@@ -271,7 +277,7 @@ async def simulate_once(req: SimRequest):
     engine = ReboundEngine()
 
     if "use_horizons" in scenario:
-        engine.load_from_horizons(scenario["use_horizons"], scenario.get("integrator", "whfast"))
+        engine.load_from_horizons(scenario["use_horizons"], scenario.get("integrator", "ias15"))
         engine.t_per_frame = scenario.get("t_per_frame", 0.005)
         engine.scale       = scenario.get("scale", 180.0)
     else:
@@ -385,7 +391,7 @@ async def accuracy_check(years: float = 0.0):
         engine.load_from_horizons(
             ["Sun", "Mercury", "Venus", "Earth", "Mars",
              "Jupiter", "Saturn", "Uranus", "Neptune"],
-            integrator="whfast"
+            integrator="ias15"
         )
 
         if years > 0:
@@ -444,7 +450,7 @@ async def horizons_scenario():
                 "name":        "Solar System — Live NASA Data",
                 "description": "Real positions from NASA JPL Horizons (today)",
                 "units":       "solar",
-                "integrator":  "whfast",
+                "integrator":  "ias15",
                 "t_per_frame": 0.005,
                 "scale":       45.0,
                 "collisions":  False,

@@ -60,6 +60,8 @@ class ReboundEngine:
         self.scale = 1.0      # AU → canvas pixels
         self._E0 = 0.0        # Initial energy
         self._initial_elements = []  # Orbital elements at t=0 for drift tracking
+        self._horizons_bodies = None  # body names if loaded from Horizons
+        self._start_date = None       # ISO date string at load time
     
     def reset(self):
         """Reset simulation to initial state."""
@@ -162,7 +164,7 @@ class ReboundEngine:
 
         return self.get_frame()
 
-    def load_from_horizons(self, body_names: list, integrator="whfast") -> dict:
+    def load_from_horizons(self, body_names: list, integrator="ias15") -> dict:
         """
         Load real solar system bodies from NASA JPL Horizons via REBOUND's built-in fetcher.
         This gets ACTUAL current positions and velocities!
@@ -208,13 +210,17 @@ class ReboundEngine:
             "units": "solar",
             "N": len(body_names),
         }
-        
+
+        from datetime import date as _date
+        self._horizons_bodies = list(body_names)
+        self._start_date = _date.today().isoformat()
+
         # Store for reset (simplified - won't re-fetch from Horizons)
         self.initial_scenario = {
             "use_horizons": body_names,
             "integrator": integrator
         }
-        
+
         return self.get_frame()
 
     # ── STEP & GET FRAME ─────────────────────────────────────
@@ -340,7 +346,7 @@ def solar_system_real():
     engine = ReboundEngine()
     engine.load_from_horizons(
         ["Sun", "Mercury", "Venus", "Earth", "Mars", "Jupiter", "Saturn"],
-        integrator="whfast"
+        integrator="ias15"
     )
     engine.scale = 180.0
     engine.t_per_frame = 0.004  # ~1.5 days per frame

@@ -2068,12 +2068,30 @@
       var div = document.createElement('div');
       div.className = 'msg msg-a';
 
-      var modeLabel = report.mode === 'ephemeris' ? 'vs NASA J2000 reference' : 'orbital drift + energy conservation';
+      var modeLabels = {
+        predictive: 'predictive — vs Horizons at simulated epoch',
+        ephemeris:  'vs NASA J2000 reference elements',
+        physics:    'orbital drift + energy conservation'
+      };
+      var modeLabel = modeLabels[report.mode] || report.mode;
       var gradeColor = { A: '#00ff88', B: '#88ff44', C: '#ffcc44', D: '#ff8844', F: '#ff4444', 'N/A': '#888' };
       var gc = gradeColor[report.grade] || '#ffffff';
 
       var html = '<div class="msg-a-tag">Orbital Accuracy</div>';
       html += '<div style="margin:4px 0 6px;font-size:11px;color:#aac">Mode: ' + modeLabel + ' &nbsp;·&nbsp; t = ' + (report.t_years || 0).toFixed(3) + ' yr</div>';
+
+      if (report.mode === 'predictive' && report.target_date) {
+        html += '<div style="font-size:10px;color:#88cc88;margin-bottom:4px">Ground truth: NASA JPL Horizons @ ' + report.target_date + '</div>';
+      }
+
+      // Error from Horizons query failure
+      if (report.error) {
+        html += '<div style="color:#ff8844;font-size:11px">' + report.error + '</div>';
+        div.innerHTML = html;
+        var msgs = document.getElementById('chat-msgs');
+        msgs.appendChild(div); msgs.scrollTop = msgs.scrollHeight;
+        return;
+      }
 
       // Overall score badge
       html += '<div style="display:flex;align-items:center;gap:10px;margin-bottom:8px">';
@@ -2084,6 +2102,16 @@
         html += '<span style="color:#888">N/A</span>';
       }
       html += '</div>';
+
+      // Energy conservation for predictive mode (key WHFast property)
+      if (report.mode === 'predictive' && report.energy_drift !== undefined) {
+        var eDrift = report.energy_drift;
+        var eCol = eDrift < 1e-8 ? '#00ff88' : eDrift < 1e-5 ? '#ffcc44' : '#ff4444';
+        html += '<div style="font-size:10px;color:#99b;margin-bottom:6px">';
+        html += 'Energy conserved: <b style="color:' + eCol + '">ΔE/E = ' + eDrift.toExponential(2) + '</b>';
+        html += ' &nbsp;<span style="color:#668">(WHFast: symplectic — phase drifts, energy doesn\'t)</span>';
+        html += '</div>';
+      }
 
       // Extra metrics for physics mode
       if (report.mode === 'physics' && report.stability_score !== undefined) {
@@ -2097,7 +2125,25 @@
       // Per-body table
       if (report.bodies && report.bodies.length) {
         var tbl = '<table class="dtable"><tr>';
-        if (report.mode === 'ephemeris') {
+        if (report.mode === 'predictive') {
+          tbl += '<td><b>Body</b></td><td><b>Score</b></td><td><b>Error (km)</b></td><td><b>Error (AU)</b></td>';
+          tbl += '</tr>';
+          report.bodies.forEach(function (b) {
+            var sc = b.score || 0;
+            var col = sc >= 95 ? '#00ff88' : sc >= 80 ? '#ffcc44' : '#ff4444';
+            var km = b.error_km;
+            var kmStr = km < 1 ? km.toFixed(3) + ' km'
+                      : km < 1000 ? km.toFixed(1) + ' km'
+                      : km < 1e6  ? (km/1000).toFixed(1) + ' kkm'
+                      : (km/1e6).toFixed(3) + ' M km';
+            tbl += '<tr>';
+            tbl += '<td>' + b.planet + '</td>';
+            tbl += '<td style="color:' + col + ';font-weight:600">' + sc.toFixed(1) + '%</td>';
+            tbl += '<td style="color:#fff;font-weight:500">' + kmStr + '</td>';
+            tbl += '<td style="color:#99b">' + (b.error_au !== undefined ? b.error_au.toExponential(3) : '—') + '</td>';
+            tbl += '</tr>';
+          });
+        } else if (report.mode === 'ephemeris') {
           tbl += '<td><b>Body</b></td><td><b>Score</b></td><td><b>a err%</b></td><td><b>e err%</b></td><td><b>P err%</b></td>';
           tbl += '</tr>';
           report.bodies.forEach(function (b) {

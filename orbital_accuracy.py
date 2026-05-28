@@ -1,15 +1,23 @@
 """
 Orbital Accuracy Checker
 
-Compares simulated orbital elements from a running ReboundEngine against
-known NASA/JPL reference values for solar system planets.
+Three accuracy modes:
 
-Metrics per body  : relative error in a (semi-major axis), e (eccentricity), P (period)
-Score per body    : 1 - mean(relative errors)  × 100  [0–100 %]
-Overall accuracy  : mean of matched body scores
+predictive  : Gold standard. Integrates forward from load epoch, then re-queries
+              NASA JPL Horizons at (start_date + t_years) and compares actual XYZ
+              positions. Error reported in km. Only available when simulation was
+              loaded via load_from_horizons().
 
-Reference values  : J2000 mean elements sourced from NASA/JPL Horizons
-                    (datasets/planets_horizons.json + standard ephemeris)
+ephemeris   : Compares current orbital elements (a, e, P) against J2000 mean
+              elements from the REFERENCE table. Falls back when predictive is
+              unavailable and known solar-system bodies are present.
+
+physics     : Compares current elements against t=0 snapshot + energy conservation.
+              Used for custom/exoplanet scenarios with no Horizons reference.
+
+Score formula for predictive mode (log-scale):
+    score = max(0, 100 - 10 * log10(max(error_km, 1)))
+    1 km → 100%  |  1 000 km → 70%  |  100 000 km → 50%  |  1 AU → ~18%
 """
 
 import math
@@ -219,24 +227,136 @@ def accuracy_for_body(sim_elements: dict, planet_name: str) -> dict | None:
     }
 
 
+def predictive_accuracy(engine) -> dict | None:
+    """
+    Gold-standard accuracy: compare simulated positions against NASA JPL
+    Horizons at the actual simulated epoch.
+
+    Process:
+      1. Compute target date = start_date + sim.t years.
+      2. Build a fresh REBOUND sim loading the same bodies from Horizons at
+         that target date.
+      3. Align both sims to their centre of mass, then compare XYZ positions
+         body-by-body.
+      4. Score = max(0, 1 - error_au / 0.01) * 100
+         (0 AU → 100 %;  0.01 AU ≈ 1.5 M km → 0 %)
+
+    Returns None if engine was not loaded via load_from_horizons(), or if
+    the Horizons query fails.
+    """
+    if not getattr(engine, '_horizons_bodies', None) or not getattr(engine, '_start_date', None):
+        return None
+    if engine.sim is None or engine.sim.N < 2:
+        return None
+
+    import rebound
+    from datetime import date as _date, timedelta
+
+    AU_TO_KM = 149_597_870.7  # 1 AU in km
+
+    t_years  = engine.sim.t
+
+    # At t=0 we trivially match our own starting state — not a real test.
+    if t_years < 1e-9:
+        return {
+            "overall":     100.0,
+            "grade":       "A",
+            "t_years":     0.0,
+            "bodies":      [],
+            "unmatched":   [],
+            "mode":        "predictive",
+            "target_date": engine._start_date,
+            "note":        (
+                "t = 0: simulation just loaded from Horizons — "
+                "run the simulation, then re-check to see genuine predictive accuracy."
+            ),
+        }
+    start    = _date.fromisoformat(engine._start_date)
+    target   = start + timedelta(days=t_years * 365.25)
+    target_s = target.isoformat()
+
+    # Load ground-truth positions from Horizons at the target epoch
+    try:
+        ref_sim = rebound.Simulation()
+        ref_sim.units = ('AU', 'yr', 'Msun')
+        for name in engine._horizons_bodies:
+            ref_sim.add(name, date=target_s)
+        ref_sim.move_to_com()
+    except Exception as exc:
+        return {
+            "overall": None, "grade": "N/A",
+            "t_years": round(t_years, 6),
+            "bodies": [], "unmatched": [],
+            "mode": "predictive",
+            "error": f"Horizons query failed: {exc}",
+        }
+
+    body_results = []
+    # Skip index 0 (primary / Sun) — only orbiting bodies are meaningful
+    for i in range(1, min(engine.sim.N, ref_sim.N, len(engine._horizons_bodies))):
+        sim_p = engine.sim.particles[i]
+        ref_p = ref_sim.particles[i]
+        name  = engine._horizons_bodies[i]
+
+        dx = sim_p.x - ref_p.x
+        dy = sim_p.y - ref_p.y
+        dz = sim_p.z - ref_p.z
+        error_au = math.sqrt(dx*dx + dy*dy + dz*dz)
+        error_km = error_au * AU_TO_KM
+
+        # Log-scale score: 1 km → 100%, 10 km → 90%, 1000 km → 70%,
+        # 100 000 km → 50%, 1 AU (150 M km) → ~18%
+        # score = max(0, 100 - 10 * log10(error_km))  (floor at 1 km to avoid -inf)
+        score = max(0.0, 100.0 - 10.0 * math.log10(max(error_km, 1.0)))
+
+        body_results.append({
+            "planet":   name,
+            "score":    round(score, 2),
+            "error_au": round(error_au, 10),
+            "error_km": round(error_km, 1),
+        })
+
+    if not body_results:
+        return None
+
+    overall = sum(b["score"] for b in body_results) / len(body_results)
+
+    # Energy conservation — key feature of symplectic integrators
+    E_now   = engine.sim.energy()
+    e_drift = abs((E_now - engine._E0) / engine._E0) if engine._E0 != 0 else 0.0
+
+    return {
+        "overall":      round(overall, 2),
+        "grade":        _grade(overall),
+        "t_years":      round(t_years, 6),
+        "bodies":       body_results,
+        "unmatched":    [],
+        "mode":         "predictive",
+        "target_date":  target_s,
+        "energy_drift": round(e_drift, 12),
+        "note": (
+            f"Positions vs NASA JPL Horizons at {target_s}. "
+            "WHFast (symplectic): energy conserved near machine-precision; "
+            "phase error accumulates slowly over time — expected behaviour."
+        ),
+    }
+
+
 def compute_accuracy(engine) -> dict:
     """
     Run a full accuracy check on a live ReboundEngine.
 
-    Parameters
-    ----------
-    engine : ReboundEngine instance with a loaded simulation.
-
-    Returns
-    -------
-    {
-        "overall":   float | None,   # 0–100 %, None if no known bodies found
-        "grade":     str,            # "A" ≥95  "B" ≥85  "C" ≥70  "D" ≥50  "F" <50
-        "t_years":   float,          # simulation time at measurement
-        "bodies":    list,           # per-body accuracy dicts
-        "unmatched": list,           # body names with no reference entry
-    }
+    Priority:
+      1. predictive  — Horizons position comparison at simulated epoch (best)
+      2. ephemeris   — orbital element comparison vs J2000 reference table
+      3. physics     — orbital drift + energy conservation (custom scenarios)
     """
+    # ── 1. Predictive mode (Horizons-loaded sims only) ────────
+    pred = predictive_accuracy(engine)
+    if pred is not None:
+        return pred
+
+    # ── 2. Ephemeris mode ─────────────────────────────────────
     elements_list = engine.get_orbital_elements()
 
     matched   = []
@@ -255,7 +375,7 @@ def compute_accuracy(engine) -> dict:
     t_years = round(engine.sim.t, 6) if engine.sim is not None else 0.0
 
     if not matched:
-        # No solar-system planets found — fall back to physics correctness
+        # ── 3. Physics mode ───────────────────────────────────
         report = physics_correctness(engine)
         report["note"] = (
             "No known solar system bodies matched. "

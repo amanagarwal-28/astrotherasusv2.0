@@ -139,4 +139,4 @@ if __name__ == "__main__":
     print("  ║   ASTRO THESAURUS — api_server.py        ║")
     print("  ║   API: http://localhost:8000              ║")
     print("  ╚══════════════════════════════════════════╝")
-    uvicorn.run(app, host="0.0.0.0", port=8000, reload=False)
+    uvicorn.run(app, host="0.0.0.0", port=8001, reload=False)
