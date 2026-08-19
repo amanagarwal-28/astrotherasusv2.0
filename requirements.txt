@@ -1,0 +1,9 @@
+fastapi==0.141.1
+uvicorn[standard]==0.52.3
+chromadb==1.5.9
+pydantic==2.13.4
+numpy==2.5.2
+matplotlib==3.11.1
+requests==2.34.2
+rebound==5.1.1
+astroquery==0.4.11

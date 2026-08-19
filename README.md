@@ -19,22 +19,30 @@ Real-time N-body physics simulations + intelligent Q&A system for orbital mechan
 ## 🚀 Quick Start
 
 ```bash
-# Install dependencies
-pip install -r requirements.txt
+# One-command setup: creates .venv, installs pinned deps, checks prerequisites
+./setup.sh
 
-# Install Ollama & pull model
+# Activate the environment
+source .venv/bin/activate
+
+# Install Ollama & pull model (https://ollama.com/download)
 ollama pull llama3.1
 
-# Build database
+# Build database (one-time; drops & rebuilds the ChromaDB collection)
 python rebuild_balanced.py
 
 # Start servers
-python websocket_server.py  # Terminal 1
-node server_v2.js          # Terminal 2
+uvicorn websocket_server:app --host 0.0.0.0 --port 8000   # Terminal 1
+node server_v2.js                                          # Terminal 2
 
 # Open browser
 http://localhost:3000
 ```
+
+**Prerequisites:** Python 3.11+, a C compiler (`rebound` builds a C extension —
+`build-essential` on Debian/Ubuntu, Xcode CLT on macOS), Node.js ≥ 18, and
+[Ollama](https://ollama.com/download). `setup.sh` checks all of these and
+fails fast with a clear message if one is missing.
 
 ---
 

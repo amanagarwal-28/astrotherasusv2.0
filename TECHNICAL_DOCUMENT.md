@@ -480,23 +480,32 @@ Response:
 
 ### Prerequisites
 
-| Dependency | Version | Install |
-|------------|---------|---------|
-| Python | ≥ 3.10 | system |
-| Node.js | ≥ 18 | system |
+Pinned exact versions live in [`requirements.txt`](../requirements.txt) and
+[`.python-version`](../.python-version); `setup.sh` verifies all non-pip
+prerequisites before installing.
+
+| Dependency | Version (pinned) | Install |
+|------------|-------------------|---------|
+| Python | 3.13 (3.11+ should work) | system |
+| C compiler | any (gcc/clang) | `build-essential` (Debian/Ubuntu) / Xcode CLT (macOS) — required to build the `rebound` C extension |
+| Node.js | ≥ 18 (tested on 20) | system |
 | Ollama | latest | `ollama.com/download` |
-| REBOUND | ≥ 3.x | `pip install rebound` |
-| FastAPI | ≥ 0.100 | `pip install fastapi uvicorn` |
-| ChromaDB | ≥ 0.4 | `pip install chromadb` |
-| NumPy | ≥ 1.24 | `pip install numpy` |
-| Matplotlib | ≥ 3.7 | `pip install matplotlib` |
-| Requests | any | `pip install requests` |
+| REBOUND | 5.1.1 | `requirements.txt` |
+| FastAPI | 0.141.1 | `requirements.txt` |
+| Uvicorn | 0.52.3 (`[standard]` extra, for WebSocket support) | `requirements.txt` |
+| ChromaDB | 1.5.9 | `requirements.txt` |
+| Pydantic | 2.13.4 | `requirements.txt` |
+| NumPy | 2.5.2 | `requirements.txt` |
+| Matplotlib | 3.11.1 | `requirements.txt` |
+| Requests | 2.34.2 | `requirements.txt` |
+| Astroquery | 0.4.11 | `requirements.txt` |
 
 ### Setup Sequence
 
 ```bash
-# 1. Python dependencies
-pip install -r requirements.txt
+# 1. One-command setup: venv + pinned Python deps + prerequisite checks
+./setup.sh
+source .venv/bin/activate
 
 # 2. Pull LLM model (requires Ollama running)
 ollama pull llama3.1
@@ -513,6 +522,10 @@ node server_v2.js
 # 6. Open browser
 http://localhost:3000
 ```
+
+CI (`.github/workflows/ci.yml`) installs `requirements.txt` and import-smoke-tests
+every module on each push, so environment drift is caught automatically rather
+than discovered at demo time.
 
 ### Database Rebuild
 
