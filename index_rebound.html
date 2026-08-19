@@ -1898,6 +1898,29 @@
     function fillChat(t) { document.getElementById('chat-in').value = t; document.getElementById('chat-in').focus(); }
     function fillSim(t) { document.getElementById('sim-input').value = t; startSim(t); }
 
+    // Core orbital-dynamics prompts — resolved by pattern-matching, no LLM
+    // needed, so these always work even without Ollama running.
+    var ORBITAL_EXAMPLES = [
+      { icon: '☉', label: 'Solar system', prompt: 'solar system' },
+      { icon: '↝', label: 'Hohmann transfer, Earth → Mars', prompt: 'hohmann transfer earth to mars' },
+      { icon: '△', label: 'Lagrange point (Jupiter Trojan)', prompt: 'lagrange point jupiter' },
+      { icon: '⟲', label: '2:1 orbital resonance', prompt: 'orbital resonance 2:1' },
+      { icon: '✦', label: 'Binary star system', prompt: 'binary star system' },
+      { icon: '☾', label: 'Earth-Moon system', prompt: 'earth moon' },
+    ];
+    (function renderOrbitalExamples() {
+      var wrap = document.querySelector('.wc-exs');
+      if (!wrap) return;
+      ORBITAL_EXAMPLES.forEach(function (ex) {
+        var el = document.createElement('div');
+        el.className = 'wce';
+        el.textContent = ex.icon + '  ' + ex.label;
+        el.title = ex.prompt;
+        el.addEventListener('click', function () { fillSim(ex.prompt); });
+        wrap.appendChild(el);
+      });
+    })();
+
     function checkAPI() {
       fetch(API + '/api/health')
         .then(function (r) { return r.json(); })

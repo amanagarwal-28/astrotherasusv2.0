@@ -58,13 +58,23 @@ fails fast with a clear message if one is missing.
 
 ## 🎬 Simulation Examples
 
+**Core orbital-dynamics concepts — pattern-matched, no Ollama required, always work:**
 ```
-"Simulate the real solar system"
-"Hot Jupiter system"
+"Solar system"                          — real NASA Horizons data, all 8 planets
+"Hohmann transfer Earth to Mars"        — any two of mercury/venus/earth/mars/jupiter/saturn
+"Lagrange point" / "Jupiter trojan L5"  — stable co-orbital equilibrium, ties to real Trojans
+"Orbital resonance 3:2"                 — any integer period ratio, via Kepler's 3rd law
+"Binary star system" / "eccentric binary star"
 "Earth-Moon system"
+"Mars orbit" (or any single planet)     — real NASA Horizons data for that body
+```
+These six are also one-click examples in the chat panel's welcome message.
+
+**Free-form scenarios — routed through the local LLM, need `ollama pull llama3.1`:**
+```
+"Hot Jupiter system"
 "TRAPPIST-1 with all 7 planets"
 "Two neutron stars spiraling together"
-"Hohmann transfer Earth to Mars"
 ```
 
 ---

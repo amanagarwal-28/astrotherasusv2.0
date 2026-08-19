@@ -416,6 +416,82 @@ def binary_star_system(mass1=1.0, mass2=1.0, separation=2.0, eccentricity=0.0):
     })
     return engine
 
+def lagrange_point_scenario(point="L4", secondary="Jupiter"):
+    """
+    Sun + secondary body + a negligible-mass test particle at the L4 or L5
+    co-orbital Lagrange point (60 deg ahead of / behind the secondary on
+    its own circular orbit). Demonstrates the stable equilibrium that traps
+    real populations like the Jupiter Trojans (see datasets/trojan.json).
+    """
+    SECONDARIES = {
+        "Jupiter": {"mass": 9.545e-4, "a": 5.203, "color": "#c88b3a"},
+        "Earth":   {"mass": 3.003e-6, "a": 1.000, "color": "#4fffb0"},
+        "Neptune": {"mass": 5.15e-5,  "a": 30.07, "color": "#3f54ba"},
+    }
+    sec = SECONDARIES.get(secondary, SECONDARIES["Jupiter"])
+    a = sec["a"]
+    G = 4 * math.pi**2
+    v_sec = math.sqrt(G * 1.0 / a)
+
+    angle = math.radians(60.0 if point == "L4" else -60.0)
+    lx, ly = a * math.cos(angle), a * math.sin(angle)
+    lvx, lvy = -v_sec * math.sin(angle), v_sec * math.cos(angle)
+
+    engine = ReboundEngine()
+    engine.load_scenario({
+        "name": f"{secondary} {point} Trojan Point",
+        "description": f"Test body co-orbiting at the Sun-{secondary} {point} Lagrange point (60° ahead/behind)",
+        "units": "solar",
+        "integrator": "ias15",
+        "t_per_frame": max(0.001, a * 0.0008),
+        "scale": max(20.0, 320.0 / a),
+        "bodies": [
+            {"name": "Sun", "mass": 1.0, "x": 0, "y": 0, "vx": 0, "vy": 0,
+             "color": "#fff200", "radius": 18, "type": "star"},
+            {"name": secondary, "mass": sec["mass"], "x": a, "y": 0, "vx": 0, "vy": v_sec,
+             "color": sec["color"], "radius": 10, "type": "planet"},
+            {"name": f"{point} Trojan", "mass": 1e-12, "x": lx, "y": ly, "vx": lvx, "vy": lvy,
+             "color": "#bf7fff", "radius": 4, "type": "asteroid"},
+        ]
+    })
+    return engine
+
+def orbital_resonance_scenario(resonance="2:1", primary_mass=1.0, a1=1.0):
+    """
+    Two planets around a central star with orbital periods in an exact
+    integer ratio (mean-motion resonance) — e.g. the Galilean moons' Io:Europa
+    is 2:1, Neptune:Pluto is 3:2. a2 is derived from Kepler's 3rd law: a ∝ T^(2/3).
+    """
+    try:
+        p, q = (float(v) for v in resonance.split(":"))  # period2 : period1 = p : q
+    except Exception:
+        p, q = 2.0, 1.0
+
+    G = 4 * math.pi**2
+    v1 = math.sqrt(G * primary_mass / a1)
+    a2 = a1 * (p / q) ** (2.0 / 3.0)
+    v2 = math.sqrt(G * primary_mass / a2)
+
+    engine = ReboundEngine()
+    engine.load_scenario({
+        "name": f"{int(p)}:{int(q)} Orbital Resonance",
+        "description": f"Two planets locked in a {int(p)}:{int(q)} mean-motion resonance (a2/a1 = {(p/q)**(2/3):.3f})",
+        "units": "solar",
+        "integrator": "whfast",
+        "dt": min(0.001, a1 * 0.0008),
+        "t_per_frame": 0.004,
+        "scale": max(20.0, 320.0 / a2),
+        "bodies": [
+            {"name": "Star", "mass": primary_mass, "x": 0, "y": 0, "vx": 0, "vy": 0,
+             "color": "#fff200", "radius": 18, "type": "star"},
+            {"name": "Inner Planet", "mass": 1e-5, "x": a1, "y": 0, "vx": 0, "vy": v1,
+             "color": "#4fffb0", "radius": 7, "type": "planet"},
+            {"name": "Outer Planet", "mass": 1e-5, "x": -a2, "y": 0, "vx": 0, "vy": -v2,
+             "color": "#ff6b35", "radius": 8, "type": "planet"},
+        ]
+    })
+    return engine
+
 def hohmann_transfer(from_body="Earth", to_body="Mars"):
     """Earth-to-Mars (or any two planets) Hohmann transfer with spacecraft."""
     PLANETS = {
@@ -476,11 +552,6 @@ def hohmann_transfer(from_body="Earth", to_body="Mars"):
              "color": "#ffffff", "radius": 3, "type": "debris"},
         ]
     })
-
-    print(f"\nHohmann Transfer {from_body} → {to_body}:")
-    print(f"  Δv₁ = {dv1:.4f} AU/yr ({dv1*4740:.0f} m/s)")
-    print(f"  Δv₂ = {dv2:.4f} AU/yr ({dv2*4740:.0f} m/s)")
-    print(f"  Transfer time = {T_transfer:.3f} yr ({T_transfer*365.25:.0f} days)")
 
     return engine
 
