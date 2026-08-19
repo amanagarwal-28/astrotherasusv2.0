@@ -203,6 +203,11 @@ PLANET_HORIZONS = {
 }
 
 
+# Bodies with a Hohmann transfer entry (matches physics_engine.SOLAR_SYSTEM
+# and rebound_engine.hohmann_transfer's PLANETS dict, capitalized there).
+HOHMANN_BODIES = ["mercury", "venus", "earth", "mars", "jupiter", "saturn"]
+
+
 def get_scenario(request: str) -> dict:
     """
     Main entry point with automatic velocity validation.
@@ -213,6 +218,53 @@ def get_scenario(request: str) -> dict:
     # Earth-Moon special case
     if "earth" in req_lower and "moon" in req_lower:
         return {"ok": True, "scenario": get_earth_moon_scenario(), "source": "builtin"}
+
+    # ── Core orbital-dynamics concepts — always available, no LLM needed ──
+
+    # Lagrange point / Trojan asteroid
+    if "lagrange" in req_lower or "trojan" in req_lower:
+        from rebound_engine import lagrange_point_scenario
+        point = "L5" if "l5" in req_lower else "L4"
+        secondary = ("Earth" if "earth" in req_lower
+                     else "Neptune" if "neptune" in req_lower
+                     else "Jupiter")
+        eng = lagrange_point_scenario(point=point, secondary=secondary)
+        return {"ok": True, "scenario": eng.initial_scenario, "source": "builtin"}
+
+    # Orbital / mean-motion resonance
+    if "resonance" in req_lower:
+        import re
+        from rebound_engine import orbital_resonance_scenario
+        m = re.search(r'(\d+)\s*[:\-]\s*(\d+)', req_lower)
+        ratio = f"{m.group(1)}:{m.group(2)}" if m else "2:1"
+        eng = orbital_resonance_scenario(resonance=ratio)
+        return {"ok": True, "scenario": eng.initial_scenario, "source": "builtin"}
+
+    # Binary star system
+    if any(k in req_lower for k in ("binary star", "binary system", "two stars")):
+        from rebound_engine import binary_star_system
+        ecc = 0.5 if any(k in req_lower for k in ("eccentric", "elliptical")) else 0.0
+        eng = binary_star_system(eccentricity=ecc)
+        return {"ok": True, "scenario": eng.initial_scenario, "source": "builtin"}
+
+    # Hohmann transfer between two planets (defaults to Earth->Mars, the
+    # canonical textbook example, when bodies aren't named or only one is)
+    if "hohmann" in req_lower or "transfer" in req_lower:
+        from rebound_engine import hohmann_transfer
+        positions = sorted(
+            ((req_lower.find(p), p) for p in HOHMANN_BODIES if p in req_lower),
+            key=lambda pair: pair[0]
+        )
+        mentioned = [p.title() for _, p in positions]
+        if len(mentioned) >= 2:
+            from_body, to_body = mentioned[0], mentioned[1]
+        elif len(mentioned) == 1:
+            to_body = mentioned[0]
+            from_body = "Mars" if to_body == "Earth" else "Earth"
+        else:
+            from_body, to_body = "Earth", "Mars"
+        eng = hohmann_transfer(from_body, to_body)
+        return {"ok": True, "scenario": eng.initial_scenario, "source": "builtin"}
 
     # Check known multi-body scenarios first (exact substring match)
     for key, val in KNOWN_SCENARIOS.items():

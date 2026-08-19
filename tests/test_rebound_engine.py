@@ -6,7 +6,14 @@ import math
 
 import pytest
 
-from rebound_engine import ReboundEngine, binary_star_system, three_body_figure8
+from rebound_engine import (
+    ReboundEngine,
+    binary_star_system,
+    hohmann_transfer,
+    lagrange_point_scenario,
+    orbital_resonance_scenario,
+    three_body_figure8,
+)
 
 G_SOLAR = 4 * math.pi ** 2
 
@@ -74,3 +81,35 @@ def test_binary_star_system_conserves_total_momentum():
     total_py = p1.m * p1.vy + p2.m * p2.vy
     assert total_px == pytest.approx(0.0, abs=1e-9)
     assert total_py == pytest.approx(0.0, abs=1e-9)
+
+
+def test_lagrange_l4_trojan_stays_near_60_degrees_from_secondary():
+    # The defining feature of a stable Lagrange point: a test body placed
+    # there should co-orbit indefinitely rather than drifting away.
+    import math as _math
+    engine = lagrange_point_scenario(point="L4", secondary="Jupiter")
+    engine.sim.integrate(50.0)  # ~4 Jupiter orbital periods (P=11.86 yr)
+    trojan, jup = engine.sim.particles[2], engine.sim.particles[1]
+    r_trojan = _math.hypot(trojan.x, trojan.y)
+    r_jup = _math.hypot(jup.x, jup.y)
+    angle = _math.degrees(_math.acos(
+        (trojan.x * jup.x + trojan.y * jup.y) / (r_trojan * r_jup)
+    ))
+    assert r_trojan == pytest.approx(r_jup, rel=0.02)
+    assert angle == pytest.approx(60.0, abs=2.0)
+
+
+def test_orbital_resonance_produces_exact_period_ratio():
+    engine = orbital_resonance_scenario(resonance="3:2")
+    elements = engine.get_orbital_elements()
+    inner, outer = elements[0], elements[1]
+    assert outer["P"] / inner["P"] == pytest.approx(1.5, rel=1e-3)
+
+
+def test_hohmann_transfer_scenario_has_sun_two_planets_and_spacecraft():
+    engine = hohmann_transfer("Earth", "Mars")
+    names = [b["name"] for b in engine.body_info]
+    assert names == ["Sun", "Earth", "Mars", "Spacecraft"]
+    # Spacecraft starts on the departure planet's orbit (r = 1 AU for Earth)
+    spacecraft = engine.sim.particles[3]
+    assert math.hypot(spacecraft.x, spacecraft.y) == pytest.approx(1.0, rel=1e-3)
