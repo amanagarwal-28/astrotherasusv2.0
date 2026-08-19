@@ -406,13 +406,14 @@ Example:
 
 | Token | Value | Usage |
 |-------|-------|-------|
-| `--void` | `#000008` | Page background |
-| `--deep` | `#03071a` | Panel background |
-| `--accent` | `#3280ff` | Primary interactive elements |
-| `--pulse` | `#00e5ff` | Glow highlights |
-| `--text` | `#c8d8ff` | Body text |
-| `--green` | `#00ff88` | Positive indicators |
-| `--nova` | `#ff1a6e` | Alerts / destructive |
+| `--bg` | `#05070d` | Page background |
+| `--surface` / `--surface-2` | `#0a0e18` / `#0d1220` | Panel backgrounds |
+| `--accent` | `#2dd4db` | Primary interactive elements (single confident accent, replacing the old accent+pulse+teal trio) |
+| `--accent-2` | `#7c8fff` | Secondary accent — 3D mode, AI/indigo touches |
+| `--gold` | `#f5b642` | Orbital Plot view, replay action |
+| `--text` | `#eef2fb` | Body text |
+| `--green` | `#3ddc8a` | Positive / live indicators |
+| `--red` | `#ff6470` | Alerts / destructive |
 
 **Typography:**
 - `Orbitron` — headings, logo
