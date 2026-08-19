@@ -1,3 +1,12 @@
+"""
+Chat-only API server for index_v2.html, the legacy chat-focused frontend.
+
+The primary backend is websocket_server.py, which serves index_rebound.html
+and includes its own /api/chat (a copy of this file's chat logic — see
+websocket_server.py's docstring on that endpoint) plus the /ws/sim
+simulation stream this file does not have. Kept for index_v2.html only;
+new work should go through websocket_server.py.
+"""
 from fastapi import FastAPI
 from fastapi.middleware.cors import CORSMiddleware
 from pydantic import BaseModel

@@ -86,7 +86,8 @@ The system is entirely local — no external API keys are required. All AI infer
 | Port | Service | Protocol |
 |------|---------|----------|
 | 3000 | `server_v2.js` – static file server | HTTP |
-| 8000 | `websocket_server.py` – simulation & chat API | HTTP + WebSocket |
+| 8000 | `websocket_server.py` – simulation & chat API (primary; serves `index_rebound.html`) | HTTP + WebSocket |
+| 8001 | `api_server.py` – chat-only API (legacy; serves `index_v2.html` only) | HTTP |
 | 11434 | Ollama – local LLM inference | HTTP |
 
 ---
@@ -168,6 +169,12 @@ One-time database builder. Drops and recreates the ChromaDB `orbital_dynamics` c
 
 ### `server_v2.js`
 Minimal Node.js HTTP server. Serves static frontend files from the workspace root directory on port 3000.
+
+### `api_server.py`
+Legacy chat-only FastAPI server (port 8001), predating `websocket_server.py`.
+Serves `/api/chat` for `index_v2.html` only — no simulation streaming. New
+work should go through `websocket_server.py`; this file is kept solely for
+`index_v2.html` backward compatibility.
 
 ---
 

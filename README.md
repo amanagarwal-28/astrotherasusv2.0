@@ -156,9 +156,9 @@ benchmark, and what these tests do (and don't) prove.
 ## 🐛 Common Issues
 
 **Bodies fall off screen?**
-```bash
-python smart_restrict.py
-```
+- Auto-scaling should prevent this (see `scenario_validator.py` / `orbital_physics.check_orbit_stability`).
+- If it still happens on a custom/AI-generated scenario, the velocity is likely
+  outside the stable range — check `scenario_validator.py`'s bounds.
 
 **Chatbot not responding?**
 ```bash
@@ -209,16 +209,21 @@ fix: correct Moon orbital velocity and visual rendering
 
 ```
 astro-thesaurus/
-├── websocket_server.py       # FastAPI server
+├── websocket_server.py       # Primary FastAPI server
+├── api_server.py              # Legacy chat-only API (index_v2.html)
 ├── ai_scenario_generator.py  # AI scenario creation
 ├── rebound_engine.py          # Physics wrapper
 ├── query_rag.py               # RAG queries
 ├── intent_parser.py           # LLM integration
 ├── scenario_validator.py      # Velocity validation
-├── index_rebound.html         # Frontend
-├── server_v2.js               # File server
-├── chroma_db/                 # Vector database
-└── datasets/                  # NASA data
+├── index_rebound.html         # Primary frontend
+├── index_v2.html              # Legacy chat-only frontend
+├── server_v2.js               # Static file server
+├── chroma_db/                 # Vector database (built locally, gitignored)
+├── datasets/                  # NASA data
+├── tests/                     # pytest validation suite — see VALIDATION.md
+├── benchmarks/                # Reproducible integrator accuracy benchmark
+└── archive/dev-scripts/       # Superseded one-off dev/patch scripts (kept for history)
 ```
 
 ---
