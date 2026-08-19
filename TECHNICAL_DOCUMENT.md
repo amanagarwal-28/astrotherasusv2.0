@@ -20,6 +20,7 @@
 10. [API Reference](#10-api-reference)
 11. [Deployment](#11-deployment)
 12. [Dataset Inventory](#12-dataset-inventory)
+13. [Validation & Benchmarks](#13-validation--benchmarks)
 
 ---
 
@@ -563,6 +564,25 @@ Use `add_concept.py` to append a single document to the live collection without 
 | `datasets/small_body.json` | JSON array | Small body catalog |
 | `datasets/nearby_stars.csv` | CSV | Nearby star catalog (SIMBAD) |
 | `astro-data.json` | JSON | Aggregated reference data |
+
+---
+
+## 13. Validation & Benchmarks
+
+Full methodology, reproduction commands, and results live in
+[`VALIDATION.md`](../VALIDATION.md). Summary:
+
+- **`tests/`** — pytest suite covering closed-form physics (Kepler, vis-viva,
+  Hohmann Δv vs textbook values), REBOUND energy/momentum conservation, and
+  the `orbital_accuracy.py` scoring modes, including a regression check that
+  a poorly-suited integrator scores measurably worse than `ias15` on the same
+  orbit. Offline tests run in CI on every push (`pytest -m "not network"`,
+  ~0.5s); Horizons-dependent ground-truth tests run best-effort
+  (`pytest -m network`).
+- **`benchmarks/integrator_comparison.py`** — deterministic, offline
+  benchmark integrating a 9-body Sun+planets system under `ias15`, `whfast`,
+  and `leapfrog` for 50 years, producing the energy-drift comparison figure
+  referenced in the README's accuracy claim.
 
 ---
 

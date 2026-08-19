@@ -143,6 +143,16 @@ exo_count = 500  # Increase number
 
 ---
 
+## ✅ Testing & Validation
+
+```bash
+pytest -m "not network"   # unit + physics regression tests, offline, ~0.5s
+pytest -m network         # ground-truth tests against live NASA JPL Horizons
+```
+
+See [VALIDATION.md](VALIDATION.md) for methodology, the integrator energy-conservation
+benchmark, and what these tests do (and don't) prove.
+
 ## 🐛 Common Issues
 
 **Bodies fall off screen?**
@@ -167,7 +177,7 @@ ls chroma_db/  # Check database exists
 - RAG Query: < 50ms
 - LLM Response: 1-3s
 - Simulation: 30 FPS sustained
-- Physics Accuracy: ΔE/E < 10⁻⁸
+- Physics Accuracy: ΔE/E < 10⁻⁸ for `ias15` over 50 years — see [VALIDATION.md](VALIDATION.md) for the reproducible benchmark and automated test suite backing this claim
 
 ---
 
