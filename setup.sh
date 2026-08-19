@@ -63,3 +63,7 @@ echo "  3. python rebuild_balanced.py  (builds chroma_db/, one-time)"
 echo "  4. uvicorn websocket_server:app --host 0.0.0.0 --port 8000   # Terminal 1"
 echo "  5. node server_v2.js                                          # Terminal 2"
 echo "  6. open http://localhost:3000"
+echo
+echo "To run the validation test suite (see VALIDATION.md):"
+echo "  pip install -r requirements-dev.txt"
+echo "  pytest -m \"not network\""
